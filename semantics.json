@@ -1,11 +1,5 @@
 [
   {
-    "name": "info",
-    "type": "boolean",
-    "label": "Tutorial and Examples: <a href=\"http://www.rezeau.org/drupal/\" target=\"_blank\" rel=\"noopener\">Papi Jo's Drupal test site</a></span>",
-    "description": "<span style=\"color: white;margin-top: -20px;display: table-caption;font-size: large;\">&#9608;</span>"    
-  },
-  {
     "name": "showCoverPage",
     "type": "boolean",
     "label": "Enable book cover",
