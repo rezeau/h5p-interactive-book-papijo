@@ -84,7 +84,7 @@
           "name": "chapter",
           "type": "library",
           "options": [
-            "H5P.ColumnPapiJo 1.14"
+            "H5P.ColumnPapiJo 1.15"
           ]
         }
       ]

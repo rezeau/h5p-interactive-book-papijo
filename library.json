@@ -3,7 +3,7 @@
   "description": "An interactive book which displays content in pages and sections",
   "majorVersion": 1,
   "minorVersion": 3,
-  "patchVersion": 3,
+  "patchVersion": 4,
   "runnable": 1,
   "fullscreen": 1,
   "author": "Joubel",
@@ -17,6 +17,11 @@
       "path": "dist/h5p-interactive-book.js"
     }
   ],
+  "preloadedCss": [
+    {
+      "path": "dist/h5p-interactive-book.css"
+    }
+  ],
   "preloadedDependencies": [
     {
       "machineName": "FontAwesome",
@@ -26,7 +31,7 @@
     {
       "machineName": "H5P.ColumnPapiJo",
       "majorVersion": 1,
-      "minorVersion": 14
+      "minorVersion": 15
     },
     {
       "machineName": "H5P.JoubelUI",
