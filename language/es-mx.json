@@ -1,19 +1,19 @@
 {
   "semantics": [
     {
-      "label": "Habilitar cubierta de libro",
+      "label": "Habilitar portada del libro",
       "description": "Una cubierta que muestra información respecto al libro antes de acceder a él"
     },
     {
-      "label": "Página de Cubierta",
+      "label": "Página de Portada",
       "fields": [
         {
-          "label": "Descripción de la Cubierta",
+          "label": "Descripción de la portada",
           "description": "Este texto será la descripción de su libro."
         },
         {
-          "label": "Cover medium",
-          "description": "Optional medium for the introduction."
+          "label": "Medio de portada",
+          "description": "Medio opcional para la introducción."
         }
       ]
     },
@@ -38,8 +38,8 @@
       "label": "Configuraciones del comportamiento",
       "fields": [
         {
-          "label": "Base color",
-          "description": "Set the base color that will define the overall color scheme of the book. Please ensure a high enough contrast.",
+          "label": "Color base",
+          "description": "Configurar el color base que definirá el esquema general de color del libro. Por favor asegure un contraste suficientemente alto.",
           "default": "#1768c4"
         },
         {
@@ -93,20 +93,20 @@
       "default": "Página incompleta"
     },
     {
-      "label": "Traducción para \"Navegar a superior\"",
-      "default": "Navegar a superior"
+      "label": "Traducción para \"Navegar hacia arriba\"",
+      "default": "Navegar hacia arriba"
     },
     {
       "label": "Traducción para \"He terminado esta página\"",
       "default": "He terminado esta página"
     },
     {
-      "label": "Etiqueta botón PantallaCompleta",
-      "default": "PantallaCompleta"
+      "label": "Etiqueta botón pantalla completa",
+      "default": "Pantalla completa"
     },
     {
-      "label": "Etiqueta botón Salir de PantallaCompleta",
-      "default": "Salir de PantallaCompleta"
+      "label": "Etiqueta botón Salir de pantalla completa",
+      "default": "Salir de pantalla completa"
     },
     {
       "label": "Progreso de páginas en libro",
