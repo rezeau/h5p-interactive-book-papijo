@@ -147,11 +147,11 @@ class StatusBar extends H5P.EventDispatcher {
     acm.buttonPrevious.classList.add('navigation-button');
     acm.buttonPrevious.classList.add('icon-previous');
     acm.buttonPrevious.setAttribute('title', this.params.l10n.previousPage);
-    acm.buttonPrevious.setAttribute('aria-label', this.params.l10n.previousPage);
 
     acm.buttonWrapperPrevious = document.createElement('button');
     acm.buttonWrapperPrevious.classList.add('h5p-interactive-book-status-arrow');
     acm.buttonWrapperPrevious.classList.add('h5p-interactive-book-status-button');
+    acm.buttonWrapperPrevious.setAttribute('aria-label', this.params.l10n.previousPage);
     acm.buttonWrapperPrevious.onclick = () => {
       this.trigger('seqChapter', {
         direction:'prev',
@@ -164,11 +164,11 @@ class StatusBar extends H5P.EventDispatcher {
     acm.buttonNext.classList.add('navigation-button');
     acm.buttonNext.classList.add('icon-next');
     acm.buttonNext.setAttribute('title', this.params.l10n.nextPage);
-    acm.buttonNext.setAttribute('aria-label', this.params.l10n.nextPage);
 
     acm.buttonWrapperNext = document.createElement('button');
     acm.buttonWrapperNext.classList.add('h5p-interactive-book-status-arrow');
     acm.buttonWrapperNext.classList.add('h5p-interactive-book-status-button');
+    acm.buttonWrapperNext.setAttribute('aria-label', this.params.l10n.nextPage);
     acm.buttonWrapperNext.onclick = () => {
       this.trigger('seqChapter', {
         direction:'next',
