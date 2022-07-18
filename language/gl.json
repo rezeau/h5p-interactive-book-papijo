@@ -12,8 +12,8 @@
           "description": "Este texto será a descrición do teu libro."
         },
         {
-          "label": "Cover medium",
-          "description": "Optional medium for the introduction."
+          "label": "Cuberta mediana",
+          "description": "Medio opcional para a introdución."
         }
       ]
     },
@@ -38,8 +38,8 @@
       "label": "Configuración do comportamento",
       "fields": [
         {
-          "label": "Base color",
-          "description": "Set the base color that will define the overall color scheme of the book. Please ensure a high enough contrast.",
+          "label": "Cor base",
+          "description": "Establece a cor base que definirá o esquema de cores global do libro. Asegúrate de establecer un contraste suficientemente alto.",
           "default": "#1768c4"
         },
         {

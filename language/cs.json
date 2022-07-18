@@ -12,8 +12,8 @@
           "description": "Tento text bude popisem vaší knihy."
         },
         {
-          "label": "Cover medium",
-          "description": "Optional medium for the introduction."
+          "label": "Médium obálky",
+          "description": "Volitelné médium pro úvod."
         }
       ]
     },
@@ -38,8 +38,8 @@
       "label": "Nastavení chování",
       "fields": [
         {
-          "label": "Base color",
-          "description": "Set the base color that will define the overall color scheme of the book. Please ensure a high enough contrast.",
+          "label": "Základní barva",
+          "description": "Zvolte základní barvu pro barevné schéma knihy. Prosím, ujistěte se, že máte nastaven dostatečný kontrast.",
           "default": "#1768c4"
         },
         {
