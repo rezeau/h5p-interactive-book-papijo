@@ -395,6 +395,7 @@ class SideBar extends H5P.EventDispatcher {
    */
   getNodesFromChapter(chapter, chapterId) {
     const chapterNode = document.createElement('li');
+    const sectionsDivId = 'h5p-interactive-book-sectionlist-' + chapterId;
     chapterNode.classList.add('h5p-interactive-book-navigation-chapter');
 
     if ( chapter.isSummary) {
@@ -476,7 +477,6 @@ class SideBar extends H5P.EventDispatcher {
 
     const sectionsWrapper = document.createElement('ul');
     sectionsWrapper.classList.add('h5p-interactive-book-navigation-sectionlist');
-    const sectionsDivId = 'h5p-interactive-book-sectionlist-' + chapterId;
     sectionsWrapper.id = sectionsDivId;
 
     const sectionLinks = [];
