@@ -23,6 +23,7 @@ class PageContent extends H5P.EventDispatcher {
     this.columnNodes = [];
     this.chapters = [];
     this.l10n = config.l10n;
+    this.sidebarIsOpen = false;
 
     // Retrieve previous state
     this.previousState = (contentData.previousState && Object.keys(contentData.previousState).length > 0) ?
@@ -491,7 +492,22 @@ class PageContent extends H5P.EventDispatcher {
    * Toggle the navigation menu.
    */
   toggleNavigationMenu() {
-    this.container.classList.toggle('h5p-interactive-book-navigation-open');
+    const self = this;
+    if (!this.sidebarIsOpen) {
+      this.container.classList.remove('h5p-interactive-book-navigation-hidden');
+      setTimeout(function () {
+        self.container.classList.add('h5p-interactive-book-navigation-open');
+      }, 1);
+    }
+    else {
+      // Wait for the tranistion to end before hiding it completely
+      H5P.Transition.onTransitionEnd(H5P.jQuery(this.container), function () {
+        self.container.classList.add('h5p-interactive-book-navigation-hidden');
+      }, 500);
+      this.container.classList.remove('h5p-interactive-book-navigation-open');
+    }
+
+    this.sidebarIsOpen = !this.sidebarIsOpen;
   }
 }
 
