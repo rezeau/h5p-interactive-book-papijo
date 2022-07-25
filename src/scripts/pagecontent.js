@@ -38,7 +38,7 @@ class PageContent extends H5P.EventDispatcher {
     this.content = this.createPageContent();
 
     this.container = document.createElement('div');
-    this.container.classList.add('h5p-interactive-book-main');
+    this.container.classList.add('h5p-interactive-book-main', 'h5p-interactive-book-navigation-hidden');
 
     this.container.appendChild(this.content);
   }
