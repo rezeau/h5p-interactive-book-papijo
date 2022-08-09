@@ -12,8 +12,8 @@
           "description": "Αυτό το κείμενο θα είναι η περιγραφή του βιβλίου σας"
         },
         {
-          "label": "Cover medium",
-          "description": "Optional medium for the introduction."
+          "label": "Μέσο Εξωφύλλου",
+          "description": "Προαιρετικό μέσο για την εισαγωγή."
         }
       ]
     },
@@ -38,8 +38,8 @@
       "label": "Ρυθμίσεις",
       "fields": [
         {
-          "label": "Base color",
-          "description": "Set the base color that will define the overall color scheme of the book. Please ensure a high enough contrast.",
+          "label": "Βασικό χρώμα",
+          "description": "Ορίστε το βασικό χρώμα που θα καθορίσει την χρωματική παλέτα του βιβλίου. Σιγουρευτείτε πως υπάρχει αρκετά υψηλή αντίθεση.",
           "default": "#1768c4"
         },
         {
