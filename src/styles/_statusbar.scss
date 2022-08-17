@@ -113,7 +113,7 @@
     }
 
     &:focus-visible {
-      outline-color: #1768C4;
+      outline-color: $base-color;
       outline-offset: 1px;
     }
   }
