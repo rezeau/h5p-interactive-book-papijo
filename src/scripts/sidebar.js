@@ -79,6 +79,13 @@ class SideBar extends H5P.EventDispatcher {
     });
   }
 
+  /**
+   * Set focus on the first meny entry
+   */
+  focus() {
+    this.content.querySelector('button').focus();
+  }
+
   setFocusToChapterItem(index, direction = 0) {
     let nextIndex = index + direction;
     if (nextIndex < 0) {

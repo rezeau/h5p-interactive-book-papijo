@@ -55,6 +55,7 @@
   border: .125em solid $background-color;
   flex-shrink: 0;
   justify-content: center;
+  order: 5;
 
   &.h5p-interactive-book-enter-fullscreen {
     &::before {
@@ -119,11 +120,14 @@
   }
 }
 
-.h5p-interactive-book-status-progress {
+.h5p-interactive-book-status-progress-wrapper {
   flex-shrink: 0;
+  margin-right: 2em;
+  order: 2;
+}
+.h5p-interactive-book-status-progress {
   margin: 0;
   white-space: nowrap;
-  width: 86px;
 
   .hidden-but-read {
     border: 0;
@@ -195,6 +199,14 @@
   flex-shrink: 0;
   height: 2.75em;
   width: 2.75em;
+
+  &.previous {
+    order: 3;
+  }
+
+  &.next {
+    order: 4;
+  }
 
   .navigation-button {
     background: transparent;

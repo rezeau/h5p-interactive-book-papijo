@@ -24,21 +24,30 @@ class StatusBar extends H5P.EventDispatcher {
      */
     this.progressBar = this.createProgressBar();
     this.progressIndicator = this.createProgressIndicator();
-    this.chapterTitle = this.addChapterTitle();
+    this.chapterTitle = this.createChapterTitle();
     this.menuToggleButton = this.createMenuToggleButton();
 
     const wrapperInfo = document.createElement('div');
     wrapperInfo.classList.add('h5p-interactive-book-status');
-    wrapperInfo.appendChild(this.menuToggleButton);
-    wrapperInfo.appendChild(this.createToTopButton());
-    wrapperInfo.appendChild(this.chapterTitle.wrapper);
-    wrapperInfo.appendChild(this.progressIndicator.wrapper);
-    wrapperInfo.appendChild(this.arrows.buttonWrapperPrevious);
-    wrapperInfo.appendChild(this.arrows.buttonWrapperNext);
+
+    if (this.params.displayToTopButton) {
+      wrapperInfo.appendChild(this.createToTopButton());
+    }
 
     if (this.params.displayFullScreenButton && H5P.fullscreenSupported) {
       wrapperInfo.appendChild(this.createFullScreenButton());
     }
+
+    wrapperInfo.appendChild(this.arrows.buttonWrapperNext);
+    wrapperInfo.appendChild(this.arrows.buttonWrapperPrevious);
+
+    if (this.params.displayMenuToggleButton) {
+      wrapperInfo.appendChild(this.menuToggleButton);
+    }
+
+    wrapperInfo.appendChild(this.progressIndicator.wrapper);
+
+    wrapperInfo.appendChild(this.chapterTitle.wrapper);
 
     this.wrapper = document.createElement('div');
     this.wrapper.classList.add(styleClassName);
@@ -144,13 +153,11 @@ class StatusBar extends H5P.EventDispatcher {
 
     // Initialize elements
     acm.buttonPrevious = document.createElement('div');
-    acm.buttonPrevious.classList.add('navigation-button');
-    acm.buttonPrevious.classList.add('icon-previous');
+    acm.buttonPrevious.classList.add('navigation-button', 'icon-previous');
     acm.buttonPrevious.setAttribute('title', this.params.l10n.previousPage);
 
     acm.buttonWrapperPrevious = document.createElement('button');
-    acm.buttonWrapperPrevious.classList.add('h5p-interactive-book-status-arrow');
-    acm.buttonWrapperPrevious.classList.add('h5p-interactive-book-status-button');
+    acm.buttonWrapperPrevious.classList.add('h5p-interactive-book-status-arrow', 'h5p-interactive-book-status-button', 'previous');
     acm.buttonWrapperPrevious.setAttribute('aria-label', this.params.l10n.previousPage);
     acm.buttonWrapperPrevious.onclick = () => {
       this.trigger('seqChapter', {
@@ -161,13 +168,11 @@ class StatusBar extends H5P.EventDispatcher {
     acm.buttonWrapperPrevious.appendChild(acm.buttonPrevious);
 
     acm.buttonNext = document.createElement('div');
-    acm.buttonNext.classList.add('navigation-button');
-    acm.buttonNext.classList.add('icon-next');
+    acm.buttonNext.classList.add('navigation-button', 'icon-next');
     acm.buttonNext.setAttribute('title', this.params.l10n.nextPage);
 
     acm.buttonWrapperNext = document.createElement('button');
-    acm.buttonWrapperNext.classList.add('h5p-interactive-book-status-arrow');
-    acm.buttonWrapperNext.classList.add('h5p-interactive-book-status-button');
+    acm.buttonWrapperNext.classList.add('h5p-interactive-book-status-arrow', 'h5p-interactive-book-status-button', 'next');
     acm.buttonWrapperNext.setAttribute('aria-label', this.params.l10n.nextPage);
     acm.buttonWrapperNext.onclick = () => {
       this.trigger('seqChapter', {
@@ -237,7 +242,7 @@ class StatusBar extends H5P.EventDispatcher {
    *
    * @return {object} Chapter title elements.
    */
-  addChapterTitle() {
+  createChapterTitle() {
     const text = document.createElement('h1');
     text.classList.add('title');
 
@@ -320,6 +325,7 @@ class StatusBar extends H5P.EventDispatcher {
     progressText.appendChild(hiddenButRead);
 
     const wrapper = document.createElement('div');
+    wrapper.classList.add('h5p-interactive-book-status-progress-wrapper');
     wrapper.appendChild(progressText);
 
     return {
