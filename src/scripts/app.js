@@ -442,6 +442,11 @@ export default class InteractiveBook extends H5P.EventDispatcher {
       // Update the menu button
       this.statusBarHeader.menuToggleButton.setAttribute('aria-expanded', this.statusBarHeader.menuToggleButton.classList.toggle('h5p-interactive-book-status-menu-active') ? 'true' : 'false');
 
+      // Set focus on first element in menu
+      if (this.pageContent.sidebarIsOpen) {
+        this.sideBar.focus();
+      }
+
       // We need to resize the whole book since the interactions are getting
       // more width and those with a static ratio will increase their height.
       setTimeout(() => {
@@ -930,12 +935,14 @@ export default class InteractiveBook extends H5P.EventDispatcher {
       a11y: this.params.a11y,
       behaviour: this.params.behaviour,
       displayFullScreenButton: true,
+      displayMenuToggleButton: true
     }, 'h5p-interactive-book-status-header');
 
     this.statusBarFooter = new StatusBar(contentId, this.chapters.length, this, {
       l10n: this.l10n,
       a11y: this.params.a11y,
-      behaviour: this.params.behaviour
+      behaviour: this.params.behaviour,
+      displayToTopButton: true
     }, 'h5p-interactive-book-status-footer');
 
     if (this.hasCover()) {
