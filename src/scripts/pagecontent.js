@@ -368,14 +368,14 @@ class PageContent extends H5P.EventDispatcher {
     let position = -1;
     this.columnNodes.forEach((element, index) => {
       if (position !== -1) {
-        return; // Skip
+        return; // Skip and set default index to first page
       }
       if (element.id === chapterUUID) {
         position = index;
       }
     });
 
-    return position;
+    return position === -1 ? 0 : position;
   }
 
   /**
