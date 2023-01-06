@@ -375,7 +375,8 @@ class PageContent extends H5P.EventDispatcher {
       }
     });
 
-    return position;
+    // Set Postion to first page if nothing's matched with chapterUUID
+    return position === -1 ? 0 : position;
   }
 
   /**

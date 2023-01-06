@@ -615,8 +615,9 @@ export default class InteractiveBook extends H5P.EventDispatcher {
     this.getChapterId = (chapterUUID) => {
       chapterUUID = chapterUUID.replace('h5p-interactive-book-chapter-', '');
 
-      return this.chapters
+      const chapterId = this.chapters
         .map(chapter => chapter.instance.subContentId).indexOf(chapterUUID);
+      return chapterId === -1 ? 0 : chapterId;
     };
 
     /**
