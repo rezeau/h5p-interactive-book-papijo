@@ -197,7 +197,7 @@ class StatusBar extends H5P.EventDispatcher {
     const buttonWrapperMenu = document.createElement('button');
     buttonWrapperMenu.classList.add('h5p-interactive-book-status-menu');
     buttonWrapperMenu.classList.add('h5p-interactive-book-status-button');
-    buttonWrapperMenu.title = this.params.a11y.menu;
+    buttonWrapperMenu.setAttribute('aria-label', this.params.a11y.menu);
     buttonWrapperMenu.setAttribute('aria-expanded', 'false');
     buttonWrapperMenu.setAttribute('aria-controls', 'h5p-interactive-book-navigation-menu');
     buttonWrapperMenu.onclick = () => {
