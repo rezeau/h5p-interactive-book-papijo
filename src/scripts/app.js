@@ -436,14 +436,16 @@ export default class InteractiveBook extends H5P.EventDispatcher {
      */
     this.on('resize', this.resize, this);
 
-    this.on('toggleMenu', () => {
+    this.on('toggleMenu', (event) => {
+      // Set nav focus flag to avoid auto-scroll in content list page
+      const focusNav = !event.data?.shouldNotFocusNav;
       this.pageContent.toggleNavigationMenu();
 
       // Update the menu button
       this.statusBarHeader.menuToggleButton.setAttribute('aria-expanded', this.statusBarHeader.menuToggleButton.classList.toggle('h5p-interactive-book-status-menu-active') ? 'true' : 'false');
 
       // Set focus on first element in menu
-      if (this.pageContent.sidebarIsOpen) {
+      if (this.pageContent.sidebarIsOpen && focusNav) {
         this.sideBar.focus();
       }
 
@@ -859,7 +861,7 @@ export default class InteractiveBook extends H5P.EventDispatcher {
       this.$wrapper = $wrapper;
 
       if (this.params.behaviour.defaultTableOfContents && !this.isSmallSurface()) {
-        this.trigger('toggleMenu');
+        this.trigger('toggleMenu', {shouldNotFocusNav: true});
       }
 
       this.pageContent.updateFooter();
