@@ -297,13 +297,19 @@ class PageContent extends H5P.EventDispatcher {
       this.columnNodes.push(columnNode);
     }
 
-    // First chapter should be visible, except if the URL of previous state says otherwise.
+    // First chapter or cover page should be visible, except if the URL of previous state says otherwise.
     if (urlFragments.chapter && urlFragments.h5pbookid == this.parent.contentId) {
       const chapterIndex = this.findChapterIndex(urlFragments.chapter);
-      this.parent.setActiveChapter(chapterIndex);
-      const headerNumber = urlFragments.headerNumber;
 
+      if (chapterIndex === -1) {
+        // Chapter requested does not exist - do nothing, so that the cover page or first chapter (0 by default) is displayed.
+        return 0;
+      }
+    
+      this.parent.setActiveChapter(chapterIndex);
+    
       if (urlFragments.section) {
+        const headerNumber = urlFragments.headerNumber;
         setTimeout(() => {
           this.redirectSection(urlFragments.section, headerNumber);
           if (this.parent.hasCover()) {
@@ -311,7 +317,7 @@ class PageContent extends H5P.EventDispatcher {
           }
         }, 1000);
       }
-
+    
       return chapterIndex;
     }
 
@@ -375,8 +381,7 @@ class PageContent extends H5P.EventDispatcher {
       }
     });
 
-    // Set Postion to first page if nothing's matched with chapterUUID
-    return position === -1 ? 0 : position;
+    return position;
   }
 
   /**
