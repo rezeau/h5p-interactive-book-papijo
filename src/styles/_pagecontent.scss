@@ -8,6 +8,7 @@
   transform: translateX(0);
   transition: .25s;
   width: 100%;
+  margin-left: 1em;
 
   &.h5p-interactive-book-previous {
     transform: translateX(-100%);

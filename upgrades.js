@@ -1,6 +1,6 @@
 var H5PUpgrades = H5PUpgrades || {};
 
-H5PUpgrades['H5P.InteractiveBook'] = (function () {
+H5PUpgrades['H5P.InteractiveBookPapiJo'] = (function () {
   return {
     1: {
       /**

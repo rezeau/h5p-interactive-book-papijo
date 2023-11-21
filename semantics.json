@@ -13,7 +13,7 @@
     "label": "Cover Page",
     "importance": "medium",
     "widget": "showWhen",
-    "showWhen": {
+    "showWhen": { 
       "rules": [
         {
           "field": "showCoverPage",
@@ -99,7 +99,7 @@
           "name": "chapter",
           "type": "library",
           "options": [
-            "H5P.Column 1.16"
+            "H5P.ColumnPapiJo 1.16"
           ]
         }
       ]

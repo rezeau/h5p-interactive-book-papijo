@@ -25,8 +25,8 @@ class Cover extends H5P.EventDispatcher {
       this.container.classList.add('h5p-cover-nographics');
     }
 
-    // Title
-    this.container.appendChild(this.createTitleElement(titleText));
+    // Title DEV papijo not needed
+    // this.container.appendChild(this.createTitleElement(titleText));
 
     // Description text
     if (params.coverDescription) {

@@ -4,4 +4,4 @@ import InteractiveBook from "../scripts/app";
 
 // Load library
 H5P = H5P || {};
-H5P.InteractiveBook = InteractiveBook;
+H5P.InteractiveBookPapiJo = InteractiveBook;
