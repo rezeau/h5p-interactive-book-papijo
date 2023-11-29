@@ -141,8 +141,11 @@ class Summary extends H5P.EventDispatcher {
 
     const text = document.createElement('span');
     text.classList.add('h5p-interactive-book-summary-text');
-    text.innerHTML = this.l10n.summaryAndSubmit;
-
+    let txtSummary = this.l10n.summaryHeader;    
+    if (this.parent.isSubmitButtonEnabled && this.parent.isAnswerUpdated && this.behaviour.displaySubmit) {
+      txtSummary = this.l10n.summaryAndSubmit;
+    }
+    text.innerHTML = txtSummary;
     const arrowIcon = document.createElement('span');
     arrowIcon.classList.add('h5p-interactive-book-summary-menu-button-arrow');
     arrowIcon.classList.add('icon-up');
@@ -321,8 +324,7 @@ class Summary extends H5P.EventDispatcher {
     const wrapper = document.createElement("div");
     wrapper.classList.add('h5p-interactive-book-summary-buttons');
     this.checkTheAnswerIsUpdated();
-
-    if (this.parent.isSubmitButtonEnabled && this.parent.isAnswerUpdated) {
+    if (this.parent.isSubmitButtonEnabled && this.parent.isAnswerUpdated && this.behaviour.displaySubmit) {
       const submitButton = this.addButton('icon-paper-pencil', this.l10n.submitReport);
       submitButton.classList.add('h5p-interactive-book-summary-submit');
       submitButton.onclick = () => {
