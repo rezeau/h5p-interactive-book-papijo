@@ -9,7 +9,8 @@
       "fields": [
         {
           "label": "Maelezo ya jalada",
-          "description": "Maandishi haya yatakuwa maelezo ya kitabu chako."
+          "description": "Maandishi haya yatakuwa maelezo ya kitabu chako.",
+          "default": "<p style=\"text-align: center;\"></p>"
         },
         {
           "label": "Njia ya Jalada",
@@ -57,6 +58,10 @@
         {
           "label": "Muhtasari wa onyesho",
           "description": "Inapowashwa mtumiaji anaweza kuona muhtasari na kuwasilisha maendeleo/majibu"
+        },
+        {
+          "label": "Display Submit",
+          "description": "When enabled the user can submit the progress/answers"
         }
       ]
     },

@@ -13,7 +13,7 @@
     "label": "Cover Page",
     "importance": "medium",
     "widget": "showWhen",
-    "showWhen": { 
+    "showWhen": {
       "rules": [
         {
           "field": "showCoverPage",

@@ -9,7 +9,8 @@
       "fields": [
         {
           "label": "وصف الغلاف",
-          "description": "هذا النص سيكون وصف كتابك."
+          "description": "هذا النص سيكون وصف كتابك.",
+          "default": "<p style=\"text-align: center;\"></p>"
         },
         {
           "label": "غلاف متوسط",
@@ -57,6 +58,10 @@
         {
           "label": "عرض الملخّص",
           "description": "عند تفعيل هذا الخيار سيتمكن المستخدم من رؤية الملخّص وإرسال التقدم/الإجابات"
+        },
+        {
+          "label": "Display Submit",
+          "description": "When enabled the user can submit the progress/answers"
         }
       ]
     },

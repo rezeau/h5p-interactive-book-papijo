@@ -9,7 +9,8 @@
       "fields": [
         {
           "label": "Beschreibung",
-          "description": "Dieser Text wird zur Beschreibung des Buchs unter dem eigentlichen Titel angezeigt."
+          "description": "Dieser Text wird zur Beschreibung des Buchs unter dem eigentlichen Titel angezeigt.",
+          "default": "<p style=\"text-align: center;\"></p>"
         },
         {
           "label": "Medium für die Titelseite",
@@ -57,6 +58,10 @@
         {
           "label": "Zusammenfassung anzeigen",
           "description": "Wenn gewählt, können die Nutzenden eine Zusammenfassung sehen und ihren Fortschritt/ihre Antworten einsenden."
+        },
+        {
+          "label": "Display Submit",
+          "description": "When enabled the user can submit the progress/answers"
         }
       ]
     },

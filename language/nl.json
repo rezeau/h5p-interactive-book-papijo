@@ -9,7 +9,8 @@
       "fields": [
         {
           "label": "Omslagbeschrijving",
-          "description": "Deze tekst wordt de beschrijving van je boek."
+          "description": "Deze tekst wordt de beschrijving van je boek.",
+          "default": "<p style=\"text-align: center;\"></p>"
         },
         {
           "label": "Kaft medium",
@@ -57,6 +58,10 @@
         {
           "label": "Toon samenvatting",
           "description": "Indien ingeschakeld, kan de gebruiker een samenvatting zien en de voortgang/antwoorden inzenden"
+        },
+        {
+          "label": "Display Submit",
+          "description": "When enabled the user can submit the progress/answers"
         }
       ]
     },

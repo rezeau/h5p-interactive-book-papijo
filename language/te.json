@@ -9,7 +9,8 @@
       "fields": [
         {
           "label": "కవర్ /ముఖచిత్రం వివరణ",
-          "description": "ఈ టెక్స్ట్ మీ పుస్తకం యొక్క వివరణ."
+          "description": "ఈ టెక్స్ట్ మీ పుస్తకం యొక్క వివరణ.",
+          "default": "<p style=\"text-align: center;\"></p>"
         },
         {
           "label": "కవర్ మీడియం",
@@ -57,6 +58,10 @@
         {
           "label": "సమ్మరీ చూపించు",
           "description": "ఎనేబుల్ అయి ఉన్నపుడు యూజర్ సమ్మరీను చూడగలరు మరియు ప్రోగ్రెస్ /సమాధానాలను సమర్పించగలరు"
+        },
+        {
+          "label": "Display Submit",
+          "description": "When enabled the user can submit the progress/answers"
         }
       ]
     },

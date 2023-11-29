@@ -9,7 +9,8 @@
       "fields": [
         {
           "label": "Opis naslovne strani",
-          "description": "Besedilo opisuje vsebino knjige."
+          "description": "Besedilo opisuje vsebino knjige.",
+          "default": "<p style=\"text-align: center;\"></p>"
         },
         {
           "label": "Medij naslovne strani",
@@ -57,6 +58,10 @@
         {
           "label": "Prikaži stran s povzetkom",
           "description": "Udeležencem se na dodatni strani prikaže povzetek interakcij oz. napredovanja."
+        },
+        {
+          "label": "Display Submit",
+          "description": "When enabled the user can submit the progress/answers"
         }
       ]
     },

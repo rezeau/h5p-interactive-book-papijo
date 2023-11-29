@@ -9,7 +9,8 @@
       "fields": [
         {
           "label": "Mô tả bìa",
-          "description": "Văn bản này sẽ là mô tả của cuốn sách của bạn."
+          "description": "Văn bản này sẽ là mô tả của cuốn sách của bạn.",
+          "default": "<p style=\"text-align: center;\"></p>"
         },
         {
           "label": "Che trung bình",
@@ -57,6 +58,10 @@
         {
           "label": "Hiển thị tóm tắt",
           "description": "Khi được bật, người dùng có thể xem tóm tắt và gửi tiến trình / câu trả lời"
+        },
+        {
+          "label": "Display Submit",
+          "description": "When enabled the user can submit the progress/answers"
         }
       ]
     },

@@ -9,7 +9,8 @@
       "fields": [
         {
           "label": "Description de la couverture",
-          "description": "Ce texte sera la description de votre livre"
+          "description": "Ce texte sera la description de votre livre",
+          "default": "<p style=\"text-align: center;\"></p>"
         },
         {
           "label": "Cover media",
@@ -57,6 +58,10 @@
         {
           "label": "Afficher le résumé",
           "description": "Lorsqu'il est activé, l'utilisateur peut voir un résumé et soumettre les progrès/réponses"
+        },
+        {
+          "label": "Display Submit",
+          "description": "When enabled the user can submit the progress/answers"
         }
       ]
     },

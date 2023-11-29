@@ -9,7 +9,8 @@
       "fields": [
         {
           "label": "Название книги",
-          "description": "Этот текст содержит описание книги."
+          "description": "Этот текст содержит описание книги.",
+          "default": "<p style=\"text-align: center;\"></p>"
         },
         {
           "label": "Cover media",
@@ -57,6 +58,10 @@
         {
           "label": "Показывать страницу Итоги",
           "description": "Если включено, добавляется страница с результатами прохождения и кнопкой их отправки"
+        },
+        {
+          "label": "Display Submit",
+          "description": "When enabled the user can submit the progress/answers"
         }
       ]
     },

@@ -9,7 +9,8 @@
       "fields": [
         {
           "label": "Περιγραφή εξωφύλλου",
-          "description": "Αυτό το κείμενο θα είναι η περιγραφή του βιβλίου σας"
+          "description": "Αυτό το κείμενο θα είναι η περιγραφή του βιβλίου σας",
+          "default": "<p style=\"text-align: center;\"></p>"
         },
         {
           "label": "Μέσο Εξωφύλλου",
@@ -57,6 +58,10 @@
         {
           "label": "Προβολή σύνοψης",
           "description": "Όταν είναι ενεργό, ο/η χρήστης μπορεί να δει μια σύνοψη και να καταχωρεί τις απαντήσεις/πρόοδό του/της"
+        },
+        {
+          "label": "Display Submit",
+          "description": "When enabled the user can submit the progress/answers"
         }
       ]
     },

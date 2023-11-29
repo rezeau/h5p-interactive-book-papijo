@@ -9,7 +9,8 @@
       "fields": [
         {
           "label": "커버 설명",
-          "description": "이 텍스트는 당신의 책에 대한 설명이 될 겁니다."
+          "description": "이 텍스트는 당신의 책에 대한 설명이 될 겁니다.",
+          "default": "<p style=\"text-align: center;\"></p>"
         },
         {
           "label": "Cover media",
@@ -57,6 +58,10 @@
         {
           "label": "요약 표시",
           "description": "활성화되면 요약 정보를 보고 학습진도/정답을 제출할 수 있음."
+        },
+        {
+          "label": "Display Submit",
+          "description": "When enabled the user can submit the progress/answers"
         }
       ]
     },

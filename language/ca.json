@@ -9,7 +9,8 @@
       "fields": [
         {
           "label": "Descripció de la portada",
-          "description": "Aquest text serà la descripció del llibre."
+          "description": "Aquest text serà la descripció del llibre.",
+          "default": "<p style=\"text-align: center;\"></p>"
         },
         {
           "label": "Cover media",
@@ -57,6 +58,10 @@
         {
           "label": "Mostra el resum",
           "description": "Si aquesta opció està activada, l’usuari podrà veure un resum i enviar el progrés i les respostes"
+        },
+        {
+          "label": "Display Submit",
+          "description": "When enabled the user can submit the progress/answers"
         }
       ]
     },

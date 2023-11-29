@@ -9,7 +9,8 @@
       "fields": [
         {
           "label": "توصیف جلد",
-          "description": "این متن توصیف کتابتان خواهد بود."
+          "description": "این متن توصیف کتابتان خواهد بود.",
+          "default": "<p style=\"text-align: center;\"></p>"
         },
         {
           "label": "Cover media",
@@ -57,6 +58,10 @@
         {
           "label": "نمایش جمع‌بندی",
           "description": "در صورت فعال‌سازی، کاربر می‌تواند جمع‌بندی را ببیند و پیشرفت/پاسخ‌ها را ارسال کند"
+        },
+        {
+          "label": "Display Submit",
+          "description": "When enabled the user can submit the progress/answers"
         }
       ]
     },

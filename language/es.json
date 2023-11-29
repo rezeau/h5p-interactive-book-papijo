@@ -9,7 +9,8 @@
       "fields": [
         {
           "label": "Descripción de la cubierta",
-          "description": "Este texto será la descripción de tu libro."
+          "description": "Este texto será la descripción de tu libro.",
+          "default": "<p style=\"text-align: center;\"></p>"
         },
         {
           "label": "Medios de cubierta",
@@ -57,6 +58,10 @@
         {
           "label": "Mostrar resumen",
           "description": "Cuando se habilita, el usuario puede ver un resumen y enviar el progreso/respuestas"
+        },
+        {
+          "label": "Display Submit",
+          "description": "When enabled the user can submit the progress/answers"
         }
       ]
     },
