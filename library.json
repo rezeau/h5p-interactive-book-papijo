@@ -3,7 +3,7 @@
   "description": "An interactive book which displays content in pages and sections",
   "majorVersion": 1,
   "minorVersion": 7,
-  "patchVersion": 6,
+  "patchVersion": 7,
   "runnable": 1,
   "fullscreen": 1,
   "author": "Joubel",
@@ -14,12 +14,12 @@
   ],
   "preloadedJs": [
     {
-      "path": "dist/h5p-interactive-book.js"
+      "path": "dist/h5p-interactive-book-papijo.js"
     }
   ],
   "preloadedCss": [
     {
-      "path": "dist/h5p-interactive-book.css"
+      "path": "dist/h5p-interactive-book-papijo.css"
     }
   ],
   "preloadedDependencies": [
