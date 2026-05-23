@@ -9,12 +9,11 @@
       "fields": [
         {
           "label": "Descripción de la portada",
-          "description": "Este texto será la descripción de su libro.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "Este texto será la descripción de su libro."
         },
         {
           "label": "Medio de portada",
-          "description": "Medio opcional para la introducción."
+          "description": "Medios opcionales a mostrar en la portada."
         }
       ]
     },
@@ -40,8 +39,7 @@
       "fields": [
         {
           "label": "Color base",
-          "description": "Configurar el color base que definirá el esquema general de color del libro. Por favor asegure un contraste suficientemente alto.",
-          "default": "#1768c4"
+          "description": "Configurar el color base que definirá el esquema general de color del libro. Por favor asegure un contraste suficientemente alto."
         },
         {
           "label": "Mostrar tabla de contenidos como configuración predeterminada",
@@ -60,8 +58,8 @@
           "description": "Cuando se habilita, el usuario puede ver un resumen y enviar el progreso/respuestas"
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "Habilitar botón \"Reiniciar\"",
+          "description": "Cuando se habilita, el usuario puede iniciar un reinicio en la página del resumen."
         }
       ]
     },
@@ -78,8 +76,20 @@
       "default": "Ocultar 'Tabla de contenidos'"
     },
     {
+      "label": "Label for page counter",
+      "default": "Page"
+    },
+    {
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
       "label": "Traducción para \"Página siguiente\"",
       "default": "Página siguiente"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
     },
     {
       "label": "Traducción para \"Página anterior\"",
@@ -198,7 +208,7 @@
           "default": "Página @page de @total."
         },
         {
-          "label": "Etiqueta para menú de navegación expandible/colapsable",
+          "label": "Etiqueta para expandir/contraer el menú de navegación",
           "default": "Alternar menú de navegación"
         }
       ]

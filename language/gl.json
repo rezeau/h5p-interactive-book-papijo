@@ -9,12 +9,11 @@
       "fields": [
         {
           "label": "Descrición da cuberta",
-          "description": "Este texto será a descrición do teu libro.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "Este texto será a descrición do teu libro."
         },
         {
-          "label": "Cuberta mediana",
-          "description": "Medio opcional para a introdución."
+          "label": "Medios de portada",
+          "description": "Medios opcionais para mostrar na portada."
         }
       ]
     },
@@ -40,8 +39,7 @@
       "fields": [
         {
           "label": "Cor base",
-          "description": "Establece a cor base que definirá o esquema de cores global do libro. Asegúrate de establecer un contraste suficientemente alto.",
-          "default": "#1768c4"
+          "description": "Establece a cor base que definirá o esquema de cores global do libro. Asegúrate de establecer un contraste suficientemente alto."
         },
         {
           "label": "Amosar a táboa de contidos por defecto",
@@ -60,8 +58,8 @@
           "description": "Se está activado, o ususario pode ver un resumo e enviar o seu progreso ou respostas"
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "Activa o botón \"Reiniciar\"",
+          "description": "Cando estea activado, o usuario pode iniciar un reinicio na páxina de resumo."
         }
       ]
     },
@@ -78,8 +76,20 @@
       "default": "Agochar 'Táboa de contidos'"
     },
     {
+      "label": "Label for page counter",
+      "default": "Page"
+    },
+    {
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
       "label": "Tradución para \"Páxina seguinte\"",
       "default": "Páxina seguinte"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
     },
     {
       "label": "Tradución para \"Páxina anterior\"",

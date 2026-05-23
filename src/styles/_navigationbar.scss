@@ -2,16 +2,9 @@
   background-color: $background-color;
   background-size: cover;
   box-shadow: .625em .625em 1.875em $dark-grey-20;
-  max-width: 0;
   min-height: 19em;
-  overflow: hidden;
-  position: sticky;
-  top: 0;
-  transition: width .15s linear, flex-basis .15s linear, max-width .15s linear;
-  width: 0;
+  transition: flex-basis .15s linear, max-width .15s linear;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
 
   >a {
     font-weight: bold;
@@ -24,15 +17,11 @@
   }
 
   .navigation-list {
-    margin: 0;
-    padding: 0;
-  }
-
-  .large-navigation-list {
-    height: 0;
-    overflow-y: auto;
-    flex: 1 1 auto;
-    min-height: 58em;
+    margin: 1rem 0 0 0;
+    padding: 0 var(--h5p-theme-spacing-s);
+    position: relative;
+    opacity: 0;
+    transition: opacity .05s linear;
   }
 }
 
@@ -44,7 +33,7 @@
   transition: max-height .5s ease-in;
 
   >:first-child {
-    margin-top: .5em;
+    padding-top: .5em;
   }
 
   >:last-child {
@@ -53,8 +42,9 @@
   }
 
   .h5p-interactive-book-navigation-section {
+    position: relative;
     background: transparent;
-    color: $mud;
+    color: var(--h5p-theme-text-secondary);
     font-size: .875em;
     font-weight: 400;
     line-height: 1.8;
@@ -65,18 +55,22 @@
       position: relative;
       background: transparent;
       border: 0;
-      padding: 0 1.125em;
+      padding: 0 1.3em;
       max-width: 100%;
+      font-family: var(--h5p-theme-font-name);
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--h5p-theme-spacing-xs);
     }
 
     .h5p-interactive-book-navigation-section-icon {
-      position: absolute;
-      color: $black;
+      color: var(--h5p-theme-text-primary);
       font-size: 5px;
       visibility: hidden;
-      width: 2.17em;
-      top: 50%;
-      transform: translateY(-50%);
+      font-size: var(--h5p-theme-font-size-xxs);
+      background-color: var(--h5p-theme-ui-base);
+      border-radius: 50%;
+      z-index: 10;
 
       &.h5p-interactive-book-navigation-section-task {
         visibility: inherit;
@@ -84,12 +78,13 @@
     }
 
     .h5p-interactive-book-navigation-section-title {
-      font-size: .85em;
-      margin-left: 15px;
-      margin-right: 2em;
+      font-size: var(--h5p-theme-font-size-s);
+      margin-left: 2rem;
+      font-weight: 600;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      color: var(--h5p-theme-text-third);
     }
   }
 
@@ -99,12 +94,33 @@
   }
 }
 
+.h5p-interactive-book-navigation-sectionlist > :last-child {
+  border-bottom: none;
+}
+
+.h5p-theme-show-results.h5p-interactive-book-navigation-chapter-button {
+  width: 100%;
+  margin: var(--h5p-theme-spacing-s) 0;
+  justify-content: center;
+}
+
+.h5p-interactive-book-navigation-chapter-button {
+  border-radius: var(--h5p-theme-border-radius-medium);
+}
+
+.h5p-interactive-book-navigation-chapter-progress:before,
+.h5p-interactive-book-navigation-chapter-button:not(.h5p-theme-show-results).h5p-interactive-book-navigation-current .h5p-interactive-book-navigation-chapter-progress:before {
+  font-size: var(--h5p-theme-font-size-l);
+  background-color: var(--h5p-theme-ui-base);
+  border-radius: 4em;
+}
+
 .h5p-interactive-book-navigation-closed {
-  .h5p-interactive-book-navigation-chapter-button {
-    background-color: var(--color-base-10, $background-color);
+  .h5p-interactive-book-navigation-chapter-button:not(.h5p-theme-show-results) {
+    background-color: var(--h5p-theme-ui-base);
 
     .h5p-interactive-book-navigation-chapter-title-text {
-      color: $mud;
+      color: var(--h5p-theme-text-secondary);
     }
   }
 
@@ -120,41 +136,50 @@
   list-style: none;
 }
 
-.h5p-interactive-book-navigation-chapter-button {
+.h5p-interactive-book-navigation-chapter-button:not(.h5p-theme-show-results) {
   align-items: center;
-  background-color: var(--color-base-10, $base-color-10);
+  background-color: var(--h5p-theme-ui-base);
   background-size: cover;
   border: 0;
-  border-bottom: solid 1px $ghost-white;
-  color: $mud;
+  color: var(--h5p-theme-text-primary);
   display: flex;
-  font-family: Arial;
+  font-family: var(--h5p-theme-font-name);
   height: 3.438em;
   margin: 0;
-  padding: 0 1.125em;
+  padding: 0 1.165em;
   text-align: initial;
-  text-decoration: none solid $mud;
+  text-decoration: none solid var(--h5p-theme-text-secondary);
   width: 100%;
   position: relative;
 
   &.h5p-interactive-book-navigation-current {
-    background-color: var(--color-base-10, $base-color-10);
+    background-color: var(--h5p-theme-contrast-cta-light);
     border-bottom-color: white;
+    z-index: 1;
+
+    .h5p-interactive-book-navigation-chapter-accordion {
+      display: block;
+    }
   }
 
   &:hover {
     background-color: var(--color-base-5, $base-color-5);
     cursor: pointer;
+
+    .h5p-interactive-book-navigation-chapter-accordion {
+      display: block;
+    }
   }
 
   .h5p-interactive-book-navigation-chapter-title-text {
+    width: 100%;
     background-color: transparent;
-    color: var(--color-base, $base-color);
-    font-family: Arial;
-    font-size: 1em;
+    color: var(--h5p-theme-contrast-cta-white);
+    font-family: var(--h5p-theme-font-name);
+    font-size: var(--h5p-theme-font-size-s);
     font-weight: 700;
     line-height: 1.5em;
-    padding-left: 1.5em;
+    padding-left: 1em;
     padding-right: 2em;
     overflow: hidden;
     text-decoration: none solid var(--color-base, $base-color);
@@ -163,12 +188,8 @@
   }
 
   .h5p-interactive-book-navigation-chapter-accordion {
-    align-self: center;
-    font-size: .65em;
-    width: 1em;
-    position: absolute;
-    left: 15px;
-    top: 17px;
+    display: none;
+    font-size: var(--h5p-theme-font-size-xxs);
 
     &.hidden {
       opacity: 0;
@@ -176,32 +197,50 @@
     }
   }
 
-  .h5p-interactive-book-navigation-chapter-progress {
-    align-self: center;
-    font-size: .75em;
-    position: absolute;
-    right: 15px;
-    top: 17px;
-  }
-
   &:active {
     background-color: var(--color-base-10, $base-color-10);
   }
 }
 
-.h5p-interactive-book-navigation-maintitle {
-  background-color: var(--color-base, $base-color);
-  background-size: cover;
+// This ensure the lines behind the circles stays centered between big and small circles
+.h5p-content.h5p-large .h5p-interactive-book-navigation-chapter-button:not(.h5p-theme-show-results) {
+  padding-left: 1.125em;
+}
 
-  .navigation-title {
-    align-self: center;
-    color: var(--color-text, $background-color);
-    font-family: Arial;
-    font-size: 1em;
-    font-weight: 400;
-    overflow: hidden;
-    padding-left: 1.25em;
-    text-decoration: none solid var(--color-text, $background-color);
-    text-overflow: ellipsis;
+// Lines connecting the dots
+.h5p-interactive-book-small .h5p-interactive-book-navigation-chapter:not(.h5p-interactive-book-navigation-summary-button):not(.h5p-interactive-book-navigation-no-sections) .h5p-interactive-book-navigation-chapter-button::after,
+.h5p-interactive-book-navigation-current[aria-expanded="true"]:not(:has(.h5p-interactive-book-navigation-chapter-accordion.hidden))::after,
+.h5p-interactive-book-navigation-section::after {
+  content: '';
+  position: absolute;
+  left: 23px;
+  bottom: 0;
+
+  top: 0;
+  z-index: 0;
+
+  height: 100%;
+  width: 2px;
+  background-color: color-mix(in srgb, var(--h5p-theme-main-cta-base), transparent 80%);
+}
+
+.h5p-interactive-book-navigation-summary-button .h5p-interactive-book-navigation-current::after {
+  display: none;
+}
+
+.h5p-interactive-book-small .h5p-interactive-book-navigation-chapter:not(.h5p-interactive-book-navigation-summary-button):not(.h5p-interactive-book-navigation-no-sections) > .h5p-interactive-book-navigation-chapter-button,
+.h5p-interactive-book-navigation-current[aria-expanded="true"]:not(:has(.h5p-interactive-book-navigation-chapter-accordion.hidden)) {
+  &::after {
+    height: 50%;
+    top: unset;
+    display: none;
   }
+
+  &:has(.h5p-interactive-book-navigation-chapter-progress)::after {
+    display: block;
+  }
+}
+
+.h5p-interactive-book-navigation-section:last-child::after {
+  height: 50%;
 }

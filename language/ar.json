@@ -9,8 +9,7 @@
       "fields": [
         {
           "label": "وصف الغلاف",
-          "description": "هذا النص سيكون وصف كتابك.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "هذا النص سيكون وصف كتابك."
         },
         {
           "label": "غلاف متوسط",
@@ -40,8 +39,7 @@
       "fields": [
         {
           "label": "اللون الأساسي",
-          "description": "عيّن اللون الأساسي الذي سيحدد نظام الألوان العام للكتاب. يرجى التأكد من وجود تباين عالٍ بدرجة كافية.",
-          "default": "#1768c4"
+          "description": "عيّن اللون الأساسي الذي سيحدد نظام الألوان العام للكتاب. يرجى التأكد من وجود تباين عالٍ بدرجة كافية."
         },
         {
           "label": "عرض الفهرس افتراضياً",
@@ -60,8 +58,8 @@
           "description": "عند تفعيل هذا الخيار سيتمكن المستخدم من رؤية الملخّص وإرسال التقدم/الإجابات"
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "Enable \"Restart\" button",
+          "description": "When enabled the user can initiate a restart on the summary page."
         }
       ]
     },
@@ -78,8 +76,20 @@
       "default": "إخفاء 'جدول المحتويات'"
     },
     {
+      "label": "Label for page counter",
+      "default": "Page"
+    },
+    {
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
       "label": "ترجمة \"الصفحة التالية\"",
       "default": "الصفحة التالية"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
     },
     {
       "label": "ترجمة \"الصفحة السابقة\"",

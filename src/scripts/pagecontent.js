@@ -1,5 +1,5 @@
 import URLTools from './urltools';
-import Summary from "./summary";
+import Summary from './summary';
 
 class PageContent extends H5P.EventDispatcher {
   /**
@@ -26,9 +26,9 @@ class PageContent extends H5P.EventDispatcher {
     this.sidebarIsOpen = false;
 
     // Retrieve previous state
-    this.previousState = (contentData.previousState && Object.keys(contentData.previousState).length > 0) ?
-      contentData.previousState :
-      null;
+    this.previousState = (contentData.previousState && Object.keys(contentData.previousState).length > 0)
+      ? contentData.previousState
+      : null;
 
     if (parent.hasValidChapters()) {
       const startChapter = this.createColumns(config, contentId, contentData);
@@ -50,7 +50,7 @@ class PageContent extends H5P.EventDispatcher {
    * @return {object[]} Chapters.
    */
   getChapters(includeSummary = true) {
-    return this.chapters.filter(chapter => !chapter.isSummary || chapter.isSummary && !!includeSummary);
+    return this.chapters.filter((chapter) => !chapter.isSummary || chapter.isSummary && !!includeSummary);
   }
 
   /**
@@ -58,9 +58,9 @@ class PageContent extends H5P.EventDispatcher {
    */
   resetChapters() {
     if (this.behaviour.progressIndicators && !this.behaviour.progressAuto) {
-      this.columnNodes.forEach(columnNode => {
+      this.columnNodes.forEach((columnNode) => {
         Array.from(columnNode.querySelectorAll('.h5p-interactive-book-status-progress-marker > input[type=checkbox]'))
-          .forEach(element => element.checked = false);
+          .forEach((element) => element.checked = false);
       });
     }
   }
@@ -73,7 +73,7 @@ class PageContent extends H5P.EventDispatcher {
   createPageContent() {
     const content = document.createElement('div');
     content.classList.add('h5p-interactive-book-content');
-    this.columnNodes.forEach(element => {
+    this.columnNodes.forEach((element) => {
       content.appendChild(element);
     });
 
@@ -163,12 +163,12 @@ class PageContent extends H5P.EventDispatcher {
     }
 
     const chapter = this.chapters[chapterIndex];
-    if ( chapter.isSummary) {
+    if (chapter.isSummary) {
       const columnNode = this.columnNodes[chapterIndex];
 
       if (chapter.isInitialized) {
         chapter.instance.setChapters(this.getChapters(false));
-        columnNode.innerHTML = "";
+        columnNode.innerHTML = '';
       }
       // Attach
       chapter.instance.addSummaryPage(H5P.jQuery(columnNode));
@@ -183,10 +183,7 @@ class PageContent extends H5P.EventDispatcher {
       this.injectSectionId(chapter.sections, columnNode);
 
       if (this.behaviour.progressIndicators && !this.behaviour.progressAuto) {
-        const checked = (this.previousState) ?
-          this.previousState.chapters[chapterIndex].completed :
-          false;
-        columnNode.appendChild(this.createChapterReadCheckbox(checked));
+        columnNode.appendChild(this.createChapterReadCheckbox(!!this.previousState?.chapters?.[chapterIndex].completed));
       }
 
       chapter.isInitialized = true;
@@ -202,12 +199,12 @@ class PageContent extends H5P.EventDispatcher {
    * @return {number} start chapter
    */
   createColumns(config, contentId, contentData) {
-    contentData = Object.assign({}, contentData);
+    contentData = { ...contentData };
 
     // Restore previous state
-    const previousState = (contentData.previousState && Object.keys(contentData.previousState).length > 0) ?
-      contentData.previousState :
-      null;
+    const previousState = (contentData.previousState && Object.keys(contentData.previousState).length > 0)
+      ? contentData.previousState
+      : null;
     let urlFragments = URLTools.extractFragmentsFromURL(this.parent.validateFragments, this.parent.hashWindow);
     if (Object.keys(urlFragments).length === 0 && contentData && previousState && previousState.urlFragments) {
       urlFragments = previousState.urlFragments;
@@ -221,14 +218,41 @@ class PageContent extends H5P.EventDispatcher {
       const columnNode = document.createElement('div');
 
       const instanceContentData = {
-        ...contentData,
-        metadata: {
-          ...contentData.metadata,
-        },
-        previousState: (previousState) ? previousState.chapters[i].state : {}
+        parent: self,
+        previousState: (previousState) ? previousState.chapters[i].state : {},
       };
       const newInstance = H5P.newRunnable(config.chapters[i], contentId, undefined, undefined, instanceContentData);
       this.parent.bubbleUp(newInstance, 'resize', this.parent);
+
+      const sections = [];
+
+      const addSections = (parentInstance, contentList) => {
+        parentInstance.getInstances().forEach((instance, contentIndex) => {
+          if (instance.libraryInfo.machineName === 'H5P.Row') {
+            const { columns } = contentList[contentIndex].content.params;
+
+            // Repeat for nested column instances
+            instance.getInstances().forEach((columnInstance, columnIndex) => {
+              addSections(columnInstance, columns[columnIndex].content.params.content);
+            });
+          }
+          else {
+            let { content } = contentList[contentIndex];
+
+            if (parentInstance.libraryInfo.machineName === 'H5P.RowColumn') {
+              content = contentList[contentIndex];
+            }
+
+            sections.push({
+              content,
+              instance,
+              isTask: false,
+            });
+          }
+        });
+      };
+
+      addSections(newInstance, config.chapters[i].params.content);
 
       const chapter = {
         isInitialized: false,
@@ -237,11 +261,7 @@ class PageContent extends H5P.EventDispatcher {
         completed: (previousState) ? previousState.chapters[i].completed : false,
         tasksLeft: (previousState) ? previousState.chapters[i].tasksLeft : 0,
         isSummary: false,
-        sections: newInstance.getInstances().map((instance, contentIndex) => ({
-          content: config.chapters[i].params.content[contentIndex].content,
-          instance: instance,
-          isTask: false
-        }))
+        sections,
       };
 
       columnNode.classList.add('h5p-interactive-book-chapter');
@@ -273,11 +293,12 @@ class PageContent extends H5P.EventDispatcher {
 
     if (this.parent.hasSummary(chapters)) {
       const columnNode = document.createElement('div');
-      const newInstance = new Summary({
-        ...config,
-      },
-      this.parent,
-      this.getChapters(false)
+      const newInstance = new Summary(
+        {
+          ...config,
+        },
+        this.parent,
+        this.getChapters(false),
       );
       this.parent.bubbleUp(newInstance, 'resize', this.parent);
 
@@ -286,11 +307,11 @@ class PageContent extends H5P.EventDispatcher {
         instance: newInstance,
         title: this.l10n.summaryHeader,
         isSummary: true,
-        sections:[],
+        sections: [],
       };
 
       columnNode.classList.add('h5p-interactive-book-chapter');
-      columnNode.id = `h5p-interactive-book-chapter-summary`;
+      columnNode.id = 'h5p-interactive-book-chapter-summary';
 
       chapter.maxTasks = chapter.tasksLeft;
       chapters.push(chapter);
@@ -305,19 +326,19 @@ class PageContent extends H5P.EventDispatcher {
         // Chapter requested does not exist - do nothing, so that the cover page or first chapter (0 by default) is displayed.
         return 0;
       }
-    
+
       this.parent.setActiveChapter(chapterIndex);
-    
+
       if (urlFragments.section) {
-        const headerNumber = urlFragments.headerNumber;
-        setTimeout(() => {
+        const { headerNumber } = urlFragments;
+        window.requestAnimationFrame(() => {
           this.redirectSection(urlFragments.section, headerNumber);
           if (this.parent.hasCover()) {
             this.parent.cover.removeCover();
           }
-        }, 1000);
+        });
       }
-    
+
       return chapterIndex;
     }
 
@@ -452,45 +473,16 @@ class PageContent extends H5P.EventDispatcher {
           this.parent.trigger('resize');
         }, 250);
       }
-      else {
-        if (this.parent.cover && !this.parent.cover.hidden) {
-          this.parent.on('coverRemoved', () => {
-            this.redirectSection(this.targetPage.section, this.targetPage.headerNumber);
-          });
-        }
-        else {
+      else if (this.parent.cover && !this.parent.cover.hidden) {
+        this.parent.on('coverRemoved', () => {
           this.redirectSection(this.targetPage.section, this.targetPage.headerNumber);
-        }
+        });
+      }
+      else {
+        this.redirectSection(this.targetPage.section, this.targetPage.headerNumber);
       }
 
       this.parent.sideBar.redirectHandler(chapterIdNew);
-    }
-  }
-
-  /**
-   * Update footer.
-   */
-  updateFooter() {
-    if ( this.chapters.length === 0) {
-      return;
-    }
-    const activeChapter = this.parent.getActiveChapter();
-    const column = this.columnNodes[activeChapter];
-    const moveFooterInsideContent = this.parent.shouldFooterBeHidden(column.clientHeight);
-
-    // Move status bar footer to content in fullscreen
-    const footerParent = this.parent.statusBarFooter.wrapper.parentNode;
-    if (moveFooterInsideContent) {
-      // Add status bar footer to page content
-      if (footerParent !== this.content) {
-        this.content.appendChild(this.parent.statusBarFooter.wrapper);
-      }
-    }
-    else {
-      // Re-attach to shared bottom of book when exiting fullscreen
-      if (footerParent !== this.parent.$wrapper) {
-        this.parent.$wrapper.append(this.parent.statusBarFooter.wrapper);
-      }
     }
   }
 
@@ -501,16 +493,18 @@ class PageContent extends H5P.EventDispatcher {
     const self = this;
     if (!this.sidebarIsOpen) {
       this.container.classList.remove('h5p-interactive-book-navigation-hidden');
-      setTimeout(function () {
+      setTimeout(() => {
         self.container.classList.add('h5p-interactive-book-navigation-open');
+        self.parent.mainWrapper.get(0).classList.add('h5p-interactive-book-navigation-open');
       }, 1);
     }
     else {
       // Wait for the tranistion to end before hiding it completely
-      H5P.Transition.onTransitionEnd(H5P.jQuery(this.container), function () {
+      H5P.Transition.onTransitionEnd(H5P.jQuery(this.container), () => {
         self.container.classList.add('h5p-interactive-book-navigation-hidden');
       }, 500);
       this.container.classList.remove('h5p-interactive-book-navigation-open');
+      this.parent.mainWrapper.get(0).classList.remove('h5p-interactive-book-navigation-open');
     }
 
     this.sidebarIsOpen = !this.sidebarIsOpen;

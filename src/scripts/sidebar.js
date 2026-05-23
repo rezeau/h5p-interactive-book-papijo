@@ -3,7 +3,7 @@
  * Constructor function.
  */
 class SideBar extends H5P.EventDispatcher {
-  constructor(config, contentId, mainTitle, parent) {
+  constructor(config, contentId, mainTitle, parent, chapters) {
     super();
 
     this.id = contentId;
@@ -14,15 +14,10 @@ class SideBar extends H5P.EventDispatcher {
     this.container = this.addSideBar();
     this.l10n = config.l10n;
 
-    this.chapters = this.findAllChapters(config.chapters);
+    this.chapters = this.findAllChapters(chapters);
     this.chapterNodes = this.getChapterNodes();
 
-    if (mainTitle) {
-      this.titleElem = this.addMainTitle(mainTitle);
-      this.container.appendChild(this.titleElem);
-    }
-
-    this.chapterNodes.forEach(element => {
+    this.chapterNodes.forEach((element) => {
       this.content.appendChild(element);
     });
 
@@ -38,8 +33,8 @@ class SideBar extends H5P.EventDispatcher {
 
   initializeNavigationControls() {
     const keyCodes = Object.freeze({
-      'UP': 38,
-      'DOWN': 40,
+      UP: 38,
+      DOWN: 40,
     });
 
     this.chapterNodes.forEach((chapter, i) => {
@@ -62,7 +57,7 @@ class SideBar extends H5P.EventDispatcher {
       for (let sectionIndex = 0; sectionIndex < sections.length; sectionIndex++) {
         const section = sections[sectionIndex];
         const sectionButton = section.querySelector('.section-button');
-        sectionButton.addEventListener('keydown', e => {
+        sectionButton.addEventListener('keydown', (e) => {
           switch (e.keyCode) {
             case keyCodes.UP:
               this.setFocusToSectionItem(i, sectionIndex, -1);
@@ -124,7 +119,7 @@ class SideBar extends H5P.EventDispatcher {
       this.setFocusToChapterItem(chapterIndex + 1);
       return;
     }
-    else  if (nextIndex < 0) {
+    if (nextIndex < 0) {
       this.setFocusToChapterItem(chapterIndex);
       return;
     }
@@ -153,7 +148,6 @@ class SideBar extends H5P.EventDispatcher {
         const section = sections[i];
         const sectionButton = section.querySelector('.section-button');
         sectionButton.setAttribute('tabindex', '-1');
-
       }
     });
 
@@ -178,25 +172,6 @@ class SideBar extends H5P.EventDispatcher {
   }
 
   /**
-   * Get main title.
-   *
-   * @param {string} title Title.
-   * @return {HTMLElement} Title element.
-   */
-  addMainTitle(titleText) {
-    const title = document.createElement('h2');
-    title.classList.add('navigation-title');
-    title.innerHTML = titleText;
-    title.setAttribute('title', titleText);
-
-    const titleWrapper = document.createElement('div');
-    titleWrapper.classList.add('h5p-interactive-book-navigation-maintitle');
-    titleWrapper.appendChild(title);
-
-    return titleWrapper;
-  }
-
-  /**
    * Find sections in chapter.
    *
    * @param {object} columnData Column data.
@@ -204,9 +179,10 @@ class SideBar extends H5P.EventDispatcher {
    */
   findSectionsInChapter(columnData) {
     const sectionsData = [];
-    const sections = columnData.params.content;
+    const { sections } = columnData;
+
     for (let j = 0; j < sections.length; j++) {
-      const content = sections[j].content;
+      const { content } = sections[j];
 
       let title = '';
       switch (content.library.split(' ')[0]) {
@@ -223,8 +199,9 @@ class SideBar extends H5P.EventDispatcher {
       }
 
       sectionsData.push({
-        title: title,
-        id: content.subContentId ? `h5p-interactive-book-section-${content.subContentId}` : undefined
+        ...sections[j],
+        title,
+        id: content.subContentId ? `h5p-interactive-book-section-${content.subContentId}` : undefined,
       });
     }
 
@@ -239,26 +216,17 @@ class SideBar extends H5P.EventDispatcher {
    */
   findAllChapters(columnsData) {
     const chapters = [];
+
     for (let i = 0; i < columnsData.length; i++) {
-      const sections = this.findSectionsInChapter(columnsData[i]);
-      const chapterTitle = columnsData[i].metadata.title;
-      const id = `h5p-interactive-book-chapter-${columnsData[i].subContentId}`;
       chapters.push({
-        sections: sections,
-        title: chapterTitle,
-        id: id,
-        isSummary: false,
+        ...columnsData[i],
+        id: (columnsData[i].isSummary)
+          ? 'h5p-interactive-book-chapter-summary'
+          : `h5p-interactive-book-chapter-${columnsData[i].instance.subContentId}`,
+        sections: this.findSectionsInChapter(columnsData[i]),
       });
     }
 
-    if ( this.parent.hasSummary()) {
-      chapters.push({
-        sections: [],
-        title: this.l10n.summaryHeader,
-        id: `h5p-interactive-book-chapter-summary`,
-        isSummary: true,
-      });
-    }
     return chapters;
   }
 
@@ -313,7 +281,6 @@ class SideBar extends H5P.EventDispatcher {
     // Trigger resize after toggling all chapters
     this.parent.trigger('resize');
 
-
     // Focus new chapter button if active chapter was closed
     if (chapterId !== this.focusedChapter) {
       const chapterButton = this.chapterNodes[chapterId].querySelector('.h5p-interactive-book-navigation-chapter-button');
@@ -331,7 +298,7 @@ class SideBar extends H5P.EventDispatcher {
 
       // Reset sections
       const sections = node.getElementsByClassName('h5p-interactive-book-navigation-section');
-      for (let section of sections) {
+      for (const section of sections) {
         const icon = section.querySelector('.h5p-interactive-book-navigation-section-icon');
         if (icon) {
           icon.classList.remove('icon-question-answered');
@@ -353,7 +320,7 @@ class SideBar extends H5P.EventDispatcher {
     }
 
     const chapter = this.chapters[chapterId];
-    if ( chapter.isSummary ) {
+    if (chapter.isSummary) {
       return;
     }
 
@@ -385,7 +352,7 @@ class SideBar extends H5P.EventDispatcher {
    */
   setSectionMarker(chapterId, sectionId) {
     const icon = this.chapterNodes[chapterId]
-      .querySelector('.h5p-interactive-book-navigation-section-' + sectionId + ' .h5p-interactive-book-navigation-section-icon');
+      .querySelector(`.h5p-interactive-book-navigation-section-${sectionId} .h5p-interactive-book-navigation-section-icon`);
 
     if (icon) {
       icon.classList.remove('icon-chapter-blank');
@@ -402,10 +369,10 @@ class SideBar extends H5P.EventDispatcher {
    */
   getNodesFromChapter(chapter, chapterId) {
     const chapterNode = document.createElement('li');
-    const sectionsDivId = 'h5p-interactive-book-sectionlist-' + chapterId;
+    const sectionsDivId = `h5p-interactive-book-sectionlist-${chapterId}`;
     chapterNode.classList.add('h5p-interactive-book-navigation-chapter');
 
-    if ( chapter.isSummary) {
+    if (chapter.isSummary) {
       chapterNode.classList.add('h5p-interactive-book-navigation-summary-button');
       const summary = this.parent.chapters[chapterId];
       const summaryButton = summary.instance.summaryMenuButton;
@@ -415,19 +382,19 @@ class SideBar extends H5P.EventDispatcher {
     }
 
     // TODO: Clean this up. Will require to receive chapter info from parent instead of building itself
-    const chapterCollapseIcon = document.createElement('div');
-    chapterCollapseIcon.classList.add('h5p-interactive-book-navigation-chapter-accordion');
+    const chapterCompletionIcon = document.createElement('div');
+    if (this.behaviour.progressIndicators) {
+      chapterCompletionIcon.classList.add('icon-chapter-blank');
+      chapterCompletionIcon.classList.add('h5p-interactive-book-navigation-chapter-progress');
+    }
 
     const chapterTitleText = document.createElement('div');
     chapterTitleText.classList.add('h5p-interactive-book-navigation-chapter-title-text');
     chapterTitleText.innerHTML = chapter.title;
     chapterTitleText.setAttribute('title', chapter.title);
 
-    const chapterCompletionIcon = document.createElement('div');
-    if (this.behaviour.progressIndicators) {
-      chapterCompletionIcon.classList.add('icon-chapter-blank');
-      chapterCompletionIcon.classList.add('h5p-interactive-book-navigation-chapter-progress');
-    }
+    const chapterCollapseIcon = document.createElement('div');
+    chapterCollapseIcon.classList.add('h5p-interactive-book-navigation-chapter-accordion');
 
     const chapterNodeTitle = document.createElement('button');
     chapterNodeTitle.setAttribute('tabindex', chapterId === 0 ? '0' : '-1');
@@ -464,13 +431,14 @@ class SideBar extends H5P.EventDispatcher {
 
       // Expand chapter in menu
       if (isExpandable) {
-        this.toggleChapter(event.currentTarget.parentElement);
+        this.toggleChapter(event.currentTarget.parentElement, isExpanded);
         this.parent.trigger('resize');
       }
     };
-    chapterNodeTitle.appendChild(chapterCollapseIcon);
-    chapterNodeTitle.appendChild(chapterTitleText);
+
     chapterNodeTitle.appendChild(chapterCompletionIcon);
+    chapterNodeTitle.appendChild(chapterTitleText);
+    chapterNodeTitle.appendChild(chapterCollapseIcon);
 
     chapterNode.appendChild(chapterNodeTitle);
 
@@ -486,15 +454,17 @@ class SideBar extends H5P.EventDispatcher {
     sectionsWrapper.classList.add('h5p-interactive-book-navigation-sectionlist');
     sectionsWrapper.id = sectionsDivId;
 
+    if (this.parent.chapters[chapterId].sections.every((s) => !s.isTask)) {
+      chapterNode.classList.add('h5p-interactive-book-navigation-no-sections');
+    }
+
     const sectionLinks = [];
     // Add sections to the chapter
     for (let i = 0; i < this.chapters[chapterId].sections.length; i++) {
       // Non-tasks will only get section links if they have headers
       if (!this.parent.chapters[chapterId].sections[i].isTask) {
-
         // Check text content for headers
-        const chapterParams = this.parent.params.chapters[chapterId];
-        const sectionParams = chapterParams.params.content[i].content;
+        const sectionParams = this.chapters[chapterId].sections[i].content;
         const isText = sectionParams.library.split(' ')[0] === 'H5P.AdvancedText';
 
         if (isText) {
@@ -581,7 +551,7 @@ class SideBar extends H5P.EventDispatcher {
 
     const sectionNode = document.createElement('li');
     sectionNode.classList.add('h5p-interactive-book-navigation-section');
-    sectionNode.classList.add('h5p-interactive-book-navigation-section-' + i);
+    sectionNode.classList.add(`h5p-interactive-book-navigation-section-${i}`);
     sectionNode.appendChild(sectionLink);
 
     return sectionNode;

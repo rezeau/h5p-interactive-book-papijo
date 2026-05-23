@@ -1,8 +1,6 @@
 import 'jquery-circle-progress';
-import Colors from './colors';
 
 class Summary extends H5P.EventDispatcher {
-
   /**
    * @constructor
    *
@@ -26,11 +24,11 @@ class Summary extends H5P.EventDispatcher {
     this.bookCompleted = false;
     this.tempState = JSON.stringify(this.parent.previousState && this.parent.previousState.chapters ? this.parent.previousState.chapters : this.getChapterStats());
 
-    parent.on('bookCompleted', event => this.setBookComplete(event.data.completed));
+    parent.on('bookCompleted', (event) => this.setBookComplete(event.data.completed));
     parent.on('toggleMenu', () => {
       const footer = document.querySelector('.h5p-interactive-book-summary-footer');
-      if ( footer && this.bookCompleted ) {
-        if ( this.parent.isMenuOpen() ) {
+      if (footer && this.bookCompleted) {
+        if (this.parent.isMenuOpen()) {
           footer.classList.add('menu-open');
         }
         else {
@@ -45,11 +43,11 @@ class Summary extends H5P.EventDispatcher {
    * @param {boolean} complete
    */
   setBookComplete(complete) {
-    let summaryFooter = this.parent.mainWrapper ?
-      this.parent.mainWrapper[0].querySelector('.h5p-interactive-book-summary-footer') :
-      null;
-    if ( !summaryFooter && this.parent.isSmallSurface()) {
-      summaryFooter = document.createElement("div");
+    let summaryFooter = this.parent.mainWrapper
+      ? this.parent.mainWrapper[0].querySelector('.h5p-interactive-book-summary-footer')
+      : null;
+    if (!summaryFooter && this.parent.isSmallSurface()) {
+      summaryFooter = document.createElement('div');
       summaryFooter.classList.add('h5p-interactive-book-summary-footer');
 
       summaryFooter.appendChild(this.createSummaryButton());
@@ -60,8 +58,8 @@ class Summary extends H5P.EventDispatcher {
     }
 
     this.bookCompleted = complete;
-    Array.from(document.querySelectorAll('.h5p-interactive-book-summary-menu-button'))
-      .forEach(button => button.setAttribute('data-book-completed', complete.toString()));
+    Array.from(document.querySelectorAll('.h5p-theme-show-results'))
+      .forEach((button) => button.setAttribute('data-book-completed', complete.toString()));
   }
 
   /**
@@ -89,7 +87,7 @@ class Summary extends H5P.EventDispatcher {
   setFilter(filter) {
     const overviewList = this.wrapper.querySelector('.h5p-interactive-book-summary-overview-list');
     const sectionList = Array.from(overviewList.querySelectorAll('.h5p-interactive-book-summary-overview-section'));
-    sectionList.forEach(section => {
+    sectionList.forEach((section) => {
       section.classList.remove('h5p-interactive-book-summary-top-section');
       section.classList.remove('h5p-interactive-book-summary-bottom-section');
     });
@@ -98,10 +96,10 @@ class Summary extends H5P.EventDispatcher {
     emptyContainer.style.display = 'none';
     if (filter === this.filterActionUnanswered) {
       overviewList.classList.add('h5p-interactive-book-summary-overview-list-only-unanswered');
-      const filteredSectionList = sectionList.filter(section => !section.classList.contains('h5p-interactive-book-summary-no-interactions'));
+      const filteredSectionList = sectionList.filter((section) => !section.classList.contains('h5p-interactive-book-summary-no-interactions'));
       if (filteredSectionList.length) {
         filteredSectionList[0].classList.add('h5p-interactive-book-summary-top-section');
-        filteredSectionList[filteredSectionList.length-1].classList.add('h5p-interactive-book-summary-bottom-section');
+        filteredSectionList[filteredSectionList.length - 1].classList.add('h5p-interactive-book-summary-bottom-section');
       }
       else {
         emptyContainer.style.display = 'block';
@@ -119,41 +117,22 @@ class Summary extends H5P.EventDispatcher {
    * @return {HTMLButtonElement}
    */
   createSummaryButton() {
-    const button = document.createElement('button');
-    button.classList.add('h5p-interactive-book-summary-menu-button');
-    button.onclick = () => {
-      const newChapter = {
-        h5pbookid: this.parent.contentId,
-        chapter: `h5p-interactive-book-chapter-summary`,
-        section: "top",
-      };
-      this.parent.trigger('newChapter', newChapter);
-      if (this.parent.isMenuOpen() && this.parent.isSmallSurface()) {
-        this.parent.trigger('toggleMenu');
-      }
-    };
-    //button.disabled = true;
-
-    const paperIcon = document.createElement('span');
-    paperIcon.classList.add('h5p-interactive-book-summary-icon');
-    paperIcon.classList.add('icon-paper');
-    paperIcon.setAttribute('aria-hidden', "true");
-
-    const text = document.createElement('span');
-    text.classList.add('h5p-interactive-book-summary-text');
-    let txtSummary = this.l10n.summaryHeader;    
-    if (this.parent.isSubmitButtonEnabled && this.parent.isAnswerUpdated && this.behaviour.displaySubmit) {
-      txtSummary = this.l10n.summaryAndSubmit;
-    }
-    text.innerHTML = txtSummary;
-    const arrowIcon = document.createElement('span');
-    arrowIcon.classList.add('h5p-interactive-book-summary-menu-button-arrow');
-    arrowIcon.classList.add('icon-up');
-    arrowIcon.setAttribute('aria-hidden', "true");
-
-    button.appendChild(paperIcon);
-    button.appendChild(text);
-    button.appendChild(arrowIcon);
+    const button = H5P.Components.Button({
+      label: this.l10n.summaryAndSubmit,
+      styleType: 'secondary',
+      icon: 'show-results',
+      onClick: () => {
+        const newChapter = {
+          h5pbookid: this.parent.contentId,
+          chapter: 'h5p-interactive-book-chapter-summary',
+          section: 'top',
+        };
+        this.parent.trigger('newChapter', newChapter);
+        if (this.parent.isMenuOpen() && this.parent.isSmallSurface()) {
+          this.parent.trigger('toggleMenu');
+        }
+      },
+    });
 
     return button;
   }
@@ -165,14 +144,18 @@ class Summary extends H5P.EventDispatcher {
    * @return {HTMLDivElement}
    */
   createCircle(progress) {
-    const color = Colors.computeContrastColor(Colors.colorBase, Colors.DEFAULT_COLOR_BG);
-    const circleProgress = document.createElement("div");
+    const circleProgress = document.createElement('div');
     circleProgress.classList.add('h5p-interactive-book-summary-progress-circle');
-    circleProgress.setAttribute('data-value', progress);
-    circleProgress.setAttribute('data-start-angle', -Math.PI / 3);
-    circleProgress.setAttribute('data-thickness', 13);
-    circleProgress.setAttribute('data-empty-fill', `rgba(${color.rgb().array().join(', ')}, .1)`);
-    circleProgress.setAttribute('data-fill', JSON.stringify({color: color.hex()}));
+
+    const documentStyle = getComputedStyle(document.documentElement);
+
+    H5P.jQuery(circleProgress).circleProgress({
+      value: progress,
+      startAngle: -Math.PI / 3,
+      thickness: 13,
+      emptyFill: documentStyle.getPropertyValue('--h5p-theme-contrast-cta-light'),
+      fill: documentStyle.getPropertyValue('--h5p-theme-main-cta-base'),
+    });
 
     return circleProgress;
   }
@@ -190,9 +173,9 @@ class Summary extends H5P.EventDispatcher {
    * @return {HTMLDivElement}
    */
   createProgress(title, smallText, progressCounter, progressTotal, isAbsoluteValues = false, smallProgress, smallProgressTotal) {
-    const box = document.createElement("div");
+    const box = document.createElement('div');
 
-    const header = document.createElement("h3");
+    const header = document.createElement('h3');
     header.innerHTML = title;
 
     const progressPercentage = progressCounter * 100 / progressTotal;
@@ -204,9 +187,9 @@ class Summary extends H5P.EventDispatcher {
       smallProgressTotal = progressTotal;
     }
 
-    const progressBigText = document.createElement("p");
+    const progressBigText = document.createElement('p');
     progressBigText.classList.add('h5p-interactive-book-summary-progressbox-bigtext');
-    progressBigText.innerHTML = Math.round(progressPercentage) + '%';
+    progressBigText.innerHTML = `${Math.round(progressPercentage)}%`;
     if (isAbsoluteValues) {
       const progress = document.createElement('span');
       progress.classList.add('absolute-value');
@@ -226,7 +209,7 @@ class Summary extends H5P.EventDispatcher {
       progressBigText.appendChild(total);
     }
 
-    const progressSmallText = document.createElement("span");
+    const progressSmallText = document.createElement('span');
     progressSmallText.classList.add('h5p-interactive-book-summary-progressbox-smalltext');
     progressSmallText.innerHTML = smallText.replace('@count', smallProgress).replace('@total', smallProgressTotal);
 
@@ -234,9 +217,9 @@ class Summary extends H5P.EventDispatcher {
     box.appendChild(progressBigText);
     box.appendChild(progressSmallText);
 
-    const container = document.createElement("div");
+    const container = document.createElement('div');
     container.appendChild(box);
-    container.appendChild(this.createCircle(progressCounter/progressTotal));
+    container.appendChild(this.createCircle(progressCounter / progressTotal));
 
     return container;
   }
@@ -247,7 +230,8 @@ class Summary extends H5P.EventDispatcher {
    * @returns {HTMLDivElement}
    */
   addScoreProgress() {
-    let totalInteractions = 0, uncompletedInteractions = 0;
+    let totalInteractions = 0; let
+      uncompletedInteractions = 0;
     for (const chapter of this.chapters) {
       totalInteractions += chapter.maxTasks;
       uncompletedInteractions += chapter.tasksLeft;
@@ -260,13 +244,10 @@ class Summary extends H5P.EventDispatcher {
       this.parent.getMaxScore(),
       true,
       Math.max(totalInteractions - uncompletedInteractions, 0),
-      totalInteractions
+      totalInteractions,
     );
     box.classList.add('h5p-interactive-book-summary-progress-container');
     box.classList.add('h5p-interactive-book-summary-score-progress');
-    const circle = box.querySelector('.h5p-interactive-book-summary-progress-circle');
-    circle.setAttribute('data-empty-fill', "rgb(198, 220, 212)");
-    circle.setAttribute('data-fill', JSON.stringify({color: '#0e7c57'}));
 
     return box;
   }
@@ -277,9 +258,9 @@ class Summary extends H5P.EventDispatcher {
    * @return {HTMLDivElement}
    */
   addBookProgress() {
-    const box = this.createProgress(this.l10n.bookProgress, this.l10n.bookProgressSubtext, this.chapters.filter(chapter => chapter.completed).length, this.chapters.length);
-    box.classList.add("h5p-interactive-book-summary-progress-container");
-    box.classList.add("h5p-interactive-book-summary-book-progress");
+    const box = this.createProgress(this.l10n.bookProgress, this.l10n.bookProgressSubtext, this.chapters.filter((chapter) => chapter.completed).length, this.chapters.length);
+    box.classList.add('h5p-interactive-book-summary-progress-container');
+    box.classList.add('h5p-interactive-book-summary-book-progress');
     return box;
   }
 
@@ -289,14 +270,15 @@ class Summary extends H5P.EventDispatcher {
    * @return {HTMLDivElement}
    */
   addInteractionsProgress() {
-    let totalInteractions = 0, uncompletedInteractions = 0;
+    let totalInteractions = 0; let
+      uncompletedInteractions = 0;
     for (const chapter of this.chapters) {
       totalInteractions += chapter.maxTasks;
       uncompletedInteractions += chapter.tasksLeft;
     }
     const box = this.createProgress(this.l10n.interactionsProgress, this.l10n.interactionsProgressSubtext, Math.max(totalInteractions - uncompletedInteractions, 0), totalInteractions);
-    box.classList.add("h5p-interactive-book-summary-progress-container");
-    box.classList.add("h5p-interactive-book-summary-interactions-progress");
+    box.classList.add('h5p-interactive-book-summary-progress-container');
+    box.classList.add('h5p-interactive-book-summary-interactions-progress');
     return box;
   }
 
@@ -307,13 +289,12 @@ class Summary extends H5P.EventDispatcher {
     if (!this.behaviour.progressIndicators) {
       return;
     }
-    const progressBox = document.createElement("div");
+    const progressBox = document.createElement('div');
     progressBox.classList.add('h5p-interactive-box-summary-progress');
     progressBox.appendChild(this.addScoreProgress());
     progressBox.appendChild(this.addBookProgress());
     progressBox.appendChild(this.addInteractionsProgress());
 
-    setTimeout(() => H5P.jQuery('.h5p-interactive-book-summary-progress-circle').circleProgress(), 100);
     this.wrapper.appendChild(progressBox);
   }
 
@@ -321,37 +302,52 @@ class Summary extends H5P.EventDispatcher {
    * Add the container with the action buttons
    */
   addActionButtons() {
-    const wrapper = document.createElement("div");
+    const wrapper = document.createElement('div');
     wrapper.classList.add('h5p-interactive-book-summary-buttons');
     this.checkTheAnswerIsUpdated();
-    if (this.parent.isSubmitButtonEnabled && this.parent.isAnswerUpdated && this.behaviour.displaySubmit) {
-      const submitButton = this.addButton('icon-paper-pencil', this.l10n.submitReport);
-      submitButton.classList.add('h5p-interactive-book-summary-submit');
-      submitButton.onclick = () => {
-        this.trigger('submitted');
-        this.parent.triggerXAPIScored(this.parent.getScore(), this.parent.getMaxScore(), 'completed');
-        wrapper.classList.add('submitted');
-        const submitText = wrapper.querySelector('.answers-submitted');
-        submitText.focus();
-        this.tempState = JSON.stringify(this.getChapterStats());
-        this.parent.isAnswerUpdated = false;
-      };
+
+    if (this.parent.isSubmitButtonEnabled && this.parent.isAnswerUpdated) {
+      const submitButton = H5P.Components.Button({
+        label: this.l10n.submitReport,
+        icon: 'show-results',
+        onClick: () => {
+          this.trigger('submitted');
+          this.parent.triggerXAPIScored(this.parent.getScore(), this.parent.getMaxScore(), 'completed');
+          wrapper.classList.add('submitted');
+          const submitText = wrapper.querySelector('.answers-submitted');
+          submitText.focus();
+          this.tempState = JSON.stringify(this.getChapterStats());
+          this.parent.isAnswerUpdated = false;
+          if (this.behaviour.enableRetry) {
+            submitConfirmButton.parentNode.appendChild(this.createRestartButton('h5p-interactive-book-summary-restart-button'));
+          }
+        },
+      });
       wrapper.appendChild(submitButton);
     }
-    wrapper.appendChild(this.createRestartButton());
-    wrapper.appendChild(this.createSubmittedConfirmation());
 
+    if (this.behaviour.enableRetry) {
+      wrapper.appendChild(this.createRestartButton());
+    }
+    const submitConfirmButton = this.createSubmittedConfirmation();
+    wrapper.appendChild(submitConfirmButton);
     this.wrapper.appendChild(wrapper);
+    this.wrapper.appendChild(this.createFilterDropdown());
   }
 
   /**
    * Create the restart button
    * @return {HTMLButtonElement}
    */
-  createRestartButton() {
-    const restartButton = this.addButton('icon-restart', this.l10n.restartLabel);
-    restartButton.classList.add('h5p-interactive-book-summary-restart');
-    restartButton.onclick = () => this.parent.resetTask();
+  createRestartButton(classes) {
+    const restartButton = H5P.Components.Button({
+      label: this.l10n.restartLabel,
+      styleType: 'secondary',
+      icon: 'retry',
+      classes,
+      onClick: this.parent.resetTask,
+    });
+
     return restartButton;
   }
 
@@ -360,44 +356,21 @@ class Summary extends H5P.EventDispatcher {
    * @return {HTMLDivElement}
    */
   createSubmittedConfirmation() {
-    const submittedContainer = document.createElement("div");
+    const submittedContainer = document.createElement('div');
     submittedContainer.classList.add('h5p-interactive-book-summary-submitted');
 
-    const icon = document.createElement("span");
+    const icon = document.createElement('span');
     icon.classList.add('icon-chapter-done');
     icon.classList.add('icon-check-mark');
     submittedContainer.appendChild(icon);
 
-    const text = document.createElement("p");
+    const text = document.createElement('p');
     text.innerHTML = this.l10n.yourAnswersAreSubmittedForReview;
     text.tabIndex = -1;
     text.classList.add('answers-submitted');
     submittedContainer.appendChild(text);
 
-    submittedContainer.appendChild(this.createRestartButton());
-
     return submittedContainer;
-  }
-
-  /**
-   * Function to create the actual button element used for the action buttons
-   *
-   * @param iconClass
-   * @param label
-   * @return {HTMLButtonElement}
-   */
-  addButton(iconClass, label) {
-    const buttonElement = document.createElement("button");
-    buttonElement.type = 'button';
-    buttonElement.classList.add('h5p-interactive-book-summary-button');
-    buttonElement.innerHTML = label;
-
-    const icon = document.createElement("span");
-    icon.classList.add(iconClass);
-    icon.setAttribute('aria-hidden', "true");
-    buttonElement.appendChild(icon);
-
-    return buttonElement;
   }
 
   /**
@@ -408,19 +381,20 @@ class Summary extends H5P.EventDispatcher {
    * @return {{hasUnansweredInteractions: boolean, sectionElements: []}}
    */
   createSectionList(sections, chapterId) {
-    let sectionElements = [], hasUnansweredInteractions = false;
+    const sectionElements = []; let
+      hasUnansweredInteractions = false;
     for (const section of sections) {
-      const sectionRow = document.createElement("li");
+      const sectionRow = document.createElement('li');
       sectionRow.classList.add('h5p-interactive-book-summary-overview-section-details');
       if (this.behaviour.progressIndicators) {
-        const icon = document.createElement("span");
+        const icon = document.createElement('span');
         icon.classList.add('h5p-interactive-book-summary-section-icon');
         icon.classList.add(section.taskDone ? 'icon-chapter-done' : 'icon-chapter-blank');
         sectionRow.appendChild(icon);
       }
 
-      const title = document.createElement("button");
-      title.type = "button";
+      const title = document.createElement('button');
+      title.type = 'button';
       title.classList.add('h5p-interactive-book-summary-section-title');
       title.onclick = () => {
         const newChapter = {
@@ -428,7 +402,7 @@ class Summary extends H5P.EventDispatcher {
           chapter: `h5p-interactive-book-chapter-${chapterId}`,
           section: `h5p-interactive-book-section-${section.instance.subContentId}`,
         };
-        this.parent.trigger("newChapter", newChapter);
+        this.parent.trigger('newChapter', newChapter);
       };
 
       // We can't expect the content type to always have set contentData as a property on their instance
@@ -439,17 +413,16 @@ class Summary extends H5P.EventDispatcher {
       const metadataTitle = section.content
         && section.content.metadata
         && section.content.metadata.title;
-      title.innerHTML = contentDataTitle ? contentDataTitle
-        : metadataTitle ? metadataTitle : 'Untitled';
+      title.innerHTML = contentDataTitle || (metadataTitle || 'Untitled');
 
-      const score = document.createElement("div");
+      const score = document.createElement('div');
       score.classList.add('h5p-interactive-book-summary-section-score');
       score.innerHTML = '-';
-      if ( typeof section.instance.getScore === 'function') {
+      if (typeof section.instance.getScore === 'function') {
         score.innerHTML = this.l10n.scoreText.replace('@score', section.instance.getScore()).replace('@maxscore', section.instance.getMaxScore());
       }
 
-      if ( section.taskDone) {
+      if (section.taskDone) {
         sectionRow.classList.add('h5p-interactive-book-summary-overview-section-details-task-done');
       }
       else {
@@ -459,17 +432,9 @@ class Summary extends H5P.EventDispatcher {
       sectionRow.appendChild(score);
       sectionElements.push(sectionRow);
     }
-    if ( sectionElements.length) {
-      const sectionRow = document.createElement("div");
-      sectionRow.classList.add('h5p-interactive-book-summary-overview-section-score-header');
-      const scoreHeader = document.createElement("div");
-      scoreHeader.innerHTML = this.l10n.score;
-      sectionRow.appendChild(scoreHeader);
-      sectionElements.unshift(sectionRow);
-    }
     return {
       hasUnansweredInteractions,
-      sectionElements
+      sectionElements,
     };
   }
 
@@ -480,54 +445,61 @@ class Summary extends H5P.EventDispatcher {
    * @return {HTMLLIElement}
    */
   createChapterOverview(chapter) {
-    const wrapper = document.createElement("li");
+    const wrapper = document.createElement('li');
     wrapper.classList.add('h5p-interactive-book-summary-overview-section');
-    const header = document.createElement("h4");
-    header.onclick = () => {
+    const header = document.createElement('div');
+    header.classList.add('h5p-interactive-book-summary-section-header');
+    const titleWrapper = document.createElement('div');
+    titleWrapper.onclick = () => {
       const newChapter = {
         h5pbookid: this.parent.contentId,
         chapter: `h5p-interactive-book-chapter-${chapter.instance.subContentId}`,
-        section: `top`,
+        section: 'top',
       };
-      this.parent.trigger("newChapter", newChapter);
-
+      this.parent.trigger('newChapter', newChapter);
     };
 
-    const chapterTitle = document.createElement("span");
-    chapterTitle.innerHTML = chapter.title;
-    header.appendChild(chapterTitle);
-
     if (this.behaviour.progressIndicators) {
-      const chapterIcon = document.createElement("span");
+      const chapterIcon = document.createElement('span');
       const chapterStatus = this.parent.getChapterStatus(chapter);
       chapterIcon.classList.add(`icon-chapter-${chapterStatus.toLowerCase()}`);
       header.appendChild(chapterIcon);
     }
 
-    wrapper.appendChild(header);
+    const chapterTitle = document.createElement('h4');
+    chapterTitle.innerHTML = chapter.title;
+    titleWrapper.appendChild(chapterTitle);
 
-    let {
+    const {
       sectionElements: sections,
-      hasUnansweredInteractions
-    } = this.createSectionList(chapter.sections.filter(section => section.isTask), chapter.instance.subContentId);
+      hasUnansweredInteractions,
+    } = this.createSectionList(chapter.sections.filter((section) => section.isTask), chapter.instance.subContentId);
 
-    if ( hasUnansweredInteractions === false) {
+    if (hasUnansweredInteractions === false) {
       wrapper.classList.add('h5p-interactive-book-summary-no-interactions');
     }
-    const sectionSubheader = document.createElement("div");
+    const sectionSubheader = document.createElement('div');
     sectionSubheader.classList.add('h5p-interactive-book-summary-chapter-subheader');
-    if ( chapter.maxTasks ) {
+    if (chapter.maxTasks) {
       sectionSubheader.innerHTML = this.l10n.leftOutOfTotalCompleted.replace('@left', Math.max(chapter.maxTasks - chapter.tasksLeft, 0)).replace('@max', chapter.maxTasks);
     }
     else {
       sectionSubheader.innerHTML = this.l10n.noInteractions;
     }
 
-    wrapper.appendChild(sectionSubheader);
+    titleWrapper.appendChild(sectionSubheader);
+    header.appendChild(titleWrapper);
 
-    const sectionsContainer = document.createElement("ul");
-    if ( sections.length ) {
-      sections.map(section => sectionsContainer.appendChild(section));
+    const scoreHeader = document.createElement('div');
+    scoreHeader.classList.add('h5p-interactive-book-summary-overview-section-score-header');
+    scoreHeader.innerHTML = this.l10n.score;
+    header.appendChild(scoreHeader);
+
+    wrapper.appendChild(header);
+
+    const sectionsContainer = document.createElement('ul');
+    if (sections.length) {
+      sections.map((section) => sectionsContainer.appendChild(section));
     }
     wrapper.appendChild(sectionsContainer);
 
@@ -540,54 +512,54 @@ class Summary extends H5P.EventDispatcher {
    * @return {HTMLDivElement}
    */
   createFilterDropdown() {
-    const createElement = (text, value)  => {
-      const listElement = document.createElement("li");
-      listElement.role = "menuitem";
+    const createElement = (text, value) => {
+      const listElement = document.createElement('li');
+      listElement.role = 'menuitem';
 
-      const actionButton = document.createElement("button");
+      const actionButton = document.createElement('button');
       actionButton.textContent = text;
-      actionButton.type = "button";
-      actionButton.onclick = event => {
+      actionButton.type = 'button';
+      actionButton.onclick = (event) => {
         this.setFilter(value);
         container.removeAttribute('active');
-        selectButton.setAttribute('aria-expanded', "false");
+        selectButton.setAttribute('aria-expanded', 'false');
         buttonText.textContent = event.currentTarget.innerHTML;
       };
       listElement.appendChild(actionButton);
       return listElement;
     };
 
-    const container = document.createElement("div");
+    const container = document.createElement('div');
     container.classList.add('h5p-interactive-book-summary-dropdown');
 
-    const selectButton = document.createElement("button");
-    selectButton.setAttribute('aria-haspopup', "true");
-    selectButton.setAttribute('aria-expanded', "false");
+    const selectButton = document.createElement('button');
+    selectButton.setAttribute('aria-haspopup', 'true');
+    selectButton.setAttribute('aria-expanded', 'false');
     selectButton.type = 'button';
     selectButton.onclick = () => {
       if (container.hasAttribute('active')) {
         container.removeAttribute('active');
-        selectButton.setAttribute('aria-expanded', "false");
+        selectButton.setAttribute('aria-expanded', 'false');
       }
       else {
-        container.setAttribute('active', "");
-        selectButton.setAttribute('aria-expanded', "true");
+        container.setAttribute('active', '');
+        selectButton.setAttribute('aria-expanded', 'true');
         selectButton.focus();
       }
     };
 
-    const buttonText = document.createElement("span");
+    const buttonText = document.createElement('span');
     buttonText.textContent = this.l10n.allInteractions;
     selectButton.appendChild(buttonText);
 
-    const caretIcon = document.createElement("span");
+    const caretIcon = document.createElement('span');
     caretIcon.classList.add('h5p-interactive-book-summary-dropdown-icon');
     caretIcon.classList.add('icon-expanded');
-    caretIcon.setAttribute('aria-hidden', "true");
+    caretIcon.setAttribute('aria-hidden', 'true');
     selectButton.appendChild(caretIcon);
 
-    const dropdownMenu = document.createElement("ul");
-    dropdownMenu.role = "menu";
+    const dropdownMenu = document.createElement('ul');
+    dropdownMenu.role = 'menu';
     dropdownMenu.classList.add('h5p-interactive-book-summary-dropdown-menu');
 
     const allInteractions = createElement(this.l10n.allInteractions, this.filterActionAll);
@@ -605,25 +577,15 @@ class Summary extends H5P.EventDispatcher {
    * Add the container for the list of chapters and sections
    */
   addSummaryOverview() {
-    const wrapper = document.createElement("ul");
+    const wrapper = document.createElement('ul');
     wrapper.classList.add('h5p-interactive-book-summary-list');
-    const summaryHeader = document.createElement("li");
-    summaryHeader.classList.add('h5p-interactive-book-summary-overview-header');
 
-    const header = document.createElement("h3");
-    header.innerHTML = this.l10n.summaryHeader;
-
-    summaryHeader.appendChild(header);
-    summaryHeader.appendChild(this.createFilterDropdown());
-
-    wrapper.appendChild(summaryHeader);
-
-    const summaryList = document.createElement("ol");
+    const summaryList = document.createElement('ol');
     summaryList.classList.add('h5p-interactive-book-summary-overview-list');
-    for ( const chapter of this.chapters) {
+    for (const chapter of this.chapters) {
       summaryList.appendChild(this.createChapterOverview(chapter));
     }
-    const emptySummaryList = document.createElement("p");
+    const emptySummaryList = document.createElement('p');
     emptySummaryList.classList.add('h5p-interactive-book-summary-overview-list-empty');
     emptySummaryList.classList.add('h5p-interactive-book-summary-top-section');
     emptySummaryList.classList.add('h5p-interactive-book-summary-bottom-section');
@@ -638,7 +600,7 @@ class Summary extends H5P.EventDispatcher {
    * Add the score bar for the book
    */
   addScoreBar() {
-    const scorebar = document.createElement("div");
+    const scorebar = document.createElement('div');
     scorebar.classList.add('h5p-interactive-book-summary-score-bar');
 
     const scoreBar = H5P.JoubelUI.createScoreBar(this.parent.getMaxScore());
@@ -651,7 +613,7 @@ class Summary extends H5P.EventDispatcher {
    * Add a container to display when no interactions are made in the book
    */
   noChapterInteractions() {
-    const wrapper = document.createElement("div");
+    const wrapper = document.createElement('div');
     wrapper.classList.add('h5p-interactive-book-summary-no-chapter-interactions');
     const boldText = document.createElement('p');
     boldText.innerHTML = this.l10n.noChapterInteractionBoldText;
@@ -677,15 +639,13 @@ class Summary extends H5P.EventDispatcher {
     this.wrapper.classList.add('h5p-interactive-book-summary-page');
 
     if (
-      this.chapters.filter(chapter => chapter.isInitialized).length > 0 ||
-      this.chapters.some(chapter => {
-        return chapter.sections.some(section => section.taskDone);
-      })
+      this.chapters.filter((chapter) => chapter.isInitialized).length > 0
+      || this.chapters.some((chapter) => chapter.sections.some((section) => section.taskDone))
     ) {
       // Only initilize if it's actually going to be shown
       if (
-        this.parent.pageContent && this.parent.chapters[this.parent.getChapterId(this.parent.pageContent.targetPage.chapter)].isSummary ||
-        this.parent.chapters.length === 0
+        this.parent.pageContent && this.parent.chapters[this.parent.getChapterId(this.parent.pageContent.targetPage.chapter)].isSummary
+        || this.parent.chapters.length === 0
       ) {
         // Initialize all the things!
         if (this.parent.chapters.length > 0) {
@@ -704,10 +664,9 @@ class Summary extends H5P.EventDispatcher {
       this.noChapterInteractions();
     }
 
-    Array.from(document.querySelectorAll('.h5p-interactive-book-summary-footer')).forEach(element => element.remove());
+    Array.from(document.querySelectorAll('.h5p-interactive-book-summary-footer')).forEach((element) => element.remove());
 
     container.append(this.wrapper);
-
     return container;
   }
 
@@ -719,9 +678,9 @@ class Summary extends H5P.EventDispatcher {
     const chapters = this.getChapterStats();
     const previousState = JSON.parse(this.tempState);
     for (const index of chapters.keys()) {
-      let previousStateInstance = previousState[index].state.instances;
-      let currentStateInstance = chapters[index].state.instances;
-      let currentTaskDone = chapters[index].sections;
+      const previousStateInstance = previousState[index].state.instances;
+      const currentStateInstance = chapters[index].state.instances;
+      const currentTaskDone = chapters[index].sections;
       for (const internalIndex of previousStateInstance.keys()) {
         // Skip null and undefined
         if (previousStateInstance[internalIndex] === null || previousStateInstance[internalIndex] === undefined) {
@@ -729,16 +688,16 @@ class Summary extends H5P.EventDispatcher {
         }
 
         // Compare array type data
-        if (Array.isArray(previousStateInstance[internalIndex]) &&
-          !this.compareStates(previousStateInstance[internalIndex], currentStateInstance[internalIndex]) &&
-          currentTaskDone[internalIndex].taskDone) {
+        if (Array.isArray(previousStateInstance[internalIndex])
+          && !this.compareStates(previousStateInstance[internalIndex], currentStateInstance[internalIndex])
+          && currentTaskDone[internalIndex].taskDone) {
           this.parent.isAnswerUpdated = true;
         }
         // Compare object type data
-        if (typeof (previousStateInstance[internalIndex]) === 'object' &&
-          !Array.isArray(previousStateInstance[internalIndex]) &&
-          JSON.stringify(previousStateInstance[internalIndex]) !== JSON.stringify(currentStateInstance[internalIndex]) &&
-          currentTaskDone[internalIndex].taskDone) {
+        if (typeof (previousStateInstance[internalIndex]) === 'object'
+          && !Array.isArray(previousStateInstance[internalIndex])
+          && JSON.stringify(previousStateInstance[internalIndex]) !== JSON.stringify(currentStateInstance[internalIndex])
+          && currentTaskDone[internalIndex].taskDone) {
           this.parent.isAnswerUpdated = true;
         }
       }
@@ -757,10 +716,10 @@ class Summary extends H5P.EventDispatcher {
    */
   getChapterStats() {
     return this.chapters
-      .filter(chapter => !chapter.isSummary)
-      .map(chapter => ({
-        sections: chapter.sections.map(section => ({taskDone: section.taskDone})),
-        state: chapter.instance.getCurrentState()
+      .filter((chapter) => !chapter.isSummary)
+      .map((chapter) => ({
+        sections: chapter.sections.map((section) => ({ taskDone: section.taskDone })),
+        state: chapter.instance.getCurrentState(),
       }));
   }
 
@@ -772,10 +731,10 @@ class Summary extends H5P.EventDispatcher {
    * @return {boolean}
    */
   compareStates(previousstate, currentState) {
-    return Array.isArray(previousstate) &&
-        Array.isArray(currentState) &&
-        previousstate.length === currentState.length &&
-        previousstate.every((val, index) => val === currentState[index] || currentState[index] === "");
+    return Array.isArray(previousstate)
+        && Array.isArray(currentState)
+        && previousstate.length === currentState.length
+        && previousstate.every((val, index) => val === currentState[index] || currentState[index] === '');
   }
 }
 

@@ -9,8 +9,7 @@
       "fields": [
         {
           "label": "Omslagbeschrijving",
-          "description": "Deze tekst wordt de beschrijving van je boek.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "Deze tekst wordt de beschrijving van je boek."
         },
         {
           "label": "Kaft medium",
@@ -40,8 +39,7 @@
       "fields": [
         {
           "label": "Basiskleur",
-          "description": "Stel de basiskleur in die het kleurenschema van het boek bepaalt. Let er op dat je voor een hoog contrast kiest.",
-          "default": "#1768c4"
+          "description": "Stel de basiskleur in die het kleurenschema van het boek bepaalt. Let er op dat je voor een hoog contrast kiest."
         },
         {
           "label": "Toon standaard de inhoudsopgave",
@@ -60,8 +58,8 @@
           "description": "Indien ingeschakeld, kan de gebruiker een samenvatting zien en de voortgang/antwoorden inzenden"
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "Enable \"Restart\" button",
+          "description": "When enabled the user can initiate a restart on the summary page."
         }
       ]
     },
@@ -78,8 +76,20 @@
       "default": "Verberg 'Inhoudsopgave'"
     },
     {
+      "label": "Label for page counter",
+      "default": "Page"
+    },
+    {
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
       "label": "Vertaling voor \"Volgende pagina\"",
       "default": "Volgende pagina"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
     },
     {
       "label": "Vertaling voor \"Vorige pagina\"",

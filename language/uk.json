@@ -9,8 +9,7 @@
       "fields": [
         {
           "label": "Назва книги",
-          "description": "Цей тескт містить опис книги.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "Цей тескт містить опис книги."
         },
         {
           "label": "Медіа обкладинки",
@@ -40,8 +39,7 @@
       "fields": [
         {
           "label": "Основний колір",
-          "description": "Встановіть основний колір, який визначатиме загальну колірну схему книги. Забезпечте достатньо високий контраст.",
-          "default": "#1768c4"
+          "description": "Встановіть основний колір, який визначатиме загальну колірну схему книги. Забезпечте достатньо високий контраст."
         },
         {
           "label": "Показувати зміст по умовчанню",
@@ -60,8 +58,8 @@
           "description": "Якщо увімкнено, додається сторінка з результатами проходження і кнопкою для відправки"
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "Enable \"Restart\" button",
+          "description": "When enabled the user can initiate a restart on the summary page."
         }
       ]
     },
@@ -78,8 +76,20 @@
       "default": "Приховати зміст"
     },
     {
+      "label": "Label for page counter",
+      "default": "Page"
+    },
+    {
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
       "label": "Переклад для \"Наступна сторінка\"",
       "default": "Наступна сторінка"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
     },
     {
       "label": "Переклад для \"Попередня сторінка\"",

@@ -9,12 +9,11 @@
       "fields": [
         {
           "label": "కవర్ /ముఖచిత్రం వివరణ",
-          "description": "ఈ టెక్స్ట్ మీ పుస్తకం యొక్క వివరణ.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "ఈ టెక్స్ట్ మీ పుస్తకం యొక్క వివరణ."
         },
         {
-          "label": "కవర్ మీడియం",
-          "description": "పరిచయం కోసం ఐచ్ఛిక (ఆప్షనల్) మీడియం."
+          "label": "కవర్ మీడియ",
+          "description": "పరిచయం కోసం ఐచ్ఛిక (ఆప్షనల్) మీడియ."
         }
       ]
     },
@@ -40,8 +39,7 @@
       "fields": [
         {
           "label": "ప్రాథమిక రంగు లేదా బేస్ కలర్",
-          "description": "పుస్తకం యొక్క మొత్తం రంగు పథకాన్ని నిర్వచించే ప్రాథమిక రంగును సెట్ చేయండి. దయచేసి తగినంత అధిక కాంట్రాస్ట్ ఉండేలా చూసుకోండి.",
-          "default": "#1768c4"
+          "description": "పుస్తకం యొక్క మొత్తం రంగు పథకాన్ని నిర్వచించే ప్రాథమిక రంగును సెట్ చేయండి. దయచేసి తగినంత అధిక కాంట్రాస్ట్ ఉండేలా చూసుకోండి."
         },
         {
           "label": "డిఫాల్ట్‌గా విషయాల పట్టికను ప్రదర్శించు",
@@ -60,8 +58,8 @@
           "description": "ఎనేబుల్ అయి ఉన్నపుడు యూజర్ సమ్మరీను చూడగలరు మరియు ప్రోగ్రెస్ /సమాధానాలను సమర్పించగలరు"
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "\"Restart\" బటన్‌ను ఎనేబుల్ చెయ్యండి",
+          "description": "ఎనేబుల్ చేసినప్పుడు యూజరు సారాంశం లేదా సమ్మరీ పేజీలో రీస్టార్ట్ ని ప్రారంభించవచ్చు."
         }
       ]
     },
@@ -78,8 +76,20 @@
       "default": "'Table of contents' ను దాచి ఉంచు"
     },
     {
+      "label": "Label for page counter",
+      "default": "Page"
+    },
+    {
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
       "label": "\"Next page\"కై అనువాదం",
       "default": "తరువాతి పేజీ"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
     },
     {
       "label": "\"Previous page\"కై అనువాదం",

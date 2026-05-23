@@ -9,8 +9,7 @@
       "fields": [
         {
           "label": "Descripció de la portada",
-          "description": "Aquest text serà la descripció del llibre.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "Aquest text serà la descripció del llibre."
         },
         {
           "label": "Cover media",
@@ -40,8 +39,7 @@
       "fields": [
         {
           "label": "Base color",
-          "description": "Set the base color that will define the overall color scheme of the book. Please ensure a high enough contrast.",
-          "default": "#1768c4"
+          "description": "Set the base color that will define the overall color scheme of the book. Please ensure a high enough contrast."
         },
         {
           "label": "Mostra la taula de continguts com a predeterminada",
@@ -60,8 +58,8 @@
           "description": "Si aquesta opció està activada, l’usuari podrà veure un resum i enviar el progrés i les respostes"
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "Enable \"Restart\" button",
+          "description": "When enabled the user can initiate a restart on the summary page."
         }
       ]
     },
@@ -78,8 +76,20 @@
       "default": "Amaga la ’Taula de continguts’"
     },
     {
+      "label": "Label for page counter",
+      "default": "Page"
+    },
+    {
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
       "label": "Traducció de «Pàgina següent»",
       "default": "Pàgina següent"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
     },
     {
       "label": "Traducció de «Pàgina anterior»",

@@ -1,14 +1,7 @@
 .h5p-interactive-book-chapter {
   display: none;
-  left: 0;
-  overflow: hidden;
-  position: absolute;
-  right: 0;
-  top: 0;
-  transform: translateX(0);
   transition: .25s;
   width: 100%;
-  margin-left: 1em;
 
   &.h5p-interactive-book-previous {
     transform: translateX(-100%);
@@ -16,7 +9,6 @@
 
   &.h5p-interactive-book-current {
     display: block;
-    transform: translateX(0);
   }
 
   &.h5p-interactive-book-next {
@@ -36,10 +28,10 @@
 }
 
 .h5p-interactive-book-content {
-  padding: 1rem;
-  overflow: hidden;
-  position: relative;
-  width: 100%;
+  margin: var(--h5p-theme-spacing-s);
+  flex: 1;
+  width: 0;
+
 
   &.hidden {
     display: none;
@@ -51,10 +43,6 @@
 
     &:first-child {
       margin-top: 0;
-
-      &> p {
-        margin-top: 0;
-      }
     }
   }
 }
@@ -75,7 +63,7 @@
   }
 
   p {
-    color: $mud;
+    color: var(--h5p-theme-text-secondary);
     font-weight: bold;
     margin: 0;
     padding-left: 1em;

@@ -9,8 +9,7 @@
       "fields": [
         {
           "label": "Beschreibung",
-          "description": "Dieser Text wird zur Beschreibung des Buchs unter dem eigentlichen Titel angezeigt.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "Dieser Text wird zur Beschreibung des Buchs unter dem eigentlichen Titel angezeigt."
         },
         {
           "label": "Medium für die Titelseite",
@@ -40,8 +39,7 @@
       "fields": [
         {
           "label": "Basisfarbe",
-          "description": "Setze die Basisfarbe für das Farbschema im Buch. Bitte denke an einen ausreichend hohen Kontrast.",
-          "default": "#1768c4"
+          "description": "Setze die Basisfarbe für das Farbschema im Buch. Bitte denke an einen ausreichend hohen Kontrast."
         },
         {
           "label": "Standardmäßig Inhaltsverzeichnis anzeigen",
@@ -60,8 +58,8 @@
           "description": "Wenn gewählt, können die Nutzenden eine Zusammenfassung sehen und ihren Fortschritt/ihre Antworten einsenden."
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "\"Neustart\"-Button anzeigen",
+          "description": "Wenn gewählt, können die Nutzenden einen Neustart auf der Zusammenfassungsseite veranlassen."
         }
       ]
     },
@@ -78,8 +76,20 @@
       "default": "Inhaltsverzeichnis ausblenden"
     },
     {
+      "label": "Label for page counter",
+      "default": "Page"
+    },
+    {
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
       "label": "Beschriftung für \"Nächste Seite\"",
       "default": "Nächste Seite"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
     },
     {
       "label": "Beschriftung für \"Vorherige Seite\"",

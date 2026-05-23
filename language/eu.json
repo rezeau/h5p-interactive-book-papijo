@@ -9,12 +9,11 @@
       "fields": [
         {
           "label": "Portadaren deskribapena",
-          "description": "Testu hau zure liburuaren deskribapena izango da.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "Testu hau zure liburuaren deskribapena izango da."
         },
         {
-          "label": "Portadarako euskarria",
-          "description": "Aurkezpenerako aukerako euskarriak."
+          "label": "Azalaren multimedia",
+          "description": "Azalean bistaratzeko aukerako multimediak."
         }
       ]
     },
@@ -40,8 +39,7 @@
       "fields": [
         {
           "label": "Oinarrizko kolorea",
-          "description": "Ezarri liburuaren kolore-eskema orokorra definituko duen oinarrizko kolorea. Mesedez, ziurtatu nahikoa kontraste altua.",
-          "default": "#1768c4"
+          "description": "Ezarri liburuaren kolore-eskema orokorra definituko duen oinarrizko kolorea. Mesedez, ziurtatu nahikoa kontraste altua."
         },
         {
           "label": "Erakutsi eduki-taula modu lehenetsian",
@@ -60,8 +58,8 @@
           "description": "Gaituz gero erabiltzaileak laburpen bat ikusi eta aurrerapena/erantzunako bidali ditzake"
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "Gaitu \"Berrabiarazi\" botoia",
+          "description": "Gaituta dagoenean, erabiltzaileak laburpen orrian berrabiarazi dezake."
         }
       ]
     },
@@ -78,8 +76,20 @@
       "default": "Ezkutatu 'Eduki-taulak'"
     },
     {
+      "label": "Label for page counter",
+      "default": "Page"
+    },
+    {
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
       "label": "\"Next page\"-erako itzulpena",
       "default": "Hurrengo orria"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
     },
     {
       "label": "\"Previous page\"-erako itzulpena",

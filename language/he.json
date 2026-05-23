@@ -9,8 +9,7 @@
       "fields": [
         {
           "label": "תיאור עמוד־פתיחה",
-          "description": "טקסט זה יהיה התיאור של הספר שלך.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "טקסט זה יהיה התיאור של הספר שלך."
         },
         {
           "label": "עמוד־פתיחה בינוני",
@@ -40,8 +39,7 @@
       "fields": [
         {
           "label": "צבע בסיסי",
-          "description": "הגדרת צבע הבסיס שיגדיר את ערכת הצבעים הכוללת של הספר. נא לוודא ניגודיות גבוהה מספיק.",
-          "default": "#1768c4"
+          "description": "הגדרת צבע הבסיס שיגדיר את ערכת הצבעים הכוללת של הספר. נא לוודא ניגודיות גבוהה מספיק."
         },
         {
           "label": "הצגת תוכן העניינים כברירת מחדל",
@@ -60,8 +58,8 @@
           "description": "כאשר מופעל המשתמש יכול לראות תקציר ולשלוח את ההתקדמות/תשובות"
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "Enable \"Restart\" button",
+          "description": "When enabled the user can initiate a restart on the summary page."
         }
       ]
     },
@@ -78,8 +76,20 @@
       "default": "הסתרת 'תוכן עניינים'"
     },
     {
+      "label": "Label for page counter",
+      "default": "Page"
+    },
+    {
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
       "label": "תרגום ל\"עמוד הבא\"",
       "default": "עמוד הבא"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
     },
     {
       "label": "תרגום לדף הקודם",

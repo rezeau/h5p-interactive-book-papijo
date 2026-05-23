@@ -2,19 +2,18 @@
   "semantics": [
     {
       "label": "Įjungti knygos viršelį",
-      "description": "Viršelis, kuriame pateikiama informacija apie knygą prieš ją pasiekiant"
+      "description": "Viršelis, kuriame pateikiama informacija apie knygą prieš ją atveriant"
     },
     {
       "label": "Viršelis",
       "fields": [
         {
           "label": "Viršelio aprašymas",
-          "description": "Šis tekstas bus jūsų knygos aprašymas.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "Šis tekstas bus jūsų knygos aprašymas."
         },
         {
-          "label": "Viršelio nustatymai",
-          "description": "Pasirenkamas įžangos nustatymas"
+          "label": "Viršelio medija",
+          "description": "Pasirenkama viršelio medija"
         }
       ]
     },
@@ -40,11 +39,10 @@
       "fields": [
         {
           "label": "Bazinė spalva",
-          "description": "Nustatykite pagrindinę spalvą, kuri nurodys bendrą knygos spalvų schemą. Užtikrinkite pakankamai didelį kontrastą.",
-          "default": "#1768c4"
+          "description": "Nustatykite pagrindinę spalvą, kuri nurodys bendrą knygos spalvų schemą. Užtikrinkite pakankamai didelį kontrastą."
         },
         {
-          "label": "Rodyti turinį kaip numatytąjį",
+          "label": "Rodyti Turinį kaip numatyta",
           "description": "Kai įjungta, atidarant knygą rodomas turinys"
         },
         {
@@ -60,8 +58,8 @@
           "description": "Kai įjungta, naudotojas gali matyti santrauką ir pateikti pažangą/atsakymus"
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "Enable \"Restart\" button",
+          "description": "When enabled the user can initiate a restart on the summary page."
         }
       ]
     },
@@ -74,15 +72,27 @@
       "default": "Rodyti „Turinys“"
     },
     {
-      "label": "Translation for \"Hide 'Table of contents'\"",
-      "default": "Hide 'Table of contents'"
+      "label": "„Slėpti turinį“ vertimas",
+      "default": "„Slėpti turinį“"
     },
     {
-      "label": "Translation for \"Next page\"",
-      "default": "Next page"
+      "label": "Label for page counter",
+      "default": "Page"
     },
     {
-      "label": "Translation for \"Previous page\"",
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
+      "label": "„Kitas puslapis“ vertimas",
+      "default": "Kitas puslapis"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
+    },
+    {
+      "label": "„Ankstesnis puslapis“ vertimas",
       "default": "Ankstesnis puslapis"
     },
     {
@@ -129,7 +139,7 @@
     },
     {
       "label": "Label for \"restart\" button",
-      "default": "Restart"
+      "default": "Perkrauti"
     },
     {
       "label": "Summary header",

@@ -9,8 +9,7 @@
       "fields": [
         {
           "label": "Voorblad beskrywing",
-          "description": "Hierdie teks sal die beskrywing van jou boek wees.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "Hierdie teks sal die beskrywing van jou boek wees."
         },
         {
           "label": "Cover media",
@@ -40,8 +39,7 @@
       "fields": [
         {
           "label": "Base color",
-          "description": "Set the base color that will define the overall color scheme of the book. Please ensure a high enough contrast.",
-          "default": "#1768c4"
+          "description": "Set the base color that will define the overall color scheme of the book. Please ensure a high enough contrast."
         },
         {
           "label": "Vertoon inhoudsopgawe as verstek",
@@ -60,8 +58,8 @@
           "description": "Indien dit geaktiveer is, kan die gebruiker 'n opsomming sien en die vordering/antwoorde indien"
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "Enable \"Restart\" button",
+          "description": "When enabled the user can initiate a restart on the summary page."
         }
       ]
     },
@@ -78,8 +76,20 @@
       "default": "Versteek 'Inhoudsopgawe'"
     },
     {
+      "label": "Label for page counter",
+      "default": "Page"
+    },
+    {
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
       "label": "Vertaling vir \"Volgende bladsy\"",
       "default": "Volgende bladsy"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
     },
     {
       "label": "Vertaling vir \"Vorige bladsy\"",

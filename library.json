@@ -2,10 +2,14 @@
   "title": "Interactive Book Papi Jo",
   "description": "An interactive book which displays content in pages and sections",
   "majorVersion": 1,
-  "minorVersion": 7,
-  "patchVersion": 8,
+  "minorVersion": 14,
+  "patchVersion": 0,
   "runnable": 1,
   "fullscreen": 1,
+  "coreApi": {
+    "majorVersion": 1,
+    "minorVersion": 28
+  },
   "author": "Joubel",
   "license": "MIT",
   "machineName": "H5P.InteractiveBookPapiJo",
@@ -37,6 +41,11 @@
       "machineName": "H5P.JoubelUI",
       "majorVersion": 1,
       "minorVersion": 3
+    },
+    {
+      "machineName": "H5P.Components",
+      "majorVersion": 1,
+      "minorVersion": 0
     }
   ],
   "editorDependencies": [

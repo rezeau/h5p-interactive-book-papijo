@@ -9,12 +9,11 @@
       "fields": [
         {
           "label": "Opis naslovne strani",
-          "description": "Besedilo opisuje vsebino knjige.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "Besedilo opisuje vsebino knjige."
         },
         {
-          "label": "Medij naslovne strani",
-          "description": "Neobvezen medij za dodaten opis vsebine knjige."
+          "label": "Medijska vsebina naslovne strani",
+          "description": "Neobvezna dodatna medijska vsebina za opis knjige."
         }
       ]
     },
@@ -40,12 +39,11 @@
       "fields": [
         {
           "label": "Osnovna barva",
-          "description": "Določitev osnovne barve za celotno barvno shemo knjige. Zagotovite dovolj visok kontrast.",
-          "default": "#006a8e"
+          "description": "Določitev osnovne barve za celotno barvno shemo knjige. Zagotoviti je treba dovolj visok kontrast."
         },
         {
           "label": "Kazalo vsebin prikaži privzeto",
-          "description": "Omogočena nastavitev kazalo vsebin prikaže ob odprtju knjige."
+          "description": "Omogočena nastavitev prikaže kazalo vsebine ob odprtju knjige."
         },
         {
           "label": "Prikaži indikatorje napredovanja",
@@ -60,8 +58,8 @@
           "description": "Udeležencem se na dodatni strani prikaže povzetek interakcij oz. napredovanja."
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "Omogoči gumb \"Poskusi ponovno\"",
+          "description": "Udeleženci lahko na strani s povzetkom sprožijo ponovni zagon vsebine."
         }
       ]
     },
@@ -78,8 +76,20 @@
       "default": "Skrij 'kazalo vsebine'"
     },
     {
+      "label": "Label for page counter",
+      "default": "Page"
+    },
+    {
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
       "label": "Besedilo za \"Naslednja stran\"",
       "default": "Naslednja stran"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
     },
     {
       "label": "Besedilo za \"Prejšnja stran\"",

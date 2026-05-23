@@ -9,8 +9,7 @@
       "fields": [
         {
           "label": "Vāka apraksts",
-          "description": "Šis teksts būs jūsu grāmatas apraksts.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "Šis teksts būs jūsu grāmatas apraksts."
         },
         {
           "label": "Vāka multivide",
@@ -40,8 +39,7 @@
       "fields": [
         {
           "label": "Pamata krāsa",
-          "description": "Iestatiet pamatkrāsu, kas noteiks grāmatas kopējo krāsu shēmu. Lūdzu, nodrošiniet pietiekami augstu kontrastu.",
-          "default": "#1768c4"
+          "description": "Iestatiet pamatkrāsu, kas noteiks grāmatas kopējo krāsu shēmu. Lūdzu, nodrošiniet pietiekami augstu kontrastu."
         },
         {
           "label": "Pēc noklusējuma rādīt satura rādītāju",
@@ -60,8 +58,8 @@
           "description": "Kad iespējots, lietotājs var redzēt kopsavilkumu un iesniegt progresu/atbildes"
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "Enable \"Restart\" button",
+          "description": "When enabled the user can initiate a restart on the summary page."
         }
       ]
     },
@@ -78,8 +76,20 @@
       "default": "Paslēpt 'Satura rādītāju'"
     },
     {
+      "label": "Label for page counter",
+      "default": "Page"
+    },
+    {
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
       "label": "\"Nākamā lappuse\" tulkojums",
       "default": "Nākamā lappuse"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
     },
     {
       "label": "\"Iepriekšējā lappuse\" tulkojums",

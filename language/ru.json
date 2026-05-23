@@ -9,8 +9,7 @@
       "fields": [
         {
           "label": "Название книги",
-          "description": "Этот текст содержит описание книги.",
-          "default": "<p style=\"text-align: center;\"></p>"
+          "description": "Этот текст содержит описание книги."
         },
         {
           "label": "Cover media",
@@ -40,8 +39,7 @@
       "fields": [
         {
           "label": "Base color",
-          "description": "Set the base color that will define the overall color scheme of the book. Please ensure a high enough contrast.",
-          "default": "#1768c4"
+          "description": "Set the base color that will define the overall color scheme of the book. Please ensure a high enough contrast."
         },
         {
           "label": "Показывать содержание по умолчанию",
@@ -60,8 +58,8 @@
           "description": "Если включено, добавляется страница с результатами прохождения и кнопкой их отправки"
         },
         {
-          "label": "Display Submit",
-          "description": "When enabled the user can submit the progress/answers"
+          "label": "Enable \"Restart\" button",
+          "description": "When enabled the user can initiate a restart on the summary page."
         }
       ]
     },
@@ -78,8 +76,20 @@
       "default": "Скрыть содержание"
     },
     {
+      "label": "Label for page counter",
+      "default": "Page"
+    },
+    {
+      "label": "Label for forwards navigation button",
+      "default": "Next"
+    },
+    {
       "label": "Перевод для \"Следующая страница\"",
       "default": "Следующая страница"
+    },
+    {
+      "label": "Label for backwards navigation button",
+      "default": "Previous"
     },
     {
       "label": "Перевод для \"Предыдущая страница\"",

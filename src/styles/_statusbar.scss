@@ -6,241 +6,299 @@
 }
 
 .h5p-interactive-book-status {
-  align-items: center;
-  background-color: $background-color;
-  background-size: cover;
-  border: 0;
-  border-color: var(--color-base, $base-color);
-  border-style: solid;
-  box-shadow: 10px 10px 30px $dark-grey-20;
-  display: flex;
-  overflow: hidden;
-  padding: .5em;
+  background: var(--h5p-theme-ui-base);
+
+  display: grid;
+  grid-template-columns: min-content 1fr;
+
+  &.h5p-interactive-book-status-header {
+    @include prefix(position, sticky, webkit);
+    pointer-events: none;
+    background: none;
+    top: 0;
+    z-index: 150; // Ensure it is above any content having high z-index
+
+    .h5p-interactive-book-status-to-top {
+      display: none;
+    }
+  }
+
+  &.h5p-interactive-book-status-footer {
+    // Prevent sidebar dropshadow
+    z-index: 2;
+    position: relative;
+
+    .h5p-interactive-book-status-menu {
+      display: none;
+    }
+
+    &.footer-hidden {
+      display: none;
+    }
+  }
+
+  .h5p-interactive-book-status-side {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    padding: var(--h5p-theme-spacing-s);
+    padding-right: 0;
+    height: 3rem;
+
+    .h5p-interactive-book-status-menu {
+      background-color: var(--h5p-theme-contrast-cta-light);
+      background-size: cover;
+      border: none;
+      flex-shrink: 0;
+
+      .icon-menu {
+        margin: auto;
+      }
+
+      &.h5p-interactive-book-status-menu-active {
+        position: relative;
+
+        .icon-menu:before {
+          font-family: 'h5p-theme';
+          content: "\e916";
+        }
+      }
+    }
+
+    .h5p-interactive-book-status-title {
+      display: none;
+      min-width: 0;
+      width: calc(100% - var(--h5p-theme-spacing-xs));
+      padding-left: var(--h5p-theme-spacing-xs);
+
+      h2 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        margin-bottom: var(--h5p-theme-spacing-xs);
+        margin-top: 0;
+        color: var(--h5p-theme-text-primary);
+        font-size: var(--h5p-theme-font-size-l);
+      }
+    }
+
+    .h5p-interactive-book-status-progressbar-back {
+      background-color: color-mix(in srgb, var(--h5p-theme-main-cta-base), transparent 80%);
+      background-size: cover;
+      width: 100%;
+      border-radius: 5px;
+
+      .h5p-interactive-book-status-progressbar-front {
+        background-color: var(--h5p-theme-contrast-cta-white);
+        height: .313em;
+        transition: 1s;
+        border-radius: 5px;
+      }
+    }
+  }
+
+  .h5p-theme-pattern {
+    display: none;
+  }
+
+  .h5p-interactive-book-status-main {
+    pointer-events: auto;
+    display: grid;
+    position: relative;
+    grid-template-columns: min-content 1fr min-content;
+    container-type: inline-size;
+    container-name: h5p-navigation;
+    padding: var(--h5p-theme-spacing-s);
+    align-items: center;
+
+    &:has(.h5p-interactive-book-status-fullscreen) {
+      grid-template-columns: min-content 1fr min-content min-content;
+    }
+
+    .h5p-theme-nav-button {
+      z-index: 1;
+    }
+
+    .h5p-theme-progress {
+      margin: 0;
+      white-space: nowrap;
+      padding: calc(var(--h5p-theme-spacing-xxs)/2) var(--h5p-theme-spacing-xxs);
+      margin-bottom: var(--h5p-theme-spacing-xxs);
+
+      span:first-of-type {
+        display: inline-block;
+        margin-right: calc(var(--h5p-theme-spacing-xxs)/2);
+      }
+
+      .hidden-but-read {
+        border: 0;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+      }
+    }
+
+    .h5p-interactive-book-status-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1;
+      line-height: 1;
+      overflow: hidden;
+
+      .h5p-interactive-book-status-chapter {
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 70%;
+
+        .title {
+          color: var(--h5p-theme-text-secondary);
+          font-family: var(--h5p-theme-font-name);
+          font-size: var(--h5p-theme-font-size-m);
+          font-weight: 700;
+          line-height: 1.1;
+          margin: 0;
+          overflow: hidden;
+          text-decoration: none solid $mud;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+
+    .h5p-interactive-book-status-fullscreen {
+      border: none;
+      margin-left: var(--h5p-theme-spacing-xs);
+      z-index: 1;
+
+      &.h5p-interactive-book-enter-fullscreen {
+        &::before {
+          font-family: 'h5p-theme';
+          content: '\e915';
+        }
+      }
+
+      &.h5p-interactive-book-exit-fullscreen {
+        &::before {
+          font-family: 'h5p-theme';
+          content: '\e914';
+        }
+      }
+    }
+  }
 
   .h5p-interactive-book-status-button {
     align-items: center;
-    border-radius: 3px;
     display: flex;
-    height: 3.6em;
-    padding: 0;
-    width: 3.6em;
-  }
-}
-
-.h5p-interactive-book-status-button {
-  border-radius: 3px;
-
-  &:hover {
-    background-color: var(--color-base-10, $base-color-10);
-    background-size: cover;
+    padding: var(--h5p-theme-spacing-xs);
+    font-size: var(--h5p-theme-font-size-m);
+    background-color: var(--h5p-theme-contrast-cta-light);
+    border-radius: var(--h5p-theme-border-radius-large);
+    color: var(--h5p-theme-contrast-cta-white);
+    border: none;
     cursor: pointer;
+
+    &:focus{
+      outline: 2px ridge var(--h5p-theme-main-cta-base);
+      border-radius: 4px;
+      outline-offset: 2px;
+    }
+
+    &:hover{
+      background-color: color-mix(in srgb, var(--h5p-theme-contrast-cta-light), transparent 60%);
+    }
+
+    &:active{
+      background-color: color-mix(in srgb, var(--h5p-theme-contrast-cta-light), transparent 80%);
+    }
   }
 
-  &:active {
-    background-color: var(--color-base-20, $base-color-20);
+  .h5p-interactive-book-status-arrow {
+    background-color: var(--color-base-5, $base-color-5);
     background-size: cover;
-  }
-
-  &[disabled] {
-    &:hover {
-      background-color: transparent;
-      cursor: default;
-    }
+    border: .125em solid $background-color;
+    border-radius: 3px;
+    flex-shrink: 0;
+    height: 2.75em;
+    width: 2.75em;
   }
 }
 
-.h5p-interactive-book-status-fullscreen {
-  background-color: var(--color-base-5, $base-color-5);
-  background-size: cover;
-  border: .125em solid $background-color;
-  flex-shrink: 0;
-  justify-content: center;
-  order: 5;
+.h5p-interactive-book-small.h5p-interactive-book-navigation-open:not(.h5p-interactive-book-navigation-hidden) .h5p-interactive-book-status {
+  grid-template-columns: 1fr;
 
-  &.h5p-interactive-book-enter-fullscreen {
-    &::before {
-      color: var(--color-base, $base-color);
-      content: '\e90b';
-      font-family: 'h5p-book';
-      font-size: 1.2em;
-    }
+  .h5p-interactive-book-status-main {
+    display: none;
   }
 
-  &.h5p-interactive-book-exit-fullscreen {
-    &::before {
-      font-size: 1.2em;
-      color: var(--color-base, $base-color);
-      content: '\e90c';
-      font-family: 'h5p-book';
-    }
+  .h5p-interactive-book-status-side {
+    width: calc(100% - 2*var(--h5p-theme-spacing-s));
   }
 }
 
-.h5p-interactive-book-status-menu {
-  background-color: $background-color;
-  background-size: cover;
-  border: 2px solid $background-color;
-  border-radius: 3px;
-  flex-shrink: 0;
+// Expand side in footer and header if nav menu is expanded
+// Prevent edge case where both open and hidden classes are applied
+.h5p-interactive-book-navigation-open:not(.h5p-interactive-book-navigation-hidden) .h5p-interactive-book-status .h5p-interactive-book-status-side {
+  width: calc(calc(var(--h5p-theme-spacing-xl)*5.5) - calc(2*var(--h5p-theme-spacing-s)));
+  padding: var(--h5p-theme-spacing-s);
+  box-shadow: 0.625em 0.625em 1.875em rgba(166, 166, 166, 0.2);
 
-  .icon-menu {
-    color: var(--color-base, $base-color);
-    font-size: 1.5em;
-    margin: auto;
+  .h5p-interactive-book-status-title {
+    display: block;
+  }
+}
+
+// Summary screen
+.h5p-interactive-book.h5p-showing-summary .h5p-interactive-book-status-header {
+  &:not(:has(.h5p-interactive-book-status-menu-active)) {
+    background-color: var(--h5p-theme-main-cta-base);
+
+    > .h5p-theme-pattern {
+      display: block;
+    }
+
+    .h5p-interactive-book-status-menu {
+      z-index: 1;
+      background-color: var(--h5p-theme-contrast-cta);
+    }
   }
 
-  &.h5p-interactive-book-status-menu-active {
-    background-color: var(--color-base, $base-color);
-    opacity: 20;
-    position: relative;
+  &:has(.h5p-interactive-book-status-menu-active) .h5p-interactive-book-status-main {
+    background-color: var(--h5p-theme-main-cta-base);
 
-    .icon-menu {
-      color: $background-color;
-      left: 50%;
-      position: absolute;
-      top: 50%;
-      transform: translate(-50%, -50%);
+    .h5p-theme-pattern {
+      display: block;
     }
+  }
 
-    &:hover {
-      background-color: var(--color-base-90, $base-color-90);
-      background-size: cover;
-      cursor: pointer;
-    }
-
-    &:active {
-      background-color: var(--color-base-95, $base-color-95);
-      background-size: cover;
-    }
+  .h5p-interactive-book-status-fullscreen {
+    background-color: var(--h5p-theme-contrast-cta);
+    border-radius: var(--h5p-theme-border-radius-large);
+    color: var(--h5p-theme-main-cta-base);
+    border: none;
+    cursor: pointer;
 
     &:focus-visible {
-      outline-color: $base-color;
-      outline-offset: 1px;
+      outline: 2px ridge var(--h5p-theme-contrast-cta-white);
+      border-radius: 4px;
+      outline-offset: 2px;
+    }
+
+    &:hover {
+      background-color: var(--h5p-theme-contrast-cta-dark);
+    }
+
+    &:active{
+      background-color: var(--h5p-theme-contrast-cta-light);
     }
   }
 }
 
-.h5p-interactive-book-status-progress-wrapper {
-  flex-shrink: 0;
-  margin-right: 2em;
-  order: 2;
-}
-.h5p-interactive-book-status-progress {
-  margin: 0;
-  white-space: nowrap;
 
-  .hidden-but-read {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
-  }
-}
-
-.h5p-interactive-book-status-progress-number {
-  color: var(--color-base, $base-color);
-  font-family: Arial;
-  font-size: 20px;
-  font-weight: 700;
-  text-align: right;
-  text-decoration: none solid var(--color-base, $base-color);
-}
-
-.h5p-interactive-book-status-progress-divider {
-  color: $mud;
-  font-family: Arial;
-  font-size: 20px;
-  font-weight: 700;
-  text-align: right;
-  text-decoration: none solid $mud;
-}
-
-.h5p-interactive-book-status-progressbar-back {
-  background-color: var(--color-base-20, $base-color-20);
-  background-size: cover;
-  width: 100%;
-}
-
-.h5p-interactive-book-status-progressbar-front {
-  background-color: var(--color-base, $base-color);
-  height: .313em;
-  transition: 1s;
-}
-
-.h5p-interactive-book-status-chapter {
-  flex-grow: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  .title {
-    color: $mud;
-    font-family: Arial;
-    font-size: 20px;
-    font-weight: 700;
-    margin: 0;
-    overflow: hidden;
-    padding: 0 1rem;
-    text-decoration: none solid $mud;
-    text-overflow: ellipsis;
-  }
-}
-
-.h5p-interactive-book-status-arrow {
-  background-color: var(--color-base-5, $base-color-5);
-  background-size: cover;
-  border: .125em solid $background-color;
-  border-radius: 3px;
-  flex-shrink: 0;
-  height: 2.75em;
-  width: 2.75em;
-
-  &.previous {
-    order: 3;
-  }
-
-  &.next {
-    order: 4;
-  }
-
-  .navigation-button {
-    background: transparent;
-    border: 0;
-    color: var(--color-base, $base-color);
-    font-size: 1.5em;
-    margin: auto;
-
-    &.disabled {
-      opacity: .5;
-    }
-  }
-}
-
-.h5p-interactive-book-status-header {
-  @include prefix(position, sticky, webkit);
-
-  background: $background-color;
-  top: 0;
-  z-index: 2;
-
-  .h5p-interactive-book-status-to-top {
-    display: none;
-  }
-}
-
-.h5p-interactive-book-status-footer {
-  bottom: 0;
-
-  .h5p-interactive-book-status-menu {
-    display: none;
-  }
-
-  &.footer-hidden {
-    display: none;
-  }
-}
