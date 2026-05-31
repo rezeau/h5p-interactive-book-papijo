@@ -3,7 +3,8 @@
   "description": "An interactive book which displays content in pages and sections",
   "majorVersion": 1,
   "minorVersion": 14,
-  "patchVersion": 0,
+  "patchVersion": 1,
+  "patchVersion": 1,
   "runnable": 1,
   "fullscreen": 1,
   "coreApi": {
@@ -35,7 +36,7 @@
     {
       "machineName": "H5P.ColumnPapiJo",
       "majorVersion": 1,
-      "minorVersion": 16
+      "minorVersion": 17
     },
     {
       "machineName": "H5P.JoubelUI",
