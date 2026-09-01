@@ -1,4 +1,4 @@
-# H5P.InteractiveBookPapiJo 1.14.2 browser characterization checklist
+# H5P.InteractiveBookPapiJo 1.14.3 browser characterization checklist
 
 Use the existing H5P development environment and the current junction. Do not rebuild or modify the library while recording this baseline.
 

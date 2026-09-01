@@ -14,7 +14,7 @@ test('manifest freezes the PapiJo identity and dependency layers', () => {
   assert.equal(library.machineName, 'H5P.InteractiveBookPapiJo');
   assert.deepEqual(
     [library.majorVersion, library.minorVersion, library.patchVersion],
-    [1, 14, 2],
+    [1, 14, 3],
   );
   assert.deepEqual(library.embedTypes, ['iframe']);
   assert.deepEqual(library.coreApi, { majorVersion: 1, minorVersion: 28 });

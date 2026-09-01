@@ -1,6 +1,6 @@
 # Interactive Book PapiJo characterization tests
 
-These tests freeze observable contracts of `H5P.InteractiveBookPapiJo` 1.14.2 without changing production code.
+These tests freeze observable contracts of `H5P.InteractiveBookPapiJo` 1.14.3 without changing production code.
 
 Run the dependency-free runtime suite with:
 

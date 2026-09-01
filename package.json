@@ -1,11 +1,18 @@
 {
 "name": "h5p-interactive-book-papijo",
-"version": "1.13.17",
+"version": "1.14.3",
+  "private": true,
   "description": "An interactive book which displays content in pages and sections. A papijo version",
   "scripts": {
+    "test": "node --test tests/runtime/*.test.cjs",
     "dev": "cross-env NODE_ENV='development' webpack",
     "build": "cross-env NODE_ENV='production' webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "lint:js": "eslint src/**/*.js",
+    "verify:production": "node tools/verify-production-immutability.cjs",
+    "verify:release": "node tools/verify-release-metadata.cjs",
+    "verify": "npm run verify:production && npm run verify:release && npm test",
+    "package:release": "pwsh -NoProfile -File tools/build-release-package.ps1"
   },
   "repository": {
     "type": "git",

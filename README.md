@@ -1,6 +1,8 @@
-# H5P Interactive Book
+# H5P Interactive Book PapiJo
 
-Interactive Book is an H5P-component, giving users a central knowledge base which utilizes the [H5P Framework](https://github.com/h5p)
+Interactive Book PapiJo is an H5P component that presents interactive content in pages and sections. It uses the `H5P.InteractiveBookPapiJo` machine name and `H5P.ColumnPapiJo` chapters.
+
+Current release: **1.14.3**
 
 ## Getting started
 
@@ -15,3 +17,23 @@ Build project:
 ```bash
 npm run build
 ```
+
+Run the aggregate release verification checks:
+
+```bash
+npm run verify
+```
+
+Run lint separately as a diagnostic check:
+
+```bash
+npm run lint:js
+```
+
+Build an allowlist-based H5P release package with the required libraries from the local H5P development environment:
+
+```powershell
+npm run package:release -- -OutputDirectory <output-directory>
+```
+
+The release package is a libraries-only archive intended for installation through the H5P library administration page.
