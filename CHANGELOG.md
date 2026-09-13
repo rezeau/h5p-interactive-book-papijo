@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.15.0 - 2026-09-13
+
+### Compatibility
+
+- Updated Interactive Book chapters from `H5P.ColumnPapiJo` 1.17 to 1.19.
+- Added indirect support for `H5P.QuestionSetPapiJo` 1.22 through ColumnPapiJo 1.19.
+- Confirmed that H5P's generic recursive content upgrade handles both nested dependency updates;
+  no `upgrades.js` or direct QuestionSetPapiJo dependency is required.
+- No runtime behavior was intentionally changed.
+
 ## 1.14.3 - 2026-09-01
 
 ### Changed

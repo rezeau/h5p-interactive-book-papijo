@@ -16,10 +16,10 @@ const baselineLibrary = JSON.parse(execFileSync(
 ));
 
 const version = `${library.majorVersion}.${library.minorVersion}.${library.patchVersion}`;
-const expectedVersion = `${baselineLibrary.majorVersion}.${baselineLibrary.minorVersion}.${baselineLibrary.patchVersion + 1}`;
+const expectedVersion = '1.15.0';
 
 if (version !== expectedVersion) {
-  throw new Error(`Expected next 1.14 patch version ${expectedVersion}, found ${version}.`);
+  throw new Error(`Expected compatibility release ${expectedVersion}, found ${version}.`);
 }
 if (packageMetadata.version !== version) {
   throw new Error(`package.json version ${packageMetadata.version} does not match library version ${version}.`);
@@ -31,9 +31,18 @@ if (packageMetadata.private !== true) {
   throw new Error('The npm package must remain private because it is release tooling, not a published npm artifact.');
 }
 
-const comparableLibrary = { ...library, patchVersion: baselineLibrary.patchVersion };
-if (JSON.stringify(comparableLibrary) !== JSON.stringify(baselineLibrary)) {
-  throw new Error('library.json contains release changes beyond patchVersion.');
+const expectedLibrary = structuredClone(baselineLibrary);
+expectedLibrary.minorVersion = 15;
+expectedLibrary.patchVersion = 0;
+const expectedColumn = expectedLibrary.preloadedDependencies.find(
+  (dependency) => dependency.machineName === 'H5P.ColumnPapiJo'
+);
+if (!expectedColumn) {
+  throw new Error('The reviewed baseline does not contain H5P.ColumnPapiJo.');
+}
+expectedColumn.minorVersion = 19;
+if (JSON.stringify(library) !== JSON.stringify(expectedLibrary)) {
+  throw new Error('library.json differs beyond the reviewed 1.15.0 and ColumnPapiJo 1.19 changes.');
 }
 
 const readme = fs.readFileSync(path.join(root, 'README.md'), 'utf8');

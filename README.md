@@ -2,7 +2,10 @@
 
 Interactive Book PapiJo is an H5P component that presents interactive content in pages and sections. It uses the `H5P.InteractiveBookPapiJo` machine name and `H5P.ColumnPapiJo` chapters.
 
-Current release: **1.14.3**
+Current release: **1.15.0**
+
+This release uses `H5P.ColumnPapiJo 1.19` chapters, which provide indirect support for
+`H5P.QuestionSetPapiJo 1.22`. Interactive Book has no direct QuestionSetPapiJo dependency.
 
 ## Getting started
 

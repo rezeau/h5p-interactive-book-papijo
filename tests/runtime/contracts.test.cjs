@@ -8,13 +8,14 @@ const test = require('node:test');
 const { repoRoot } = require('./helpers/harness.cjs');
 
 const read = (name) => fs.readFileSync(path.join(repoRoot, name), 'utf8');
+const releasedColumnVersion = '1.19';
 
-test('manifest freezes the PapiJo identity and dependency layers', () => {
+test('manifest identifies InteractiveBookPapiJo 1.15.0 with ColumnPapiJo 1.19', () => {
   const library = JSON.parse(read('library.json'));
   assert.equal(library.machineName, 'H5P.InteractiveBookPapiJo');
   assert.deepEqual(
     [library.majorVersion, library.minorVersion, library.patchVersion],
-    [1, 14, 3],
+    [1, 15, 0],
   );
   assert.deepEqual(library.embedTypes, ['iframe']);
   assert.deepEqual(library.coreApi, { majorVersion: 1, minorVersion: 28 });
@@ -25,18 +26,18 @@ test('manifest freezes the PapiJo identity and dependency layers', () => {
     dependency.machineName,
     `${dependency.majorVersion}.${dependency.minorVersion}`,
   ]));
-  assert.equal(dependencies.get('H5P.ColumnPapiJo'), '1.17');
+  assert.equal(dependencies.get('H5P.ColumnPapiJo'), releasedColumnVersion);
   assert.equal(dependencies.get('H5P.Components'), '1.0');
 });
 
-test('semantics requires one to fifty ColumnPapiJo 1.17 chapters', () => {
+test('semantics requires one to fifty ColumnPapiJo 1.19 chapters', () => {
   const semantics = JSON.parse(read('semantics.json'));
   const chapters = semantics.find((field) => field.name === 'chapters');
   assert.ok(chapters);
   assert.equal(chapters.min, 1);
   assert.equal(chapters.max, 50);
   const chapterLibrary = chapters.field.fields.find((field) => field.name === 'chapter');
-  assert.deepEqual(chapterLibrary.options, ['H5P.ColumnPapiJo 1.17']);
+  assert.deepEqual(chapterLibrary.options, [`H5P.ColumnPapiJo ${releasedColumnVersion}`]);
 });
 
 test('runtime source freezes the ColumnPapiJo and Components roles', () => {

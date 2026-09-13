@@ -2,8 +2,8 @@
   "title": "Interactive Book Papi Jo",
   "description": "An interactive book which displays content in pages and sections",
   "majorVersion": 1,
-  "minorVersion": 14,
-  "patchVersion": 3,
+  "minorVersion": 15,
+  "patchVersion": 0,
   "runnable": 1,
   "fullscreen": 1,
   "coreApi": {
@@ -35,7 +35,7 @@
     {
       "machineName": "H5P.ColumnPapiJo",
       "majorVersion": 1,
-      "minorVersion": 17
+      "minorVersion": 19
     },
     {
       "machineName": "H5P.JoubelUI",

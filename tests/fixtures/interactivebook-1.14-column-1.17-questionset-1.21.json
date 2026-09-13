@@ -1,0 +1,34 @@
+{
+  "library": "H5P.InteractiveBookPapiJo 1.14",
+  "params": {
+    "chapters": [
+      {
+        "library": "H5P.ColumnPapiJo 1.17",
+        "subContentId": "phase-2a-column",
+        "metadata": {
+          "title": "Compatibility chapter"
+        },
+        "params": {
+          "content": [
+            {
+              "content": {
+                "library": "H5P.QuestionSetPapiJo 1.21",
+                "subContentId": "phase-2a-question-set",
+                "params": {
+                  "questions": [],
+                  "progressType": "textual"
+                }
+              },
+              "useSeparator": "auto"
+            }
+          ]
+        }
+      }
+    ],
+    "behaviour": {
+      "displaySummary": false,
+      "progressIndicators": true,
+      "progressAuto": true
+    }
+  }
+}
