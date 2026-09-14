@@ -187,6 +187,10 @@ class PageContent extends H5P.EventDispatcher {
       }
 
       chapter.isInitialized = true;
+      if (chapter.resetPending) {
+        chapter.instance.resetTask();
+        chapter.resetPending = false;
+      }
     }
   }
 
@@ -257,6 +261,7 @@ class PageContent extends H5P.EventDispatcher {
       const chapter = {
         isInitialized: false,
         instance: newInstance,
+        resetPending: false,
         title: config.chapters[i].metadata.title,
         completed: (previousState) ? previousState.chapters[i].completed : false,
         tasksLeft: (previousState) ? previousState.chapters[i].tasksLeft : 0,

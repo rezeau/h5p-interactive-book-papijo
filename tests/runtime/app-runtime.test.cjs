@@ -196,6 +196,7 @@ function makeChapter(instance, overrides = {}) {
   return {
     completed: false,
     instance,
+    isInitialized: true,
     isSummary: false,
     maxTasks: 0,
     sections: [],

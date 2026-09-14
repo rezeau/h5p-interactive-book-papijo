@@ -179,6 +179,43 @@ test('chapter creation passes browser self as parent and chapter-specific previo
   assert.equal(column2.attachCount, 1);
 });
 
+test('saved top-section redirect can fire before InteractiveBook status-bar initialization', () => {
+  const section = new FakeChild({
+    subContentId: 'task-1',
+    machineName: 'H5P.MultiChoice',
+    isTask: true,
+  });
+  const column = new FakeChild({
+    subContentId: 'column-1',
+    instances: [section],
+    renderedSections: 1,
+  });
+  const harness = createPageHarness({
+    fragments: {
+      h5pbookid: '42',
+      chapter: 'h5p-interactive-book-chapter-column-1',
+      section: 'top',
+    },
+    instances: [column],
+  });
+  const parent = new harness.Parent();
+  parent.on('scrollToTop', () => parent.statusBarHeader.wrapper.scrollIntoView());
+  const config = minimalConfig(0);
+  config.chapters = [
+    chapterConfig('One', [{ content: { library: 'H5P.MultiChoice 1.16', params: {} } }]),
+  ];
+
+  assert.throws(
+    () => new harness.PageContent(config, '42', {}, parent, {
+      l10n: { markAsFinished: 'Done' },
+      behaviour: config.behaviour,
+    }),
+    (error) => error.name === 'TypeError' && /wrapper/.test(error.message),
+  );
+  assert.equal(harness.window.animationFrameCount, 1);
+  assert.equal(column.attachCount, 0);
+});
+
 test('nested Row and RowColumn instances are flattened before task detection', () => {
   const nestedTask = new FakeChild({ subContentId: 'nested-task', machineName: 'H5P.TrueFalse', isTask: true });
   const rowColumn = new FakeChild({ subContentId: 'row-column', machineName: 'H5P.RowColumn', instances: [nestedTask] });

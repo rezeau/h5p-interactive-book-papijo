@@ -35,7 +35,7 @@ const questionSetPath = questionSetCandidates.find((candidate) =>
 );
 
 test(
-  'real H5P recursion upgrades InteractiveBook 1.14 -> 1.15, ColumnPapiJo 1.17 -> 1.19, and QuestionSetPapiJo 1.21 -> 1.22',
+  'real H5P recursion upgrades InteractiveBook 1.14 -> 1.15, ColumnPapiJo 1.17 -> 1.19, and QuestionSetPapiJo 1.21 -> 1.22.1',
   {
     skip: !h5pJsPath || !columnPath || !questionSetPath
       ? 'H5P core upgrade scripts or target PapiJo libraries are unavailable'
@@ -86,7 +86,7 @@ test(
     );
     assert.deepEqual(
       [questionSetLibrary.machineName, questionSetLibrary.majorVersion, questionSetLibrary.minorVersion, questionSetLibrary.patchVersion],
-      ['H5P.QuestionSetPapiJo', 1, 22, 0]
+      ['H5P.QuestionSetPapiJo', 1, 22, 1]
     );
 
     const libraries = new Map([

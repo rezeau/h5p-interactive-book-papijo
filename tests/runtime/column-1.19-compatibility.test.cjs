@@ -319,7 +319,7 @@ function chapter(title, subContentId, content) {
 }
 
 test(
-  'InteractiveBook composes with real ColumnPapiJo 1.19 and QuestionSetPapiJo 1.22-shaped children',
+  'InteractiveBook composes with real ColumnPapiJo 1.19 and QuestionSetPapiJo 1.22.1-shaped children',
   { skip: !columnPath ? 'H5P.ColumnPapiJo 1.19 source is unavailable' : false },
   async () => {
     const harness = createCompatibilityHarness();
@@ -451,4 +451,235 @@ test(
     assert.equal(seenXAPISources.includes(nestedQuestion), true);
     assert.deepEqual(book.getXAPIData().statement.result.score, { raw: 3, max: 5 });
   }
+);
+
+test(
+  'Summary does not ask real ColumnPapiJo 1.19 for nested state before attachment',
+  { skip: !columnPath ? 'H5P.ColumnPapiJo 1.19 source is unavailable' : false },
+  () => {
+    const harness = createCompatibilityHarness();
+    const questionContent = {
+      library: 'H5P.QuestionSetPapiJo 1.22',
+      subContentId: 'detached-question-set',
+      params: {},
+    };
+    const column = new harness.H5P.ColumnPapiJo({
+      content: [{ content: questionContent }],
+    }, '42', {});
+    const question = harness.questions.get('detached-question-set');
+    let stateReadCount = 0;
+    question.getCurrentState = () => {
+      stateReadCount++;
+      if (question.attachCount === 0) {
+        throw new TypeError("can't access property 'hasClass', element.$ is undefined");
+      }
+      return { attached: true };
+    };
+    harness.document.querySelectorAll = () => [];
+    harness.H5P.Components = { Button: () => new FakeElement('button') };
+    const Summary = loadProductionClass('src/scripts/summary.js', 'Summary', {
+      H5P: harness.H5P,
+      document: harness.document,
+      setTimeout,
+    }).Class;
+    const parent = new harness.H5P.EventDispatcher();
+    parent.isAnswerUpdated = true;
+    parent.isSubmitButtonEnabled = false;
+    const chapter = {
+      instance: column,
+      isInitialized: false,
+      isSummary: false,
+      sections: [{ taskDone: false }],
+    };
+    const summary = new Summary({ behaviour: {}, l10n: {} }, parent, [chapter]);
+    summary.wrapper = new FakeElement('div');
+
+    assert.doesNotThrow(() => summary.addActionButtons());
+    assert.equal(stateReadCount, 0);
+
+    column.attach(new harness.JQueryWrapper(new FakeElement('div')));
+    chapter.isInitialized = true;
+    summary.checkTheAnswerIsUpdated();
+    assert.equal(stateReadCount, 1);
+    assert.deepEqual(JSON.parse(summary.tempState)[0].state.instances[0], { attached: true });
+  },
+);
+
+test(
+  'automatic state saving skips uninitialized real ColumnPapiJo chapters on later-page reload',
+  { skip: !columnPath ? 'H5P.ColumnPapiJo 1.19 source is unavailable' : false },
+  () => {
+    const harness = createCompatibilityHarness();
+    const questionContent = (id) => ({
+      library: 'H5P.QuestionSetPapiJo 1.22',
+      subContentId: id,
+      params: {},
+    });
+    const config = minimalConfig(0);
+    config.behaviour.displaySummary = true;
+    config.chapters = [
+      chapter('Earlier one', 'column-earlier-one', [{ content: questionContent('question-earlier-one') }]),
+      chapter('Earlier two', 'column-earlier-two', [{ content: questionContent('question-earlier-two') }]),
+      chapter('Reloaded later', 'column-reloaded-later', [{ content: questionContent('question-reloaded-later') }]),
+    ];
+    const savedChapter = (id) => ({
+      completed: false,
+      sections: [{ taskDone: false }],
+      state: { instances: [{ saved: id }] },
+      tasksLeft: 1,
+    });
+    const earlierWithoutSavedState = savedChapter('earlier-two');
+    delete earlierWithoutSavedState.state;
+    const previousState = {
+      chapters: [
+        savedChapter('earlier-one'),
+        earlierWithoutSavedState,
+        savedChapter('reloaded-later'),
+      ],
+      maxScore: 6,
+      score: 3,
+      urlFragments: {
+        chapter: 'h5p-interactive-book-chapter-column-reloaded-later',
+        h5pbookid: '42',
+      },
+    };
+    harness.window.__fragments = { ...previousState.urlFragments };
+    const book = new harness.InteractiveBook(config, '42', {
+      metadata: { title: 'Later-page state save' },
+      previousState,
+    });
+    const earlierQuestions = [
+      harness.questions.get('question-earlier-one'),
+      harness.questions.get('question-earlier-two'),
+    ];
+    const laterQuestion = harness.questions.get('question-reloaded-later');
+    const prematureReads = { maxScore: 0, score: 0, state: 0 };
+    earlierQuestions.forEach((question) => {
+      question.getCurrentState = () => {
+        prematureReads.state++;
+        return { unexpectedlyRead: true };
+      };
+      question.getMaxScore = () => {
+        prematureReads.maxScore++;
+        throw new TypeError('this.cloze is undefined');
+      };
+      question.getScore = () => {
+        prematureReads.score++;
+        throw new TypeError('this.cloze is undefined');
+      };
+    });
+    const initializedReads = { maxScore: 0, score: 0, state: 0 };
+    laterQuestion.getCurrentState = () => {
+      initializedReads.state++;
+      return { attached: true };
+    };
+    laterQuestion.getMaxScore = () => {
+      initializedReads.maxScore++;
+      return 2;
+    };
+    laterQuestion.getScore = () => {
+      initializedReads.score++;
+      return 1;
+    };
+    harness.H5P.storeCurrentState = (instance) => instance.getCurrentState();
+
+    assert.deepEqual(Array.from(book.chapters.slice(0, 3), ({ isInitialized }) => isInitialized), [false, false, true]);
+    let storedState;
+    assert.doesNotThrow(() => {
+      storedState = harness.H5P.storeCurrentState(book);
+    });
+    assert.deepEqual(prematureReads, { maxScore: 0, score: 0, state: 0 });
+    assert.deepEqual(initializedReads, { maxScore: 1, score: 1, state: 1 });
+    assert.deepEqual(storedState.chapters[0].state, previousState.chapters[0].state);
+    assert.equal(storedState.chapters[1].state, null);
+    assert.deepEqual(storedState.chapters[2].state.instances[0], { attached: true });
+    assert.equal(storedState.score, 1);
+    assert.equal(storedState.maxScore, 2);
+  },
+);
+
+test(
+  'Reset Session defers nested resets until real ColumnPapiJo chapters are attached',
+  { skip: !columnPath ? 'H5P.ColumnPapiJo 1.19 source is unavailable' : false },
+  () => {
+    const harness = createCompatibilityHarness();
+    const questionContent = (id) => ({
+      library: 'H5P.QuestionSetPapiJo 1.22',
+      subContentId: id,
+      params: {},
+    });
+    const config = minimalConfig(0);
+    config.behaviour.displaySummary = true;
+    config.chapters = Array.from({ length: 4 }, (_, index) => chapter(
+      `Chapter ${index + 1}`,
+      `column-reset-${index + 1}`,
+      [{ content: questionContent(`question-reset-${index + 1}`) }],
+    ));
+    const previousState = {
+      chapters: Array.from({ length: 4 }, (_, index) => ({
+        completed: true,
+        sections: [{ taskDone: true }],
+        state: { instances: [{ answers: [{ saved: index + 1 }] }] },
+        tasksLeft: 0,
+      })),
+      maxScore: 8,
+      score: 4,
+      urlFragments: {
+        chapter: 'h5p-interactive-book-chapter-column-reset-4',
+        h5pbookid: '42',
+      },
+    };
+    harness.window.__fragments = { ...previousState.urlFragments };
+    const book = new harness.InteractiveBook(config, '42', {
+      metadata: { title: 'Deferred Reset Session' },
+      previousState,
+    });
+    book.attach(new harness.JQueryWrapper(new FakeElement('div')));
+    const questions = Array.from({ length: 4 }, (_, index) =>
+      harness.questions.get(`question-reset-${index + 1}`));
+    const resetErrors = [];
+    const resetCalls = [0, 0, 0, 0];
+    questions.forEach((question, index) => {
+      question.answered = true;
+      question.getScore = () => question.answered ? 1 : 0;
+      question.resetTask = () => {
+        resetCalls[index]++;
+        try {
+          if (question.attachCount === 0) {
+            throw new TypeError('nested reset requires attachment');
+          }
+          question.answered = false;
+          question.contentData.previousState = {};
+        }
+        catch (error) {
+          resetErrors.push('subcontent does not contain a valid resetTask function');
+          resetErrors.push(error.message);
+        }
+      };
+    });
+
+    assert.deepEqual(Array.from(book.chapters.slice(0, 4), ({ isInitialized }) => isInitialized), [false, false, false, true]);
+    assert.equal(book.getScore(), 1);
+    assert.doesNotThrow(() => book.resetTask());
+    assert.deepEqual(resetErrors, []);
+    assert.deepEqual(Array.from(book.chapters.slice(0, 4), ({ isInitialized }) => isInitialized), [true, true, false, true]);
+    assert.deepEqual(resetCalls, [1, 1, 0, 1]);
+    assert.equal(book.chapters[2].resetPending, true);
+    assert.deepEqual(Object.keys(previousState), []);
+    assert.equal(book.getScore(), 0);
+
+    const stateAfterReset = harness.H5P.storeCurrentState
+      ? harness.H5P.storeCurrentState(book)
+      : book.getCurrentState();
+    assert.equal(stateAfterReset.chapters[2].state, null);
+
+    book.pageContent.initializeChapter(2);
+    assert.equal(book.chapters[2].isInitialized, true);
+    assert.equal(book.chapters[2].resetPending, false);
+    assert.equal(questions[2].attachCount, 1);
+    assert.equal(resetCalls[2], 1);
+    assert.equal(questions[2].answered, false);
+    assert.deepEqual(questions[2].contentData.previousState, {});
+    assert.deepEqual(resetErrors, []);
+  },
 );

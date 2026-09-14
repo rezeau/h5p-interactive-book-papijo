@@ -146,7 +146,7 @@ export default class InteractiveBook extends H5P.EventDispatcher {
     this.getScore = () => {
       if (this.chapters.length > 0) {
         return this.chapters.reduce((accu, current) => {
-          if (typeof current.instance.getScore === 'function') {
+          if (current.isInitialized && typeof current.instance.getScore === 'function') {
             return accu + current.instance.getScore();
           }
           return accu;
@@ -168,7 +168,7 @@ export default class InteractiveBook extends H5P.EventDispatcher {
     this.getMaxScore = () => {
       if (this.chapters.length > 0) {
         return this.chapters.reduce((accu, current) => {
-          if (typeof current.instance.getMaxScore === 'function') {
+          if (current.isInitialized && typeof current.instance.getMaxScore === 'function') {
             return accu + current.instance.getMaxScore();
           }
           return accu;
@@ -208,8 +208,14 @@ export default class InteractiveBook extends H5P.EventDispatcher {
     this.resetTask = () => {
       if (this.hasValidChapters()) {
         this.chapters.forEach((chapter, index) => {
-          if (typeof chapter.instance.resetTask === 'function') {
+          if (chapter.isInitialized && typeof chapter.instance.resetTask === 'function') {
             chapter.instance.resetTask();
+          }
+          else if (!chapter.isInitialized) {
+            chapter.resetPending = typeof chapter.instance.resetTask === 'function';
+            if (chapter.instance.contentData) {
+              chapter.instance.contentData.previousState = {};
+            }
           }
           chapter.completed = false;
           chapter.tasksLeft = chapter.maxTasks;
@@ -309,10 +315,12 @@ export default class InteractiveBook extends H5P.EventDispatcher {
       // Get relevant state information from non-summary chapters
       const chapters = this.chapters
         .filter((chapter) => !chapter.isSummary)
-        .map((chapter) => ({
+        .map((chapter, index) => ({
           completed: chapter.completed || null,
           sections: chapter.sections.map((section) => ({ taskDone: section.taskDone || null })),
-          state: chapter.instance.getCurrentState() || null,
+          state: chapter.isInitialized
+            ? chapter.instance.getCurrentState() || null
+            : this.previousState?.chapters?.[index]?.state ?? null,
         }));
 
       const currentState = {

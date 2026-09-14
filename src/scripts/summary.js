@@ -22,7 +22,9 @@ class Summary extends H5P.EventDispatcher {
     this.filterActionAll = 'all';
     this.filterActionUnanswered = 'unanswered';
     this.bookCompleted = false;
-    this.tempState = JSON.stringify(this.parent.previousState && this.parent.previousState.chapters ? this.parent.previousState.chapters : this.getChapterStats());
+    this.tempState = this.parent.previousState && this.parent.previousState.chapters
+      ? JSON.stringify(this.parent.previousState.chapters)
+      : null;
 
     parent.on('bookCompleted', (event) => this.setBookComplete(event.data.completed));
     parent.on('toggleMenu', () => {
@@ -378,9 +380,10 @@ class Summary extends H5P.EventDispatcher {
    *
    * @param sections
    * @param chapterId
+   * @param {boolean} isChapterInitialized
    * @return {{hasUnansweredInteractions: boolean, sectionElements: []}}
    */
-  createSectionList(sections, chapterId) {
+  createSectionList(sections, chapterId, isChapterInitialized) {
     const sectionElements = []; let
       hasUnansweredInteractions = false;
     for (const section of sections) {
@@ -418,7 +421,7 @@ class Summary extends H5P.EventDispatcher {
       const score = document.createElement('div');
       score.classList.add('h5p-interactive-book-summary-section-score');
       score.innerHTML = '-';
-      if (typeof section.instance.getScore === 'function') {
+      if (isChapterInitialized && typeof section.instance.getScore === 'function') {
         score.innerHTML = this.l10n.scoreText.replace('@score', section.instance.getScore()).replace('@maxscore', section.instance.getMaxScore());
       }
 
@@ -473,7 +476,11 @@ class Summary extends H5P.EventDispatcher {
     const {
       sectionElements: sections,
       hasUnansweredInteractions,
-    } = this.createSectionList(chapter.sections.filter((section) => section.isTask), chapter.instance.subContentId);
+    } = this.createSectionList(
+      chapter.sections.filter((section) => section.isTask),
+      chapter.instance.subContentId,
+      chapter.isInitialized,
+    );
 
     if (hasUnansweredInteractions === false) {
       wrapper.classList.add('h5p-interactive-book-summary-no-interactions');
@@ -654,10 +661,15 @@ class Summary extends H5P.EventDispatcher {
             this.parent.pageContent.initializeChapter(chapterId);
           }
         }
-        this.addProgressIndicators();
+        const areChaptersInitialized = this.chapters.every((chapter) => chapter.isInitialized);
+        if (areChaptersInitialized) {
+          this.addProgressIndicators();
+        }
         this.addActionButtons();
         this.addSummaryOverview();
-        this.addScoreBar();
+        if (areChaptersInitialized) {
+          this.addScoreBar();
+        }
       }
     }
     else {
@@ -675,7 +687,18 @@ class Summary extends H5P.EventDispatcher {
    * Compare previous and current states of children to notice changes
    */
   checkTheAnswerIsUpdated() {
+    if (!this.chapters
+      .filter((chapter) => !chapter.isSummary)
+      .every((chapter) => chapter.isInitialized)) {
+      return;
+    }
+
     const chapters = this.getChapterStats();
+    if (this.tempState === null) {
+      this.tempState = JSON.stringify(chapters);
+      return;
+    }
+
     const previousState = JSON.parse(this.tempState);
     for (const index of chapters.keys()) {
       const previousStateInstance = previousState[index].state.instances;
