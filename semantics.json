@@ -99,7 +99,7 @@
           "name": "chapter",
           "type": "library",
           "options": [
-            "H5P.ColumnPapiJo 1.19"
+            "H5P.ColumnPapiJo 1.20"
           ]
         }
       ]

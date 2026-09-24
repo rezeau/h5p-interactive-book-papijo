@@ -1,7 +1,7 @@
 # Interactive Book PapiJo characterization tests
 
 These tests cover the observable contracts and page-lifecycle regressions of
-`H5P.InteractiveBookPapiJo` 1.15.0.
+`H5P.InteractiveBookPapiJo` 1.16.0.
 
 Run the dependency-free runtime suite with:
 
@@ -15,3 +15,6 @@ The browser checklists in `tests/browser/` cover behaviors that cannot be establ
 with the lightweight Node harness: rendered layout, focus, fullscreen, clipping, actual
 iframe/core propagation, timing-sensitive resize behavior, passive autosave, and Reset Session
 across partially initialized pages.
+
+Use `tests/browser/interactivebook-1.16-recursive-upgrade.md` for the current compatibility release.
+The other versioned browser documents are retained as historical verification records.

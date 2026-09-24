@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.16.0 - 2026-09-24
+
+### Compatibility
+
+- Updated Interactive Book pages from `H5P.ColumnPapiJo` 1.19 to 1.20.
+- Added transitive compatibility with `H5P.QuestionSetPapiJo` 1.23 and `H5P.ScaleQuestion` 0.2.
+- Confirmed with the real H5P content-upgrade process that direct and nested content upgrades
+  recursively from Interactive Book 1.15 through Column and QuestionSet to ScaleQuestion 0.2.
+- Preserved chapter order, metadata, subcontent identifiers, child parameters, and unaffected
+  sibling libraries in recursive-upgrade regression coverage.
+- Kept QuestionSetPapiJo and ScaleQuestion as transitive, semantics-level child types; install
+  those libraries separately when they are not included in the target H5P environment.
+
+### Changed
+
+- Updated compatibility metadata only. Interactive Book runtime behavior and runtime assets are
+  unchanged from 1.15.0, and no Interactive Book `upgrades.js` is required.
+
 ## 1.15.0 - 2026-09-14
 
 ### Compatibility

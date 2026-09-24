@@ -1,0 +1,247 @@
+{
+  "library": "H5P.InteractiveBookPapiJo 1.15",
+  "metadata": {
+    "title": "InteractiveBook recursive upgrade fixture",
+    "defaultLanguage": "fr",
+    "license": "CC BY-SA"
+  },
+  "params": {
+    "showCoverPage": false,
+    "chapters": [
+      {
+        "library": "H5P.ColumnPapiJo 1.19",
+        "subContentId": "ecf67572-d4b2-4f36-8683-6c930f0625b0",
+        "metadata": {
+          "contentType": "Page Papi Jo",
+          "title": "Direct Scale chapter",
+          "license": "CC BY",
+          "authors": [
+            {
+              "name": "Fixture Author",
+              "role": "Author"
+            }
+          ]
+        },
+        "params": {
+          "content": [
+            {
+              "content": {
+                "library": "H5P.AdvancedTextPapiJo 1.2",
+                "subContentId": "8539affc-ef27-475e-9b64-562e52d19210",
+                "metadata": {
+                  "contentType": "Advanced Text Papi Jo",
+                  "title": "Preserved introductory text",
+                  "license": "U"
+                },
+                "params": {
+                  "text": "<p>This sibling remains first.</p>"
+                }
+              },
+              "useSeparator": "auto"
+            },
+            {
+              "content": {
+                "library": "H5P.ScaleQuestion 0.1",
+                "subContentId": "f0c6dd8c-8d20-483e-b51a-256cf267218e",
+                "metadata": {
+                  "contentType": "Scale Question",
+                  "title": "Direct numerical scale",
+                  "license": "CC BY",
+                  "authors": [
+                    {
+                      "name": "Scale Author",
+                      "role": "Author"
+                    }
+                  ]
+                },
+                "params": {
+                  "question": "<p>Choose the value closest to the target.</p>",
+                  "scaleMode": "numerical",
+                  "minimum": -5,
+                  "maximum": 15,
+                  "step": 0.5,
+                  "correctValue": 7.5,
+                  "acceptedTolerance": 1,
+                  "maxAttempts": 3,
+                  "orientation": "vertical",
+                  "behaviour": {
+                    "autoCheck": false,
+                    "enableRetry": true,
+                    "enableSolutionsButton": false
+                  },
+                  "l10n": {
+                    "scaleLabel": "Authored numerical scale",
+                    "selectedValue": "Chosen value: @value",
+                    "checkAnswer": "Validate"
+                  }
+                }
+              },
+              "useSeparator": "enabled"
+            },
+            {
+              "content": {
+                "library": "H5P.TrueFalse 1.8",
+                "subContentId": "a6eff0f0-6428-4cb7-bbf7-d57b2f97f387",
+                "metadata": {
+                  "contentType": "True/False Question",
+                  "title": "Preserved direct sibling",
+                  "license": "U"
+                },
+                "params": {
+                  "question": "<p>This statement is true.</p>",
+                  "correct": "true",
+                  "behaviour": {
+                    "enableRetry": true,
+                    "enableSolutionsButton": true,
+                    "enableCheckButton": true
+                  }
+                }
+              },
+              "useSeparator": "disabled"
+            }
+          ]
+        }
+      },
+      {
+        "library": "H5P.ColumnPapiJo 1.19",
+        "subContentId": "bb882e90-26b0-49a9-8e23-3170c9a9a2b9",
+        "metadata": {
+          "contentType": "Page Papi Jo",
+          "title": "Nested QuestionSet and Scale chapter",
+          "license": "CC BY-SA"
+        },
+        "params": {
+          "content": [
+            {
+              "content": {
+                "library": "H5P.QuestionSetPapiJo 1.22",
+                "subContentId": "a22c1eb0-9eff-4029-8266-f01ef19407c2",
+                "metadata": {
+                  "contentType": "Question Set PapiJo",
+                  "title": "Nested scale quiz",
+                  "defaultLanguage": "fr",
+                  "license": "CC BY-SA"
+                },
+                "params": {
+                  "progressType": "dots",
+                  "passPercentage": 70,
+                  "disableBackwardsNavigation": true,
+                  "randomQuestions": false,
+                  "questions": [
+                    {
+                      "library": "H5P.ScaleQuestion 0.1",
+                      "subContentId": "683e4ef8-25d8-4a7d-85a1-12da630ab0d8",
+                      "metadata": {
+                        "contentType": "Scale Question",
+                        "title": "Nested numerical scale",
+                        "license": "CC BY"
+                      },
+                      "params": {
+                        "question": "<p>Select five.</p>",
+                        "scaleMode": "numerical",
+                        "minimum": 0,
+                        "maximum": 10,
+                        "step": 1,
+                        "correctValue": 5,
+                        "acceptedTolerance": 0,
+                        "maxAttempts": 2,
+                        "orientation": "horizontal",
+                        "behaviour": {
+                          "autoCheck": false,
+                          "enableRetry": true,
+                          "enableSolutionsButton": true
+                        }
+                      }
+                    },
+                    {
+                      "library": "H5P.TrueFalse 1.8",
+                      "subContentId": "2f411459-c3ea-41b6-8877-fdc7f54052d6",
+                      "metadata": {
+                        "contentType": "True/False Question",
+                        "title": "Preserved nested sibling",
+                        "license": "U"
+                      },
+                      "params": {
+                        "question": "<p>This nested statement is true.</p>",
+                        "correct": "true"
+                      }
+                    }
+                  ],
+                  "override": {
+                    "checkButton": false,
+                    "retryButton": "off",
+                    "showSolutionButton": "on"
+                  },
+                  "endGame": {
+                    "showResultPage": true,
+                    "showSolutionButton": true,
+                    "showRetryButton": false,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 100,
+                        "feedback": "Preserved overall feedback"
+                      }
+                    ]
+                  }
+                }
+              },
+              "useSeparator": "enabled"
+            },
+            {
+              "content": {
+                "library": "H5P.AdvancedTextPapiJo 1.2",
+                "subContentId": "61cfd746-1204-44a6-929a-79124702ac11",
+                "metadata": {
+                  "contentType": "Advanced Text Papi Jo",
+                  "title": "Preserved outer sibling",
+                  "license": "U"
+                },
+                "params": {
+                  "text": "<p>This outer sibling remains second.</p>"
+                }
+              },
+              "useSeparator": "auto"
+            }
+          ]
+        }
+      },
+      {
+        "library": "H5P.ColumnPapiJo 1.19",
+        "subContentId": "f229db23-ad4e-4a49-bd11-ef3af4878270",
+        "metadata": {
+          "contentType": "Page Papi Jo",
+          "title": "Unaffected content chapter",
+          "license": "U"
+        },
+        "params": {
+          "content": [
+            {
+              "content": {
+                "library": "H5P.AdvancedTextPapiJo 1.2",
+                "subContentId": "36434e54-a2a6-4d16-8b19-23001da181ee",
+                "metadata": {
+                  "contentType": "Advanced Text Papi Jo",
+                  "title": "Unaffected chapter text",
+                  "license": "U"
+                },
+                "params": {
+                  "text": "<p>This entire chapter content remains unchanged.</p>"
+                }
+              },
+              "useSeparator": "auto"
+            }
+          ]
+        }
+      }
+    ],
+    "behaviour": {
+      "baseColor": "#1768c4",
+      "defaultTableOfContents": true,
+      "progressIndicators": true,
+      "progressAuto": true,
+      "displaySummary": true,
+      "enableRetry": true
+    }
+  }
+}

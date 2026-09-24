@@ -13,18 +13,35 @@ const {
   FakeJQuery,
   loadProductionClass,
 } = require('./helpers/harness.cjs');
+const { findLibrary, materializeGitLibrary } = require('./helpers/library-discovery.cjs');
 
 const root = path.resolve(__dirname, '..', '..');
 const questionSetCandidates = [
   process.env.H5P_QUESTIONSET_PAPIJO_1221_PATH,
   process.env.H5P_QUESTIONSET_PAPIJO_122_PATH,
-  path.resolve(root, '..', 'papi-jo-h5p-questionset'),
   'C:\\wamp64\\www\\wp-h5p\\wp-content\\uploads\\h5p\\libraries\\H5P.QuestionSetPapiJo-1.22',
+  'C:\\my_first_h5p_environment\\libraries\\H5P.QuestionSetPapiJo-1.22',
+  path.resolve(root, '..', 'papi-jo-h5p-questionset'),
 ].filter(Boolean);
-const questionSetPath = questionSetCandidates.find((candidate) =>
-  fs.existsSync(path.join(candidate, 'js', 'questionset.js')) &&
-  fs.existsSync(path.join(candidate, 'tests', 'reset-task-instance-scope.test.cjs'))
-);
+let questionSetPath = findLibrary(questionSetCandidates, {
+  machineName: 'H5P.QuestionSetPapiJo',
+  majorVersion: 1,
+  minorVersion: 22,
+  patchVersion: 1,
+}, ['js/questionset.js', 'tests/reset-task-instance-scope.test.cjs']);
+const questionSetSnapshot = questionSetPath ? undefined : materializeGitLibrary([
+  process.env.H5P_QUESTIONSET_PAPIJO_REPOSITORY,
+  path.resolve(root, '..', 'papi-jo-h5p-questionset'),
+].filter(Boolean), 'v1.22.1', {
+  machineName: 'H5P.QuestionSetPapiJo',
+  majorVersion: 1,
+  minorVersion: 22,
+  patchVersion: 1,
+}, ['js/questionset.js', 'tests/reset-task-instance-scope.test.cjs']);
+if (questionSetSnapshot) {
+  questionSetPath = questionSetSnapshot.path;
+  test.after(() => questionSetSnapshot.cleanup());
+}
 
 test('summary defers its baseline and action-button state reads until chapters are initialized', () => {
   const document = new FakeDocument();
@@ -173,7 +190,7 @@ test(
   'released QuestionSetPapiJo 1.22.1 resets unequal instances without progress-dot leakage',
   {
     skip: !questionSetPath
-      ? 'QuestionSetPapiJo 1.22.1 source and reset harness are unavailable'
+      ? 'QuestionSetPapiJo 1.22.1 source and reset harness are unavailable locally or at tag v1.22.1'
       : false,
   },
   () => {

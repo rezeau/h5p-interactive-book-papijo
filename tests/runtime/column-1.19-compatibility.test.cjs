@@ -13,16 +13,21 @@ const {
   loadProductionClass,
   minimalConfig,
 } = require('./helpers/harness.cjs');
+const { findLibrary } = require('./helpers/library-discovery.cjs');
 
 const root = path.resolve(__dirname, '..', '..');
 const columnCandidates = [
   process.env.H5P_COLUMN_PAPIJO_119_PATH,
+  'C:\\wamp64\\www\\wp-h5p\\wp-content\\uploads\\h5p\\libraries\\H5P.ColumnPapiJo-1.19',
+  'C:\\my_first_h5p_environment\\libraries\\H5P.ColumnPapiJo-1.19',
   path.resolve(root, '..', 'papi-jo-h5p-column'),
 ].filter(Boolean);
-const columnPath = columnCandidates.find((candidate) =>
-  fs.existsSync(path.join(candidate, 'library.json')) &&
-  fs.existsSync(path.join(candidate, 'scripts', 'h5p-column.js'))
-);
+const columnPath = findLibrary(columnCandidates, {
+  machineName: 'H5P.ColumnPapiJo',
+  majorVersion: 1,
+  minorVersion: 19,
+  patchVersion: 0,
+}, ['scripts/h5p-column.js']);
 
 function createXAPIEvent(verb, score, maxScore) {
   return {

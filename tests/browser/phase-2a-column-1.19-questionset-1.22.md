@@ -1,5 +1,8 @@
 # Phase 2A ColumnPapiJo 1.19 / QuestionSetPapiJo 1.22 smoke test
 
+> Historical 1.15 compatibility record. Use
+> `interactivebook-1.16-recursive-upgrade.md` for the current 1.16 release checklist.
+
 Use a manually prepared development fixture with this exact dependency chain:
 
 - `H5P.InteractiveBookPapiJo 1.15.0` source under test;

@@ -7,6 +7,8 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+Import-Module (Join-Path $PSScriptRoot 'release-archive.psm1') -Force
+
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 if ([string]::IsNullOrWhiteSpace($OutputDirectory)) {
   $OutputDirectory = $root
@@ -277,37 +279,19 @@ try {
     Remove-Item -LiteralPath $outputPath -Force
   }
 
-  Compress-Archive -Path (Join-Path $stage '*') -DestinationPath $zipPath -CompressionLevel Optimal
+  New-H5PFileOnlyArchive `
+    -SourceDirectory $stage `
+    -DestinationPath $zipPath `
+    -AllowedExtensions $allowedExtensions `
+    -ForbiddenPatterns $forbiddenPatterns
   Move-Item -LiteralPath $zipPath -Destination $outputPath
 
-  Add-Type -AssemblyName System.IO.Compression.FileSystem
-  $archive = [System.IO.Compression.ZipFile]::OpenRead($outputPath)
-  try {
-    $entryNames = @($archive.Entries | ForEach-Object { $_.FullName.Replace('\', '/') })
-    $duplicateEntries = @($entryNames | Group-Object | Where-Object Count -gt 1)
-    if ($duplicateEntries.Count -gt 0) {
-      throw "Duplicate archive entries: $($duplicateEntries.Name -join ', ')"
-    }
-    foreach ($entry in $archive.Entries) {
-      $normalized = $entry.FullName.Replace('\', '/')
-      if ($normalized -match '(^/)|(^[A-Za-z]:)|(^|/)\.\.(/|$)') {
-        throw "Unsafe archive entry: $normalized"
-      }
-      if (-not $normalized.EndsWith('/')) {
-        Test-ForbiddenPath -RelativePath $normalized
-        $stream = $entry.Open()
-        try {
-          $buffer = New-Object byte[] 8192
-          while ($stream.Read($buffer, 0, $buffer.Length) -gt 0) {}
-        }
-        finally {
-          $stream.Dispose()
-        }
-      }
-    }
-  }
-  finally {
-    $archive.Dispose()
+  $archiveValidation = Test-H5PArchive `
+    -ArchivePath $outputPath `
+    -AllowedExtensions $allowedExtensions `
+    -ForbiddenPatterns $forbiddenPatterns
+  if ($archiveValidation.RegularFileCount -ne $stagedFiles.Count) {
+    throw "Archive file count differs from staged payload: $($archiveValidation.RegularFileCount) != $($stagedFiles.Count)."
   }
 
   [System.IO.Compression.ZipFile]::ExtractToDirectory($outputPath, $extract)

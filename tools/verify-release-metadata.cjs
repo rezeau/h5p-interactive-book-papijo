@@ -4,11 +4,12 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { execFileSync } = require('node:child_process');
 
-const baseline = '70f3b6a211bf79491bf00f965fbbc57593289910';
+const baseline = 'v1.15.0';
 const root = path.resolve(__dirname, '..');
 const library = JSON.parse(fs.readFileSync(path.join(root, 'library.json'), 'utf8'));
 const packageMetadata = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 const packageLock = JSON.parse(fs.readFileSync(path.join(root, 'package-lock.json'), 'utf8'));
+const semantics = JSON.parse(fs.readFileSync(path.join(root, 'semantics.json'), 'utf8'));
 const baselineLibrary = JSON.parse(execFileSync(
   'git',
   ['show', `${baseline}:library.json`],
@@ -16,7 +17,12 @@ const baselineLibrary = JSON.parse(execFileSync(
 ));
 
 const version = `${library.majorVersion}.${library.minorVersion}.${library.patchVersion}`;
-const expectedVersion = '1.15.0';
+const baselineSemantics = JSON.parse(execFileSync(
+  'git',
+  ['show', `${baseline}:semantics.json`],
+  { cwd: root, encoding: 'utf8' }
+));
+const expectedVersion = '1.16.0';
 
 if (version !== expectedVersion) {
   throw new Error(`Expected compatibility release ${expectedVersion}, found ${version}.`);
@@ -32,7 +38,7 @@ if (packageMetadata.private !== true) {
 }
 
 const expectedLibrary = structuredClone(baselineLibrary);
-expectedLibrary.minorVersion = 15;
+expectedLibrary.minorVersion = 16;
 expectedLibrary.patchVersion = 0;
 const expectedColumn = expectedLibrary.preloadedDependencies.find(
   (dependency) => dependency.machineName === 'H5P.ColumnPapiJo'
@@ -40,9 +46,36 @@ const expectedColumn = expectedLibrary.preloadedDependencies.find(
 if (!expectedColumn) {
   throw new Error('The reviewed baseline does not contain H5P.ColumnPapiJo.');
 }
-expectedColumn.minorVersion = 19;
+if (expectedColumn.majorVersion !== 1 || expectedColumn.minorVersion !== 19) {
+  throw new Error('The published v1.15.0 baseline does not require H5P.ColumnPapiJo 1.19.');
+}
+expectedColumn.minorVersion = 20;
 if (JSON.stringify(library) !== JSON.stringify(expectedLibrary)) {
-  throw new Error('library.json differs beyond the reviewed 1.15.0 and ColumnPapiJo 1.19 changes.');
+  throw new Error('library.json differs beyond the reviewed 1.16.0 and ColumnPapiJo 1.20 changes.');
+}
+
+const directDependencies = ['preloadedDependencies', 'editorDependencies', 'dynamicDependencies']
+  .flatMap((section) => library[section] || []);
+for (const machineName of ['H5P.QuestionSetPapiJo', 'H5P.ScaleQuestion']) {
+  if (directDependencies.some((dependency) => dependency.machineName === machineName)) {
+    throw new Error(`Unexpected direct Interactive Book dependency: ${machineName}.`);
+  }
+}
+
+const expectedSemantics = structuredClone(baselineSemantics);
+const baselineChapterLibrary = expectedSemantics
+  .find((field) => field.name === 'chapters')
+  ?.field.fields.find((field) => field.name === 'chapter');
+if (!baselineChapterLibrary ||
+    JSON.stringify(baselineChapterLibrary.options) !== JSON.stringify(['H5P.ColumnPapiJo 1.19'])) {
+  throw new Error('The published v1.15.0 baseline does not author chapters with ColumnPapiJo 1.19.');
+}
+baselineChapterLibrary.options = ['H5P.ColumnPapiJo 1.20'];
+if (JSON.stringify(semantics) !== JSON.stringify(expectedSemantics)) {
+  throw new Error('semantics.json differs beyond the reviewed ColumnPapiJo 1.19 to 1.20 change.');
+}
+if (JSON.stringify(semantics).includes('H5P.ColumnPapiJo 1.19')) {
+  throw new Error('semantics.json still contains the old ColumnPapiJo 1.19 authoring declaration.');
 }
 
 const readme = fs.readFileSync(path.join(root, 'README.md'), 'utf8');
