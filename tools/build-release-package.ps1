@@ -10,6 +10,15 @@ $ErrorActionPreference = 'Stop'
 Import-Module (Join-Path $PSScriptRoot 'release-archive.psm1') -Force
 
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
+# Fail before building or creating output when candidates or the selected Column
+# payload differ from the audited final chain. Semantics-only children remain
+# separately installed libraries; they are not direct Book dependencies.
+foreach ($check in @('verify-production-immutability.cjs', 'verify-release-metadata.cjs')) {
+  & node (Join-Path $PSScriptRoot $check)
+  if ($LASTEXITCODE -ne 0) { throw "Release preflight failed: $check" }
+}
+& node (Join-Path $PSScriptRoot 'verify-release-chain.cjs') --library-root $LibraryRoot
+if ($LASTEXITCODE -ne 0) { throw 'Final candidate chain or packaging Column source mismatch.' }
 if ([string]::IsNullOrWhiteSpace($OutputDirectory)) {
   $OutputDirectory = $root
 }

@@ -1,6 +1,5 @@
 <?php
-// Storage fixture only. The installed H5P validator and core execute unchanged.
-// AdvancedText 1.3 is registered in memory using unchanged 1.2.6 semantics.
+// Installed H5P methods, read-only storage. No WordPress bootstrap, DB or writes.
 error_reporting(E_ALL & ~E_DEPRECATED);
 set_error_handler(function ($severity, $message, $file, $line) {
     if (error_reporting() & $severity) {
@@ -12,114 +11,86 @@ require_once $input['corePath'];
 
 final class InteractiveBookFixtureStorage {
     public $errors = [];
-    public $libraries;
-    public $semantics;
-    public $libraryRoots;
-
-    public function t($message, $arguments = []) {
-        return strtr($message, $arguments);
-    }
-
+    public $libraries = [];
+    public $semantics = [];
+    public $libraryRoots = [];
+    public function t($message, $arguments = []) { return strtr($message, $arguments); }
     public function setErrorMessage($message, $code = null) {
         $this->errors[] = ['message' => $message, 'code' => $code];
     }
-
-    public function loadLibrary($name, $major, $minor) {
-        $key = "$name $major.$minor";
-        if (isset($this->libraries[$key])) {
-            return $this->libraries[$key];
+    private function readLibraryFile($name, $major, $minor, $file) {
+        // Only unrelated dependency libraries may come from installed storage.
+        // The complete PapiJo release chain requires actual candidate registrations.
+        if (in_array($name, ['H5P.InteractiveBookPapiJo', 'H5P.ColumnPapiJo',
+            'H5P.AccordionPapiJo', 'H5P.AdvancedTextPapiJo', 'H5PEditor.AdvancedTextPapiJoTooltip'])) {
+            throw new RuntimeException("Missing actual candidate: $name $major.$minor");
         }
         foreach ($this->libraryRoots as $root) {
-            $file = "$root/$name-$major.$minor/library.json";
-            if (is_file($file)) {
-                $library = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
-                if ([$library['machineName'], $library['majorVersion'], $library['minorVersion']]
-                    === [$name, $major, $minor]) {
-                    return $library;
-                }
-            }
+            $path = "$root/$name-$major.$minor/$file";
+            if (is_file($path)) { return file_get_contents($path); }
         }
-        return null;
+        throw new RuntimeException("Missing read-only dependency: $name $major.$minor/$file");
     }
-
+    public function loadLibrary($name, $major, $minor) {
+        $key = "$name $major.$minor";
+        return $this->libraries[$key] ?? json_decode(
+            $this->readLibraryFile($name, $major, $minor, 'library.json'), true, 512, JSON_THROW_ON_ERROR);
+    }
     public function loadLibrarySemantics($name, $major, $minor) {
-        return $this->semantics["$name $major.$minor"] ?? null;
+        return $this->semantics["$name $major.$minor"] ??
+            $this->readLibraryFile($name, $major, $minor, 'semantics.json');
     }
-
-    public function alterLibrarySemantics(&$semantics, $name, $major, $minor) {
-        // Keep every registered library's real semantics intact.
-    }
+    public function alterLibrarySemantics(&$semantics, $name, $major, $minor) {}
 }
-
-function validateFixture($input, $old, $nested) {
-    $storage = new InteractiveBookFixtureStorage();
-    $book = $input[$old ? 'oldBookLibrary' : 'bookLibrary'];
-    $bookSemantics = $input[$old ? 'oldBookSemantics' : 'bookSemantics'];
-    $bookKey = $book['machineName'] . ' ' . $book['majorVersion'] . '.' . $book['minorVersion'];
-    $storage->libraries = [$bookKey => $book, 'H5P.ColumnPapiJo 1.21' => $input['columnLibrary']];
-    if ($old) {
-        // Actual historical manifest, so the old book's preload stays 1.20.
-        $storage->libraries['H5P.ColumnPapiJo 1.20'] = $input['oldColumnLibrary'];
-    }
-    $storage->semantics = [
-        $bookKey => json_encode($bookSemantics, JSON_THROW_ON_ERROR),
-        'H5P.ColumnPapiJo 1.21' => json_encode($input['columnSemantics'], JSON_THROW_ON_ERROR)
-    ];
-    if ($nested) {
-        $child = $input['childLibrary'];
-        if ([$child['machineName'], $child['majorVersion'], $child['minorVersion'], $child['patchVersion']]
-            !== ['H5P.AdvancedTextPapiJo', 1, 2, 6]) {
-            throw new RuntimeException('Prospective registration requires unchanged AdvancedTextPapiJo 1.2.6 sources.');
-        }
-        $child['minorVersion'] = 3;
-        $child['patchVersion'] = 0;
-        $storage->libraries['H5P.AdvancedTextPapiJo 1.3'] = $child;
-        $storage->semantics['H5P.AdvancedTextPapiJo 1.3'] = json_encode($input['childSemantics'], JSON_THROW_ON_ERROR);
-    }
-    $storage->libraryRoots = $input['libraryRoots'];
+function installedCore($storage) {
     $core = (new ReflectionClass(H5PCore::class))->newInstanceWithoutConstructor();
     (new ReflectionProperty(H5PCore::class, 'h5pF'))->setValue($core, $storage);
+    $core->relativePathRegExp = '/^((\.\.\/){1,2})(.*content\/)?(\d+|editor)\/(.+)$/';
+    return $core;
+}
+function validateFixture($input) {
+    $storage = new InteractiveBookFixtureStorage();
+    $storage->libraryRoots = $input['libraryRoots'];
+    $expected = [
+        'H5P.InteractiveBookPapiJo' => [1, 17, 0], 'H5P.ColumnPapiJo' => [1, 21, 0],
+        'H5P.AccordionPapiJo' => [1, 2, 0], 'H5P.AdvancedTextPapiJo' => [1, 3, 0],
+        'H5PEditor.AdvancedTextPapiJoTooltip' => [1, 2, 0]
+    ];
+    foreach ($input['candidateLibraries'] as $candidate) {
+        $library = $candidate['manifest'];
+        $name = $library['machineName'];
+        if (!isset($expected[$name]) ||
+            [$library['majorVersion'], $library['minorVersion'], $library['patchVersion']] !== $expected[$name]) {
+            throw new RuntimeException('Actual candidate version mismatch: ' . $name);
+        }
+        unset($expected[$name]);
+        // Register actual manifests/semantics verbatim; never rewrite identity.
+        $key = "$name {$library['majorVersion']}.{$library['minorVersion']}";
+        $storage->libraries[$key] = $library;
+        $storage->semantics[$key] = json_encode($candidate['semantics'], JSON_THROW_ON_ERROR);
+    }
+    if ($expected) { throw new RuntimeException('Missing actual candidate registrations'); }
+    $core = installedCore($storage);
     $validator = new H5PContentValidator($storage, $core);
     $content = json_decode(json_encode($input['content'], JSON_THROW_ON_ERROR));
-    $content->library = $bookKey;
-    if (!$nested) {
-        $content->params->chapters[0]->params->content = [];
-    }
-    $validator->validateLibrary($content, (object) ['options' => [$bookKey]]);
+    $validator->validateLibrary($content, (object) ['options' => ['H5P.InteractiveBookPapiJo 1.17']]);
     $dependencies = [];
     foreach ($validator->getDependencies() as $dependency) {
         $library = $dependency['library'];
-        $dependencies[] = [
-            'machineName' => $library['machineName'],
-            'majorVersion' => $library['majorVersion'],
-            'minorVersion' => $library['minorVersion'],
-            'type' => $dependency['type']
-        ];
+        $dependencies[] = ['machineName' => $library['machineName'],
+            'majorVersion' => $library['majorVersion'], 'minorVersion' => $library['minorVersion'],
+            'type' => $dependency['type'], 'weight' => $dependency['weight']];
     }
-    $errors = $storage->errors;
-    // Check the actual page field separately to expose its rejection as null.
-    foreach ($bookSemantics as $field) {
-        if ($field['name'] === 'chapters') {
-            $pageField = $field['field']['fields'][0];
-        }
-    }
-    $page = json_decode(json_encode($input['content']['params']['chapters'][0], JSON_THROW_ON_ERROR));
-    if (!$nested) {
-        $page->params->content = [];
-    }
-    $validator->validateLibrary($page, (object) $pageField);
-    return ['content' => $content, 'directPage' => $page, 'dependencies' => $dependencies, 'errors' => $errors];
+    return ['content' => $content, 'dependencies' => $dependencies, 'errors' => $storage->errors,
+        'validatorPath' => (new ReflectionClass(H5PContentValidator::class))->getFileName(),
+        'dependencyTraversalPath' => (new ReflectionMethod(H5PCore::class, 'findLibraryDependencies'))->getFileName()];
 }
-
-$result = [
-    'columnOnly' => validateFixture($input, false, false),
-    'old' => validateFixture($input, true, false),
-    'validatorPath' => (new ReflectionClass(H5PContentValidator::class))->getFileName(),
-    'dependencyTraversalPath' => (new ReflectionMethod(H5PCore::class, 'findLibraryDependencies'))->getFileName()
-];
-if (isset($input['childLibrary'])) {
-    $result['nested'] = validateFixture($input, false, true);
-    $result['sourceChildVersion'] = '1.2.6';
-    $result['registrationOnlyVersion'] = '1.3.0';
+if ($input['operation'] === 'eligibility') {
+    $core = installedCore(new InteractiveBookFixtureStorage());
+    $versions = array_map(function ($row) { return (object) $row; }, $input['versions']);
+    echo json_encode((object) $core->getUpgrades((object) $input['source'], $versions), JSON_THROW_ON_ERROR);
 }
-echo json_encode($result, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
+elseif ($input['operation'] === 'validate') {
+    echo json_encode(validateFixture($input), JSON_THROW_ON_ERROR);
+}
+else { throw new RuntimeException('Unknown operation'); }

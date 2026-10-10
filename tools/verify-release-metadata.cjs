@@ -56,7 +56,7 @@ if (JSON.stringify(library) !== JSON.stringify(expectedLibrary)) {
 
 const directDependencies = ['preloadedDependencies', 'editorDependencies', 'dynamicDependencies']
   .flatMap((section) => library[section] || []);
-for (const machineName of ['H5P.AdvancedTextPapiJo', 'H5P.QuestionSetPapiJo', 'H5P.ScaleQuestion']) {
+for (const machineName of ['H5P.AccordionPapiJo', 'H5P.AdvancedTextPapiJo', 'H5P.QuestionSetPapiJo', 'H5P.ScaleQuestion']) {
   if (directDependencies.some((dependency) => dependency.machineName === machineName)) {
     throw new Error(`Unexpected direct Interactive Book dependency: ${machineName}.`);
   }

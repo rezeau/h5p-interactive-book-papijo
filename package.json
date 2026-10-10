@@ -10,7 +10,7 @@
     "watch": "webpack --watch",
     "lint:js": "eslint src/**/*.js",
     "verify:production": "node tools/verify-production-immutability.cjs",
-    "verify:release": "node tools/verify-release-metadata.cjs",
+    "verify:release": "node tools/verify-release-metadata.cjs && node tools/verify-release-chain.cjs",
     "verify": "npm run verify:production && npm run verify:release && npm test",
     "package:release": "pwsh -NoProfile -File tools/build-release-package.ps1"
   },

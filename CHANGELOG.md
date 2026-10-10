@@ -1,24 +1,27 @@
 # Changelog
 
-## 1.17.0 - 2026-10-10
+## 1.17.0 - 2026-10-10 (unreleased candidate)
 
 ### Compatibility
 
-- Updated page semantics and the preloaded `H5P.ColumnPapiJo` dependency from 1.20 to 1.21
-  to prepare transitive compatibility with the future `H5P.AdvancedTextPapiJo` 1.3 release.
-- Verified actual Column 1.21 acceptance and dependency traversal using the installed H5P PHP
-  validator/core, with semantic and HTML filtering intact and old page semantics rejecting 1.21.
-- Verified the prospective Interactive Book -> Column 1.21 -> AdvancedText 1.3 chain using only
-  an in-memory 1.3 registration of unchanged AdvancedText 1.2.6 sources. Actual 1.3 integration
-  remains pending that candidate; no child release was fabricated or packaged.
-- Added real H5P core upgrade coverage from Interactive Book 1.14, 1.15, and 1.16 to Column 1.21,
-  preserving chapter order, metadata, identifiers, parameters, and unaffected children.
+- Updated page semantics and the preloaded `H5P.ColumnPapiJo` dependency from 1.20 to 1.21.
+- Revalidated against the final repaired Column 1.21.0 commit, public Accordion 1.2.0,
+  actual AdvancedText 1.3.0 and tooltip editor 1.2.0. Removed prospective/legacy registrations.
+- Executed installed WordPress/H5P main-library selection and batching with in-memory transport:
+  the 1.16 -> 1.17 minor boundary offers an upgrade; patch-only changes do not.
+- Verified both recursive chains and mixed/current children through installed normal PHP
+  validation and dependency rebuild, preserving order, settings, metadata, UUIDs, rich text,
+  tooltips, image definitions/occurrences, captions, links, widths/wrapping, paths and optional absence.
+- Retained Book 1.14/1.15/1.16 upgrade and historical QuestionSet/ScaleQuestion regression coverage.
 
 ### Changed
 
 - Compatibility metadata only; runtime source and compiled assets are unchanged from 1.16.0.
   H5P's normal recursive content upgrade handles the dependency change without an Interactive
   Book `upgrades.js`. Install compatible child libraries separately before upgrading content.
+- Release verification fails on absent/mismatched candidates, an unrepaired/dirty Column, old
+  dependency targets or legacy fallback sources. Package preflight checks the selected Column
+  payload against the repaired candidate before building. Nothing was packaged or published.
 
 ## 1.16.0 - 2026-09-24
 
