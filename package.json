@@ -1,6 +1,6 @@
 {
 "name": "h5p-interactive-book-papijo",
-"version": "1.16.0",
+"version": "1.17.0",
   "private": true,
   "description": "An interactive book which displays content in pages and sections. A papijo version",
   "scripts": {

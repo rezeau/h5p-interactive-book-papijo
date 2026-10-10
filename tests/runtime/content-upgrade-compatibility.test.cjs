@@ -80,24 +80,53 @@ const interactiveBook115Snapshot = materializeGitLibrary([root], 'v1.15.0', {
 if (interactiveBook115Snapshot) {
   test.after(() => interactiveBook115Snapshot.cleanup());
 }
-const column120Path = findLibrary(column120Candidates, {
+const interactiveBook116Snapshot = materializeGitLibrary([root], 'v1.16.0', {
+  machineName: 'H5P.InteractiveBookPapiJo',
+  majorVersion: 1,
+  minorVersion: 16,
+  patchVersion: 0,
+}, ['semantics.json']);
+if (interactiveBook116Snapshot) {
+  test.after(() => interactiveBook116Snapshot.cleanup());
+}
+let column120Path = findLibrary(column120Candidates, {
   machineName: 'H5P.ColumnPapiJo',
   majorVersion: 1,
   minorVersion: 20,
   patchVersion: 0,
 }, ['semantics.json']);
+const column120Snapshot = column120Path ? undefined : materializeGitLibrary([
+  process.env.H5P_COLUMN_PAPIJO_REPOSITORY,
+  path.resolve(root, '..', 'papi-jo-h5p-column'),
+].filter(Boolean), 'v1.20.0', {
+  machineName: 'H5P.ColumnPapiJo', majorVersion: 1, minorVersion: 20, patchVersion: 0,
+}, ['semantics.json']);
+if (column120Snapshot) {
+  column120Path = column120Snapshot.path;
+  test.after(() => column120Snapshot.cleanup());
+}
 const questionSet123Path = findLibrary(questionSet123Candidates, {
   machineName: 'H5P.QuestionSetPapiJo',
   majorVersion: 1,
   minorVersion: 23,
   patchVersion: 0,
 }, ['semantics.json']);
-const scaleQuestion02Path = findLibrary(scaleQuestion02Candidates, {
+let scaleQuestion02Path = findLibrary(scaleQuestion02Candidates, {
   machineName: 'H5P.ScaleQuestion',
   majorVersion: 0,
   minorVersion: 2,
   patchVersion: 1,
 }, ['semantics.json', 'upgrades.js']);
+const scaleQuestion021Snapshot = scaleQuestion02Path ? undefined : materializeGitLibrary([
+  process.env.H5P_SCALEQUESTION_REPOSITORY,
+  path.resolve(root, '..', 'papi-jo-h5p-scale-question'),
+].filter(Boolean), 'v0.2.1', {
+  machineName: 'H5P.ScaleQuestion', majorVersion: 0, minorVersion: 2, patchVersion: 1,
+}, ['semantics.json', 'upgrades.js']);
+if (scaleQuestion021Snapshot) {
+  scaleQuestion02Path = scaleQuestion021Snapshot.path;
+  test.after(() => scaleQuestion021Snapshot.cleanup());
+}
 
 test(
   'real H5P recursion upgrades InteractiveBook 1.14 -> 1.15, ColumnPapiJo 1.17 -> 1.19, and QuestionSetPapiJo 1.21 -> 1.22.1',
@@ -199,8 +228,8 @@ test(
 test(
   'real H5P recursion upgrades InteractiveBook 1.15 -> 1.16 through Column 1.20, QuestionSet 1.23, and ScaleQuestion 0.2',
   {
-    skip: !h5pJsPath || !column120Path || !questionSet123Path || !scaleQuestion02Path
-      ? 'H5P core, ColumnPapiJo 1.20.0, QuestionSetPapiJo 1.23.0, or ScaleQuestion 0.2.1 is unavailable'
+    skip: !h5pJsPath || !interactiveBook116Snapshot || !column120Path || !questionSet123Path || !scaleQuestion02Path
+      ? 'H5P core, InteractiveBookPapiJo 1.16.0, ColumnPapiJo 1.20.0, QuestionSetPapiJo 1.23.0, or ScaleQuestion 0.2.1 is unavailable'
       : false,
   },
   async () => {
@@ -210,7 +239,7 @@ test(
     ));
     const before = structuredClone(fixture);
 
-    const destinationManifest = JSON.parse(fs.readFileSync(path.join(root, 'library.json'), 'utf8'));
+    const destinationManifest = JSON.parse(fs.readFileSync(path.join(interactiveBook116Snapshot.path, 'library.json'), 'utf8'));
     const destinationColumnDependency = destinationManifest.preloadedDependencies.find(
       ({ machineName }) => machineName === 'H5P.ColumnPapiJo'
     );
@@ -224,7 +253,7 @@ test(
       [1, 20]
     );
 
-    const destinationSemantics = JSON.parse(fs.readFileSync(path.join(root, 'semantics.json'), 'utf8'));
+    const destinationSemantics = JSON.parse(fs.readFileSync(path.join(interactiveBook116Snapshot.path, 'semantics.json'), 'utf8'));
     const destinationChapterField = destinationSemantics
       .find(({ name }) => name === 'chapters')
       .field.fields.find(({ name }) => name === 'chapter');
